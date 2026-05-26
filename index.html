@@ -26,8 +26,10 @@
                 <h1 class="text-4xl font-bold mb-2">🌪️ 智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full">雲端完全版</span></h1>
                 <p class="text-gray-400">引導式情境教學模組・連動個人化資料庫</p>
             </div>
-            <div class="ml-auto flex items-center gap-3 bg-slate-800 p-2 rounded-lg border border-slate-700 text-sm">
-                <span class="text-xs text-gray-400">🎓 學生：翊翔</span>
+            <div class="ml-auto flex items-center gap-4 bg-slate-800 py-2 px-3 rounded-lg border border-slate-700 text-sm">
+                <span id="userEmailDisplay" class="text-xs text-gray-400">🎓 讀取中...</span>
+                <div class="w-px h-4 bg-slate-600"></div>
+                <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 font-bold transition">登出</button>
             </div>
         </header>
 
@@ -143,9 +145,6 @@
     </div>
 
     <script>
-        // ==========================================
-        // 1. Supabase 設定與動態變數 (乾淨無重複)
-        // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -155,28 +154,28 @@
         let pollingInterval = null;
 
         // ==========================================
-        // 🌟 2. 核心升級：驗證登入狀態與自動建檔
+        // 🌟 登入狀態驗證與 UI 更新
         // ==========================================
         async function checkAuthAndInit() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             
             if (!session) {
-                // 如果沒登入，強制跳轉去註冊/登入頁面
                 window.location.href = 'register.html';
                 return;
             }
 
-            // 成功抓到真實使用者的 UUID！
             testUserId = session.user.id;
 
-            // 防呆機制：檢查這位使用者在資料庫有沒有進度表？
+            // 🔥 動態更新右上角的帳號名稱 (取信箱 @ 前面的字串)
+            const emailPrefix = session.user.email.split('@')[0];
+            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${emailPrefix}`;
+
             const { data: existingRow } = await supabaseClient
                 .from('lms_disaster_progress')
                 .select('user_id')
                 .eq('user_id', testUserId)
                 .maybeSingle();
 
-            // 如果是剛註冊的新手，幫他新增一筆全 0 的初始資料
             if (!existingRow) {
                 await supabaseClient.from('lms_disaster_progress').insert([{ 
                     user_id: testUserId, 
@@ -187,14 +186,19 @@
                 }]);
             }
 
-            // 準備就緒，開始繪製畫面資料！
             fetchUserProgress();
         }
 
         window.onload = checkAuthAndInit;
 
+        // 🔥 新增：登出功能
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
+
         // ==========================================
-        // 3. 引導與 iOS 鏡頭喚醒邏輯 (<a>標籤深層連結防擋版)
+        // 其餘邏輯 (完全不變)
         // ==========================================
         function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
@@ -260,9 +264,6 @@
             document.getElementById('preparationGuideSection').classList.remove('hidden');
         }
 
-        // ==========================================
-        // 4. UI 災害模式切換
-        // ==========================================
         function setDisasterMode(mode) {
             currentMode = mode;
             ['earthquake', 'typhoon', 'fire'].forEach(m => {
@@ -282,9 +283,6 @@
             document.getElementById('startQuizBtn').innerText = "🎲 產生新情境考題";
         }
 
-        // ==========================================
-        // 5. 從 Supabase 讀取最新進度資料
-        // ==========================================
         async function fetchUserProgress() {
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
@@ -313,9 +311,6 @@
             }
         }
 
-        // ==========================================
-        // 6. 呼叫 Vercel 雲端 Serverless API 出題
-        // ==========================================
         document.getElementById('startQuizBtn').addEventListener('click', async () => {
             const btn = document.getElementById('startQuizBtn');
             btn.innerText = "⏳ 構建虛擬情境中...";
@@ -335,9 +330,6 @@
             }
         });
 
-        // ==========================================
-        // 7. 繪製題目
-        // ==========================================
         function renderQuiz(quiz) {
             document.getElementById('aiQuizDisplay').classList.remove('hidden');
             document.getElementById('explanationBox').classList.add('hidden');
