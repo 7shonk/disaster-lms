@@ -7,53 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 強制防止選取，防止反白，強制游標變手指 */
-        .prevent-select {
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        .cursor-pointer-important {
-            cursor: pointer !important;
-        }
         @keyframes radar { 0% { transform: scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
         .radar-pulse { animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); }
+        /* 只對標題和文字禁止反白，按鈕與 Input 保留互動 */
+        .no-select { user-select: none; -webkit-user-select: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex font-sans no-select">
+<body class="bg-slate-950 text-white min-h-screen flex font-sans">
 
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col shrink-0">
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col shrink-0 no-select">
         <div class="text-xl font-bold mb-10 text-blue-400">🌪️ 防災學習 LMS</div>
         <nav class="space-y-4 flex-1">
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">主選單</div>
-            <a href="#" class="flex items-center gap-3 text-blue-400 bg-blue-900/20 p-3 rounded-lg border border-blue-900/50"><span>📊</span> 儀表板</a>
+            <a href="#" class="flex items-center gap-3 text-blue-400 bg-blue-900/20 p-3 rounded-lg border border-blue-900/50 cursor-pointer"><span>📊</span> 儀表板</a>
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-8 mb-2">防災知識庫</div>
-            <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition"><span>📄</span> 緊急避難包清單</a>
-            <a href="files/日常儲備清單.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition"><span>📄</span> 日常居家儲備</a>
+            <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition cursor-pointer"><span>📄</span> 緊急避難包清單</a>
+            <a href="files/日常儲備清單.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition cursor-pointer"><span>📄</span> 日常居家儲備</a>
         </nav>
         <div class="mt-auto border-t border-slate-800 pt-6">
             <div id="userEmailDisplay" class="text-xs text-gray-400 mb-4 truncate">🎓 載入中...</div>
-            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-2"><span>🚪</span> 登出系統</button>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-2 cursor-pointer"><span>🚪</span> 登出系統</button>
         </div>
     </aside>
 
     <main class="flex-1 p-8 overflow-y-auto">
         <div class="max-w-5xl mx-auto">
-            <h1 class="text-3xl font-bold mb-8">智慧防災學習中控台</h1>
+            <h1 class="text-3xl font-bold mb-8 no-select">智慧防災學習中控台</h1>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg lg:col-span-1">
                     <div id="preparationGuideSection">
-                        <h2 class="text-md font-bold text-blue-400 mb-4">📋 步驟一：實體包準備</h2>
+                        <h2 class="text-md font-bold text-blue-400 mb-4 no-select">📋 步驟一：實體包準備</h2>
                         <div class="space-y-3 text-sm">
-                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-700 border-slate-600">
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer hover:bg-slate-700 transition">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-700 border-slate-600 cursor-pointer">
                                 <div><span class="block font-bold">1. 維持生命物資</span><span class="text-xs text-gray-400">水與糧食</span></div>
                             </label>
-                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600">
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer hover:bg-slate-700 transition">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600 cursor-pointer">
                                 <div><span class="block font-bold">2. 急救與防寒</span><span class="text-xs text-gray-400">藥品、保暖毯</span></div>
                             </label>
-                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600">
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer hover:bg-slate-700 transition">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600 cursor-pointer">
                                 <div><span class="block font-bold">3. 求救與照明</span><span class="text-xs text-gray-400">手電筒、哨子</span></div>
                             </label>
                         </div>
@@ -68,11 +62,12 @@
                     <div id="scanResultSection" class="hidden flex flex-col items-center py-4">
                         <div id="scoreDisplay" class="text-5xl font-extrabold text-blue-400">--</div>
                         <p id="statusMessage" class="mt-2 text-sm text-yellow-400">讀取中...</p>
-                        <button onclick="resetToPrep()" class="text-xs text-gray-500 mt-4 underline">重新盤點</button>
+                        <button onclick="resetToPrep()" class="text-xs text-gray-500 mt-4 underline cursor-pointer">重新盤點</button>
                     </div>
                 </div>
+
                 <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg lg:col-span-2">
-                    <h2 class="text-lg font-bold mb-4">🧠 學習進度概況</h2>
+                    <h2 class="text-lg font-bold mb-4 no-select">🧠 學習進度概況</h2>
                     <div class="grid grid-cols-3 gap-4 text-center">
                         <div class="bg-slate-800 p-4 rounded-lg"><div class="text-xl">🫨</div><div class="text-xs text-gray-400">地震</div><div id="progress-earthquake" class="font-bold">0 關</div></div>
                         <div class="bg-slate-800 p-4 rounded-lg"><div class="text-xl">🌀</div><div class="text-xs text-gray-400">防颱</div><div id="progress-typhoon" class="font-bold">0 關</div></div>
@@ -80,14 +75,15 @@
                     </div>
                 </div>
             </div>
+
             <div class="bg-slate-900 rounded-xl border border-blue-900/50 shadow-lg p-6">
-                <h3 class="text-xl font-bold mb-4">🕹️ 斷點情境模擬訓練室</h3>
+                <h3 class="text-xl font-bold mb-4 no-select">🕹️ 斷點情境模擬訓練室</h3>
                 <div class="flex gap-2 mb-6">
-                    <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-2 rounded-lg bg-blue-600 font-bold">地震</button>
-                    <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400">颱風</button>
-                    <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400">火災</button>
+                    <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-2 rounded-lg bg-blue-600 font-bold cursor-pointer">地震</button>
+                    <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400 cursor-pointer">颱風</button>
+                    <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400 cursor-pointer">火災</button>
                 </div>
-                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">🎲 啟動 AI 情境出題</button>
+                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg cursor-pointer">🎲 啟動 AI 情境出題</button>
                 <div id="aiQuizDisplay" class="hidden mt-6">
                     <p id="questionText" class="text-lg font-bold mb-4"></p>
                     <div id="optionsContainer" class="flex flex-col gap-2"></div>
@@ -98,16 +94,10 @@
     </main>
 
     <script>
-        // 確保 DOM 載入後才執行
-        document.addEventListener('DOMContentLoaded', async () => {
-            const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-            const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-            window.supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-            
-            checkAuthAndInit();
-        });
-
-        // 核心邏輯移入全域或適當位置，確保按鈕能抓到
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
         let testUserId = null; 
         let currentMode = 'earthquake'; 
         let pollingInterval = null;
@@ -116,9 +106,7 @@
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { window.location.href = 'register.html'; return; }
             testUserId = session.user.id;
-            const emailPrefix = session.user.email.split('@')[0];
-            const display = document.getElementById('userEmailDisplay');
-            if (display) display.innerText = `🎓 學生：${emailPrefix}`;
+            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${session.user.email.split('@')[0]}`;
             
             const { data: existingRow } = await supabaseClient.from('lms_disaster_progress').select('user_id').eq('user_id', testUserId).maybeSingle();
             if (!existingRow) {
@@ -129,14 +117,6 @@
         
         async function logout() { await supabaseClient.auth.signOut(); window.location.href = 'register.html'; }
 
-        // 綁定勾選框的監聽器
-        function setupCheckboxes() {
-            const checkboxes = document.querySelectorAll('.prep-check');
-            checkboxes.forEach(cb => {
-                cb.addEventListener('change', checkPrepStatus);
-            });
-        }
-
         function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
             const btn = document.getElementById('startScanBtn');
@@ -144,33 +124,111 @@
 
             if (allChecked) {
                 btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
-                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer-important');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer');
                 btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
                 btn.href = "disasterlms://opencamera";
                 btn.onclick = triggerUIUpdate;
             } else {
                 btn.classList.add('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
-                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer-important');
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer');
                 btn.innerText = "🔒 請先勾選備齊物資";
                 btn.removeAttribute('href');
                 btn.onclick = null;
             }
         }
 
-        // 修改 DOMContentLoaded 綁定
-        document.addEventListener('DOMContentLoaded', () => {
-            checkAuthAndInit();
-            setupCheckboxes(); // 初始化監聽
-        });
-                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed";
-                <a id="startScanBtn" class="prevent-select block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed">
-    🔒 請先勾選備齊物資
-</a>
-            }
-        };
+        function triggerUIUpdate() {
+            document.getElementById('preparationGuideSection').classList.add('hidden');
+            document.getElementById('scanResultSection').classList.add('hidden');
+            document.getElementById('scanningWaitSection').classList.remove('hidden');
+            document.getElementById('scanningWaitSection').style.display = 'flex';
+            startPollingScore();
+        }
 
-        // ... (其他函數 triggerUIUpdate, startPollingScore, ... 保持原樣)
-        // 記得檢查所有的 click 事件，全部改成上面這種安全寫法
+        function startPollingScore() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            pollingInterval = setInterval(async () => {
+                try {
+                    const { data } = await supabaseClient.from('lms_disaster_progress').select('disaster_kit_score').eq('user_id', testUserId).single();
+                    if (data && data.disaster_kit_score !== null) {
+                        clearInterval(pollingInterval);
+                        setTimeout(() => showFinalScore(data), 1500); 
+                    }
+                } catch (e) { console.error(e); }
+            }, 2000);
+        }
+
+        function showFinalScore(data) {
+            document.getElementById('scanningWaitSection').classList.add('hidden');
+            document.getElementById('scanResultSection').classList.remove('hidden');
+            document.getElementById('scanResultSection').style.display = 'flex';
+            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score;
+        }
+
+        function resetToPrep() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            document.getElementById('scanResultSection').classList.add('hidden');
+            document.getElementById('scanningWaitSection').classList.add('hidden');
+            document.getElementById('preparationGuideSection').classList.remove('hidden');
+        }
+
+        function setDisasterMode(mode) {
+            currentMode = mode;
+            ['earthquake', 'typhoon', 'fire'].forEach(m => {
+                const element = document.getElementById(`tab-${m}`);
+                if (element) element.className = "flex-1 py-2 rounded-lg bg-slate-800 text-gray-400 cursor-pointer";
+            });
+            document.getElementById(`tab-${mode}`).className = "flex-1 py-2 rounded-lg bg-blue-600 font-bold cursor-pointer";
+            
+            const descMap = {
+                earthquake: "【地震情境】模擬強震突發時的斷點決策...",
+                typhoon: "【颱風情境】模擬強颱登陸...",
+                fire: "【火災情境】模擬濃煙密布的逃生路線..."
+            };
+            document.getElementById('modeDescription').innerText = descMap[mode];
+            document.getElementById('aiQuizDisplay').classList.add('hidden');
+        }
+
+        async function fetchUserProgress() {
+            try {
+                const { data } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
+                if (data) {
+                    document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
+                    document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
+                    document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        document.getElementById('startQuizBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startQuizBtn');
+            btn.innerText = "⏳ 構建中...";
+            try {
+                const res = await fetch(`/api/get-quiz?mode=${currentMode}`);
+                const data = await res.json();
+                renderQuiz(data);
+            } catch (e) { alert("生成失敗，請檢查 Vercel"); }
+            finally { btn.innerText = "🎲 啟動 AI 情境出題"; }
+        });
+
+        function renderQuiz(quiz) {
+            document.getElementById('aiQuizDisplay').classList.remove('hidden');
+            document.getElementById('questionText').innerText = quiz.question;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = "";
+            quiz.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "text-left bg-slate-700 p-3 rounded-lg hover:bg-slate-600 cursor-pointer";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    document.getElementById('explanationBox').classList.remove('hidden');
+                    document.getElementById('explanationBox').innerHTML = `<b>AI 回饋：</b> ${quiz.explanation}`;
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
     </script>
 </body>
 </html>
