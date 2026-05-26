@@ -127,3 +127,108 @@
                 if (data.disaster_kit_score < 60) {
                     document.getElementById('statusMessage').innerText = "🔴 警告：實體物資嚴重不足";
                     document.getElementById('statusMessage').className = "mt-3 text-sm text-red-400 font-bold";
+                    document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-red-500";
+                } else {
+                    document.getElementById('statusMessage').innerText = "🟢 實體包準備完善";
+                    document.getElementById('statusMessage').className = "mt-3 text-sm text-green-400 font-bold";
+                    document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
+                }
+
+                document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
+                document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
+                document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
+
+            } catch (err) {
+                console.error("撈取資料失敗:", err);
+            }
+        }
+        window.onload = fetchUserProgress;
+
+        // ==========================================
+        // 4. 改向本機 Python API 請求 Gemini 題目
+        // ==========================================
+        document.getElementById('startQuizBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startQuizBtn');
+            btn.innerText = "⏳ 構建虛擬情境中...";
+            btn.disabled = true;
+
+            try {
+                // 💡 丟給 Python 後端處理，順便告訴後端目前是什麼模式
+                const response = await fetch(`${BACKEND_API_URL}?mode=${currentMode}`);
+                if (!response.ok) throw new Error("後端連線異常");
+                
+                const quizData = await response.json(); 
+                renderQuiz(quizData); 
+
+            } catch (error) {
+                alert("🤖 提示：請確保您的 Python 後端(sync_backend.py)正在開著運作喔！");
+                console.error(error);
+            } finally {
+                btn.innerText = "🎲 重新產生情境";
+                btn.disabled = false;
+            }
+        });
+
+        // ==========================================
+        // 5. 繪製題目
+        // ==========================================
+        function renderQuiz(quiz) {
+            document.getElementById('aiQuizDisplay').classList.remove('hidden');
+            document.getElementById('explanationBox').classList.add('hidden');
+            document.getElementById('questionText').innerText = quiz.question;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = ""; 
+
+            quiz.options.forEach(option => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "text-left bg-slate-700 hover:bg-slate-600 p-4 rounded-lg font-bold border border-slate-600 transition";
+                optBtn.innerText = option;
+                
+                optBtn.onclick = async () => {
+                    document.getElementById('explanationBox').classList.remove('hidden');
+                    const allButtons = container.querySelectorAll('button');
+                    allButtons.forEach(b => b.disabled = true);
+
+                    if (option === quiz.correctAnswer) {
+                        optBtn.className = "text-left bg-green-600/50 border-green-500 p-4 rounded-lg font-bold text-white";
+                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-green-400'>🚀 [系統同步] ${currentMode} 情境過關！正在將經驗值寫入資料庫...</span>`;
+                        
+                        await saveCategoryProgress(currentMode);
+                    } else {
+                        optBtn.className = "text-left bg-red-600/50 border-red-500 p-4 rounded-lg font-bold text-white";
+                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-400'>🔄 [系統提示] 觀念需要調整，請重新產生情境進行挑戰。</span>`;
+                    }
+                };
+                container.appendChild(optBtn);
+            });
+        }
+
+        async function saveCategoryProgress(mode) {
+            const columnMap = {
+                earthquake: 'earthquake_completed_quizzes',
+                typhoon: 'typhoon_completed_quizzes',
+                fire: 'fire_completed_quizzes'
+            };
+            const targetColumn = columnMap[mode];
+
+            try {
+                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select(targetColumn).eq('user_id', testUserId).single();
+                let currentCount = currentData[targetColumn] || 0;
+
+                const { error } = await supabaseClient
+                    .from('lms_disaster_progress')
+                    .update({ 
+                        [targetColumn]: currentCount + 1,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('user_id', testUserId);
+
+                if (error) throw error;
+                setTimeout(fetchUserProgress, 1500);
+            } catch (err) {
+                console.error("更新關卡進度失敗:", err);
+            }
+        }
+    </script>
+</body>
+</html>
