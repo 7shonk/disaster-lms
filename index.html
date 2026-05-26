@@ -21,7 +21,7 @@
 <body class="bg-slate-900 text-white p-6 font-sans">
 
     <div class="max-w-4xl mx-auto">
-        <header class="mb-8 border-b border-slate-700 pb-4 flex justify-between items-end">
+        <header class="mb-8 border-b border-slate-700 pb-4 flex justify-between items-end select-none">
             <div>
                 <h1 class="text-4xl font-bold mb-2">🌪️ 智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full">雲端完全版</span></h1>
                 <p class="text-gray-400">引導式情境教學模組・連動個人化資料庫</p>
@@ -32,7 +32,7 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start relative overflow-hidden">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start relative overflow-hidden select-none">
                 
                 <div id="preparationGuideSection">
                     <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：實體包自主準備</h2>
@@ -89,7 +89,7 @@
 
             </div>
 
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-2">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-2 select-none">
                 <h2 class="text-lg text-gray-300 mb-4">🧠 認知與預防教學進度</h2>
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div class="bg-slate-700/50 p-4 rounded-lg">
@@ -112,25 +112,25 @@
         </div>
 
         <div class="bg-slate-800 rounded-xl border border-blue-500/50 shadow-lg overflow-hidden">
-            <div class="bg-slate-700 p-4 border-b border-slate-600 flex justify-between items-center">
+            <div class="bg-slate-700 p-4 border-b border-slate-600 flex justify-between items-center select-none">
                 <h3 class="text-xl font-bold text-white">🕹️ 斷點情境模擬訓練室</h3>
             </div>
             
-            <div class="flex border-b border-slate-600">
+            <div class="flex border-b border-slate-600 select-none">
                 <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-3 text-center font-bold bg-blue-600 text-white transition">🫨 地震情境</button>
                 <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition">🌀 颱風情境</button>
                 <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition">🔥 火災情境</button>
             </div>
 
             <div class="p-6">
-                <p id="modeDescription" class="text-gray-300 mb-6">目前模式：地震發生時的瞬間應變與物資運用。</p>
+                <p id="modeDescription" class="text-gray-300 mb-6 select-none">目前模式：地震發生時的瞬間應變與物資運用。</p>
                 
-                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-lg transition shadow-lg mb-6">
+                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-lg transition shadow-lg mb-6 select-none">
                     🎲 啟動 AI 情境出題
                 </button>
 
                 <div id="aiQuizDisplay" class="hidden">
-                    <div class="flex items-center gap-3 mb-4">
+                    <div class="flex items-center gap-3 mb-4 select-none">
                         <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400">🤖 Gemini 導師</div>
                         <p class="text-sm text-gray-400">已為您生成專屬情境題</p>
                     </div>
@@ -144,18 +144,57 @@
 
     <script>
         // ==========================================
-        // 1. Supabase 設定
+        // 1. Supabase 設定與動態變數 (乾淨無重複)
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
-        const testUserId = 'f0bda093-7bb6-414a-97fc-9777b97d6320'; 
+        let testUserId = null; 
         let currentMode = 'earthquake'; 
         let pollingInterval = null;
 
         // ==========================================
-        // 2. 引導與 iOS 鏡頭喚醒邏輯 (<a>標籤深層連結防擋版)
+        // 🌟 2. 核心升級：驗證登入狀態與自動建檔
+        // ==========================================
+        async function checkAuthAndInit() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                // 如果沒登入，強制跳轉去註冊/登入頁面
+                window.location.href = 'register.html';
+                return;
+            }
+
+            // 成功抓到真實使用者的 UUID！
+            testUserId = session.user.id;
+
+            // 防呆機制：檢查這位使用者在資料庫有沒有進度表？
+            const { data: existingRow } = await supabaseClient
+                .from('lms_disaster_progress')
+                .select('user_id')
+                .eq('user_id', testUserId)
+                .maybeSingle();
+
+            // 如果是剛註冊的新手，幫他新增一筆全 0 的初始資料
+            if (!existingRow) {
+                await supabaseClient.from('lms_disaster_progress').insert([{ 
+                    user_id: testUserId, 
+                    disaster_kit_score: 0, 
+                    earthquake_completed_quizzes: 0, 
+                    typhoon_completed_quizzes: 0, 
+                    fire_completed_quizzes: 0 
+                }]);
+            }
+
+            // 準備就緒，開始繪製畫面資料！
+            fetchUserProgress();
+        }
+
+        window.onload = checkAuthAndInit;
+
+        // ==========================================
+        // 3. 引導與 iOS 鏡頭喚醒邏輯 (<a>標籤深層連結防擋版)
         // ==========================================
         function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
@@ -163,36 +202,28 @@
             const allChecked = Array.from(checkboxes).every(c => c.checked);
 
             if (allChecked) {
-                // 移除鎖定狀態
                 btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
-                // 加上解鎖特效與顏色
                 btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse');
                 btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
                 
-                // 🔥 核心修改：賦予真實 href，利用原生 HTML 特性突破 iOS 防線
                 btn.href = "disasterlms://opencamera";
                 btn.onclick = function() { triggerUIUpdate(); };
             } else {
-                // 恢復鎖定狀態
                 btn.removeAttribute('href');
                 btn.onclick = null;
-                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none";
+                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none select-none";
                 btn.innerText = "🔒 請先勾選備齊物資";
             }
         }
 
         function triggerUIUpdate() {
-            // 這個函數只負責切換網頁的 UI，原生 <a> 標籤會自己去喚醒 App
             document.getElementById('preparationGuideSection').classList.add('hidden');
             document.getElementById('scanResultSection').classList.add('hidden');
             document.getElementById('scanningWaitSection').classList.remove('hidden');
             document.getElementById('scanningWaitSection').style.display = 'flex';
-
-            // 開始每 2 秒去 Supabase 偷看一次，老黃的分數同步過來了沒？
             startPollingScore();
         }
 
-        // 輪詢檢查資料庫
         function startPollingScore() {
             if (pollingInterval) clearInterval(pollingInterval);
             
@@ -230,7 +261,7 @@
         }
 
         // ==========================================
-        // 3. UI 災害模式切換
+        // 4. UI 災害模式切換
         // ==========================================
         function setDisasterMode(mode) {
             currentMode = mode;
@@ -252,7 +283,7 @@
         }
 
         // ==========================================
-        // 4. 從 Supabase 讀取最新進度資料
+        // 5. 從 Supabase 讀取最新進度資料
         // ==========================================
         async function fetchUserProgress() {
             try {
@@ -281,10 +312,9 @@
                 document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
             }
         }
-        window.onload = fetchUserProgress;
 
         // ==========================================
-        // 5. 呼叫 Vercel 雲端 Serverless API 出題
+        // 6. 呼叫 Vercel 雲端 Serverless API 出題
         // ==========================================
         document.getElementById('startQuizBtn').addEventListener('click', async () => {
             const btn = document.getElementById('startQuizBtn');
@@ -306,7 +336,7 @@
         });
 
         // ==========================================
-        // 6. 繪製題目
+        // 7. 繪製題目
         // ==========================================
         function renderQuiz(quiz) {
             document.getElementById('aiQuizDisplay').classList.remove('hidden');
@@ -317,7 +347,7 @@
 
             quiz.options.forEach(option => {
                 const optBtn = document.createElement('button');
-                optBtn.className = "text-left bg-slate-700 hover:bg-slate-600 p-4 rounded-lg font-bold border border-slate-600 transition";
+                optBtn.className = "text-left bg-slate-700 hover:bg-slate-600 p-4 rounded-lg font-bold border border-slate-600 transition select-none";
                 optBtn.innerText = option;
                 
                 optBtn.onclick = async () => {
@@ -326,11 +356,11 @@
                     allButtons.forEach(b => b.disabled = true);
 
                     if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left bg-green-600/50 border-green-500 p-4 rounded-lg font-bold text-white";
+                        optBtn.className = "text-left bg-green-600/50 border-green-500 p-4 rounded-lg font-bold text-white select-none";
                         document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-green-400'>🚀 [系統同步] ${currentMode} 情境過關！正在將經驗值寫入資料庫...</span>`;
                         await saveCategoryProgress(currentMode);
                     } else {
-                        optBtn.className = "text-left bg-red-600/50 border-red-500 p-4 rounded-lg font-bold text-white";
+                        optBtn.className = "text-left bg-red-600/50 border-red-500 p-4 rounded-lg font-bold text-white select-none";
                         document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-400'>🔄 [系統提示] 觀念需要調整，請重新產生情境進行挑戰。</span>`;
                     }
                 };
