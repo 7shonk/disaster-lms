@@ -10,41 +10,62 @@
 <body class="bg-slate-900 text-white p-6 font-sans">
 
     <div class="max-w-4xl mx-auto">
-        <nav class="flex items-center text-sm text-gray-400 mb-6 bg-slate-800 p-3 rounded-lg border border-slate-700">
-            <a href="login.html" class="hover:text-white transition">LMS 課程大廳</a>
-            <span class="mx-2">/</span>
-            <span class="text-gray-500">生活防護學程</span>
-            <span class="mx-2">/</span>
-            <span class="text-blue-400 font-bold">防災萬用包 (模組 3)</span>
-            
-            <div class="ml-auto flex items-center gap-3">
-                <span class="bg-slate-700 px-3 py-1 rounded-full text-xs">🎓 學生：翊翔</span>
-                <a href="login.html" class="text-red-400 hover:text-red-300 text-xs">登出</a>
-            </div>
-        </nav>
-
         <header class="mb-8 border-b border-slate-700 pb-4 flex justify-between items-end">
             <div>
-                <h1 class="text-4xl font-bold mb-2">🌪️ 智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full">引導式教學模式</span></h1>
-                <p class="text-gray-400">目前開啟單元：斷點決策與實體物資 O2O 連動</p>
+                <h1 class="text-4xl font-bold mb-2">🌪️ 智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full">雲端完全版</span></h1>
+                <p class="text-gray-400">引導式情境教學模組・連動個人化資料庫</p>
             </div>
-            
-            <div class="hidden md:flex gap-2">
-                <div class="bg-slate-800 border border-slate-700 px-4 py-2 rounded-lg opacity-50 cursor-not-allowed">
-                    <span class="text-xs text-gray-500 block">模組 4</span>
-                    <span class="text-sm font-bold text-gray-400">🔒 洪水避難演練</span>
-                </div>
+            <div class="ml-auto flex items-center gap-3 bg-slate-800 p-2 rounded-lg border border-slate-700 text-sm">
+                <span class="text-xs text-gray-400">🎓 學生：翊翔</span>
             </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-center items-center text-center">
-                <h2 class="text-lg text-gray-300 mb-2">實體防災包掃描分數</h2>
-                <div class="flex items-baseline gap-2">
-                    <div id="scoreDisplay" class="text-6xl font-extrabold text-blue-400">--</div>
-                    <div class="text-lg text-gray-400">/ 100</div>
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start">
+                
+                <div id="preparationGuideSection">
+                    <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：實體包自主準備</h2>
+                    <p class="text-xs text-gray-400 mb-4">請先在桌上備齊以下核心物資：</p>
+                    
+                    <div class="space-y-3 text-sm">
+                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
+                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
+                            <div>
+                                <span class="font-bold block text-gray-200">1. 維持生命物資</span>
+                                <span class="text-xs text-gray-400">礦泉水與乾糧（三天份）</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
+                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
+                            <div>
+                                <span class="font-bold block text-gray-200">2. 急救與防寒</span>
+                                <span class="text-xs text-gray-400">常用急救藥品、保暖毯</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
+                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
+                            <div>
+                                <span class="font-bold block text-gray-200">3. 求救與照明</span>
+                                <span class="text-xs text-gray-400">強光手電筒、高分貝哨子</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button id="startScanBtn" disabled onclick="unlockScanResult()" class="w-full bg-slate-700 text-gray-400 font-bold py-2.5 rounded-lg mt-4 transition cursor-not-allowed text-sm">
+                        🔒 請先勾選備齊物資
+                    </button>
                 </div>
-                <p id="statusMessage" class="mt-3 text-sm text-yellow-400">讀取中...</p>
+
+                <div id="scanResultSection" class="hidden flex flex-col items-center justify-center text-center my-auto py-4">
+                    <h2 class="text-sm text-gray-400 mb-2">📸 步驟二：iOS 鏡頭盤點結果</h2>
+                    <div class="flex items-baseline gap-2">
+                        <div id="scoreDisplay" class="text-6xl font-extrabold text-blue-400">--</div>
+                        <div class="text-lg text-gray-400">/ 100</div>
+                    </div>
+                    <p id="statusMessage" class="mt-3 text-sm text-yellow-400">讀取資料中...</p>
+                    <button onclick="resetToPrep()" class="text-xs text-gray-500 hover:text-blue-400 mt-4 underline transition">重新查看準備清單</button>
+                </div>
+
             </div>
 
             <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-2">
@@ -102,7 +123,7 @@
 
     <script>
         // ==========================================
-        // 1. Supabase 設定與初始化
+        // 1. Supabase 設定
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
@@ -112,7 +133,38 @@
         let currentMode = 'earthquake'; 
 
         // ==========================================
-        // 2. UI 模式切換邏輯
+        // 2. 引導式教學階段切換邏輯
+        // ==========================================
+        function checkPrepStatus() {
+            const checkboxes = document.querySelectorAll('.prep-check');
+            const btn = document.getElementById('startScanBtn');
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
+
+            if (allChecked) {
+                btn.removeAttribute('disabled');
+                btn.innerText = "🚀 備齊了！開啟鏡頭盤點";
+                btn.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg mt-4 transition shadow-lg animate-pulse";
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.innerText = "🔒 請先勾選備齊物資";
+                btn.className = "w-full bg-slate-700 text-gray-400 font-bold py-2.5 rounded-lg mt-4 transition cursor-not-allowed text-sm";
+            }
+        }
+
+        function unlockScanResult() {
+            document.getElementById('preparationGuideSection').classList.add('hidden');
+            document.getElementById('scanResultSection').classList.remove('hidden');
+            // 解鎖時觸發一次最新分數撈取
+            fetchUserProgress();
+        }
+
+        function resetToPrep() {
+            document.getElementById('scanResultSection').classList.add('hidden');
+            document.getElementById('preparationGuideSection').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // 3. UI 災害模式切換
         // ==========================================
         function setDisasterMode(mode) {
             currentMode = mode;
@@ -139,13 +191,14 @@
         }
 
         // ==========================================
-        // 3. 從 Supabase 讀取資料並顯示
+        // 4. 從 Supabase 讀取最新進度資料
         // ==========================================
         async function fetchUserProgress() {
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
                 if (error) throw error;
                 
+                // 更新實體鏡頭盤點分數
                 document.getElementById('scoreDisplay').innerText = data.disaster_kit_score;
                 if (data.disaster_kit_score < 60) {
                     document.getElementById('statusMessage').innerText = "🔴 警告：實體物資嚴重不足";
@@ -157,6 +210,7 @@
                     document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
                 }
 
+                // 更新大腦教學進度
                 document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
                 document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
                 document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
@@ -165,10 +219,11 @@
                 console.error("撈取資料失敗:", err);
             }
         }
+        // 初始化時依然會撈背景進度，但畫面上會維持引導準備狀態
         window.onload = fetchUserProgress;
 
         // ==========================================
-        // 4. 呼叫 Vercel 雲端 Serverless API (無伺服器架構)
+        // 5. 呼叫 Vercel 雲端 Serverless API 出題
         // ==========================================
         document.getElementById('startQuizBtn').addEventListener('click', async () => {
             const btn = document.getElementById('startQuizBtn');
@@ -176,9 +231,8 @@
             btn.disabled = true;
 
             try {
-                // 向我們寫好的 Vercel 後端要題目
                 const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
-                if (!response.ok) throw new Error("雲端路由異常，請確認 API 設定");
+                if (!response.ok) throw new Error("雲端路由異常");
                 
                 const quizData = await response.json(); 
                 renderQuiz(quizData); 
@@ -193,7 +247,7 @@
         });
 
         // ==========================================
-        // 5. 繪製題目與寫入資料庫
+        // 6. 繪製題目
         // ==========================================
         function renderQuiz(quiz) {
             document.getElementById('aiQuizDisplay').classList.remove('hidden');
