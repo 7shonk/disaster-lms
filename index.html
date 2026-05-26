@@ -9,11 +9,13 @@
     <style>
         @keyframes radar { 0% { transform: scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
         .radar-pulse { animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); }
+        /* 強制禁止選取，防止反白 */
+        .no-select { user-select: none; -webkit-user-select: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex font-sans">
+<body class="bg-slate-950 text-white min-h-screen flex font-sans no-select">
 
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col shrink-0 select-none">
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col shrink-0">
         <div class="text-xl font-bold mb-10 text-blue-400">🌪️ 防災學習 LMS</div>
         <nav class="space-y-4 flex-1">
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">主選單</div>
@@ -38,7 +40,7 @@
                         <div class="space-y-3 text-sm">
                             <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
                                 <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-700 border-slate-600">
-                                <div><span class="block font-bold">1. 維持生命物資</span><span class="text-xs text-gray-400">水與三天份糧食</span></div>
+                                <div><span class="block font-bold">1. 維持生命物資</span><span class="text-xs text-gray-400">水與糧食</span></div>
                             </label>
                             <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
                                 <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600">
@@ -49,7 +51,9 @@
                                 <div><span class="block font-bold">3. 求救與照明</span><span class="text-xs text-gray-400">手電筒、哨子</span></div>
                             </label>
                         </div>
-                        <a id="startScanBtn" class="block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 pointer-events-none text-sm transition">🔒 請先勾選備齊物資</a>
+                        <a id="startScanBtn" class="block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed">
+                            🔒 請先勾選備齊物資
+                        </a>
                     </div>
                     <div id="scanningWaitSection" class="hidden flex flex-col items-center py-8">
                         <div class="relative w-16 h-16 flex items-center justify-center mb-4"><div class="absolute inset-0 bg-indigo-500 rounded-full radar-pulse"></div>📱</div>
@@ -88,21 +92,27 @@
     </main>
 
     <script>
-        // 初始化
-        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-        
+        // 確保 DOM 載入後才執行
+        document.addEventListener('DOMContentLoaded', async () => {
+            const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+            const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+            window.supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+            
+            checkAuthAndInit();
+        });
+
+        // 核心邏輯移入全域或適當位置，確保按鈕能抓到
         let testUserId = null; 
         let currentMode = 'earthquake'; 
         let pollingInterval = null;
 
-        // 登入狀態驗證
         async function checkAuthAndInit() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { window.location.href = 'register.html'; return; }
             testUserId = session.user.id;
-            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${session.user.email.split('@')[0]}`;
+            const emailPrefix = session.user.email.split('@')[0];
+            const display = document.getElementById('userEmailDisplay');
+            if (display) display.innerText = `🎓 學生：${emailPrefix}`;
             
             const { data: existingRow } = await supabaseClient.from('lms_disaster_progress').select('user_id').eq('user_id', testUserId).maybeSingle();
             if (!existingRow) {
@@ -113,13 +123,29 @@
         
         async function logout() { await supabaseClient.auth.signOut(); window.location.href = 'register.html'; }
 
-        // 綁定所有事件
-        window.addEventListener('DOMContentLoaded', () => {
-            checkAuthAndInit();
-        });
+        // 綁定 checkPrepStatus
+        window.checkPrepStatus = function() {
+            const checkboxes = document.querySelectorAll('.prep-check');
+            const btn = document.getElementById('startScanBtn');
+            if (!btn) return;
+            const allChecked = Array.from(checkboxes).every(c => c.checked);
 
-        // (其他所有邏輯函數 checkPrepStatus, triggerUIUpdate, startPollingScore, ... 照舊填入此處)
-        // [確保所有的功能函數都在這裡，並且都沒有被遺漏]
+            if (allChecked) {
+                btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse');
+                btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
+                btn.href = "disasterlms://opencamera";
+                btn.onclick = triggerUIUpdate;
+            } else {
+                btn.removeAttribute('href');
+                btn.onclick = null;
+                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed";
+                btn.innerText = "🔒 請先勾選備齊物資";
+            }
+        };
+
+        // ... (其他函數 triggerUIUpdate, startPollingScore, ... 保持原樣)
+        // 記得檢查所有的 click 事件，全部改成上面這種安全寫法
     </script>
 </body>
 </html>
