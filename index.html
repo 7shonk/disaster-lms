@@ -6,6 +6,17 @@
     <title>防災萬用包 - 智慧學習儀表板</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* 雷達掃描動畫 */
+        @keyframes radar {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .radar-pulse {
+            animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+    </style>
 </head>
 <body class="bg-slate-900 text-white p-6 font-sans">
 
@@ -21,7 +32,7 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start relative overflow-hidden">
                 
                 <div id="preparationGuideSection">
                     <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：實體包自主準備</h2>
@@ -51,19 +62,29 @@
                         </label>
                     </div>
 
-                    <button id="startScanBtn" disabled onclick="unlockScanResult()" class="w-full bg-slate-700 text-gray-400 font-bold py-2.5 rounded-lg mt-4 transition cursor-not-allowed text-sm">
+                    <a id="startScanBtn" class="block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none">
                         🔒 請先勾選備齊物資
-                    </button>
+                    </a>
                 </div>
 
-                <div id="scanResultSection" class="hidden flex flex-col items-center justify-center text-center my-auto py-4">
-                    <h2 class="text-sm text-gray-400 mb-2">📸 步驟二：iOS 鏡頭盤點結果</h2>
+                <div id="scanningWaitSection" class="hidden flex-col items-center justify-center text-center my-auto py-8">
+                    <div class="relative w-20 h-20 flex items-center justify-center mb-4">
+                        <div class="absolute inset-0 bg-indigo-500 rounded-full radar-pulse"></div>
+                        <div class="relative z-10 text-4xl">📱</div>
+                    </div>
+                    <h2 class="text-md font-bold text-indigo-400 mb-1">已喚醒 iOS 掃描鏡頭</h2>
+                    <p class="text-xs text-gray-400">請在手機上完成實體包盤點<br>等待資料庫同步中...</p>
+                    <button onclick="mockReceiveScore()" class="mt-6 text-[10px] text-gray-600 hover:text-gray-400 underline">評審 Demo 專用：強制略過連線</button>
+                </div>
+
+                <div id="scanResultSection" class="hidden flex-col items-center justify-center text-center my-auto py-4">
+                    <h2 class="text-sm text-gray-400 mb-2">✅ 步驟二：雲端盤點結果</h2>
                     <div class="flex items-baseline gap-2">
                         <div id="scoreDisplay" class="text-6xl font-extrabold text-blue-400">--</div>
                         <div class="text-lg text-gray-400">/ 100</div>
                     </div>
                     <p id="statusMessage" class="mt-3 text-sm text-yellow-400">讀取資料中...</p>
-                    <button onclick="resetToPrep()" class="text-xs text-gray-500 hover:text-blue-400 mt-4 underline transition">重新查看準備清單</button>
+                    <button onclick="resetToPrep()" class="text-xs text-gray-500 hover:text-blue-400 mt-4 underline transition">重新盤點</button>
                 </div>
 
             </div>
@@ -131,9 +152,10 @@
         
         const testUserId = 'f0bda093-7bb6-414a-97fc-9777b97d6320'; 
         let currentMode = 'earthquake'; 
+        let pollingInterval = null;
 
         // ==========================================
-        // 2. 引導式教學階段切換邏輯
+        // 2. 引導與 iOS 鏡頭喚醒邏輯 (<a>標籤深層連結防擋版)
         // ==========================================
         function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
@@ -141,25 +163,69 @@
             const allChecked = Array.from(checkboxes).every(c => c.checked);
 
             if (allChecked) {
-                btn.removeAttribute('disabled');
-                btn.innerText = "🚀 備齊了！開啟鏡頭盤點";
-                btn.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg mt-4 transition shadow-lg animate-pulse";
+                // 移除鎖定狀態
+                btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
+                // 加上解鎖特效與顏色
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse');
+                btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
+                
+                // 🔥 核心修改：賦予真實 href，利用原生 HTML 特性突破 iOS 防線
+                btn.href = "disasterlms://opencamera";
+                btn.onclick = function() { triggerUIUpdate(); };
             } else {
-                btn.setAttribute('disabled', 'true');
+                // 恢復鎖定狀態
+                btn.removeAttribute('href');
+                btn.onclick = null;
+                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none";
                 btn.innerText = "🔒 請先勾選備齊物資";
-                btn.className = "w-full bg-slate-700 text-gray-400 font-bold py-2.5 rounded-lg mt-4 transition cursor-not-allowed text-sm";
             }
         }
 
-        function unlockScanResult() {
+        function triggerUIUpdate() {
+            // 這個函數只負責切換網頁的 UI，原生 <a> 標籤會自己去喚醒 App
             document.getElementById('preparationGuideSection').classList.add('hidden');
+            document.getElementById('scanResultSection').classList.add('hidden');
+            document.getElementById('scanningWaitSection').classList.remove('hidden');
+            document.getElementById('scanningWaitSection').style.display = 'flex';
+
+            // 開始每 2 秒去 Supabase 偷看一次，老黃的分數同步過來了沒？
+            startPollingScore();
+        }
+
+        // 輪詢檢查資料庫
+        function startPollingScore() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                try {
+                    const { data } = await supabaseClient.from('lms_disaster_progress').select('disaster_kit_score, updated_at').eq('user_id', testUserId).single();
+                    if (data && data.disaster_kit_score !== null) {
+                        clearInterval(pollingInterval);
+                        setTimeout(() => showFinalScore(data), 1500); 
+                    }
+                } catch (e) { console.error(e); }
+            }, 2000);
+        }
+
+        function mockReceiveScore() {
+            clearInterval(pollingInterval);
+            fetchUserProgress(); 
+            document.getElementById('scanningWaitSection').classList.add('hidden');
             document.getElementById('scanResultSection').classList.remove('hidden');
-            // 解鎖時觸發一次最新分數撈取
-            fetchUserProgress();
+            document.getElementById('scanResultSection').style.display = 'flex';
+        }
+
+        function showFinalScore(data) {
+            document.getElementById('scanningWaitSection').classList.add('hidden');
+            document.getElementById('scanResultSection').classList.remove('hidden');
+            document.getElementById('scanResultSection').style.display = 'flex';
+            updateScoreUI(data);
         }
 
         function resetToPrep() {
+            if (pollingInterval) clearInterval(pollingInterval);
             document.getElementById('scanResultSection').classList.add('hidden');
+            document.getElementById('scanningWaitSection').classList.add('hidden');
             document.getElementById('preparationGuideSection').classList.remove('hidden');
         }
 
@@ -170,15 +236,10 @@
             currentMode = mode;
             ['earthquake', 'typhoon', 'fire'].forEach(m => {
                 const element = document.getElementById(`tab-${m}`);
-                if (element) {
-                    element.className = "flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition";
-                }
+                if (element) element.className = "flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition";
             });
-            
             const activeTab = document.getElementById(`tab-${mode}`);
-            if (activeTab) {
-                activeTab.className = "flex-1 py-3 text-center font-bold bg-blue-600 text-white transition";
-            }
+            if (activeTab) activeTab.className = "flex-1 py-3 text-center font-bold bg-blue-600 text-white transition";
             
             const descMap = {
                 earthquake: "【地震情境】模擬強震突發時的斷點決策，以及避難包的緊急運用。",
@@ -197,20 +258,8 @@
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
                 if (error) throw error;
-                
-                // 更新實體鏡頭盤點分數
-                document.getElementById('scoreDisplay').innerText = data.disaster_kit_score;
-                if (data.disaster_kit_score < 60) {
-                    document.getElementById('statusMessage').innerText = "🔴 警告：實體物資嚴重不足";
-                    document.getElementById('statusMessage').className = "mt-3 text-sm text-red-400 font-bold";
-                    document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-red-500";
-                } else {
-                    document.getElementById('statusMessage').innerText = "🟢 實體包準備完善";
-                    document.getElementById('statusMessage').className = "mt-3 text-sm text-green-400 font-bold";
-                    document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
-                }
+                updateScoreUI(data);
 
-                // 更新大腦教學進度
                 document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
                 document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
                 document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
@@ -219,7 +268,19 @@
                 console.error("撈取資料失敗:", err);
             }
         }
-        // 初始化時依然會撈背景進度，但畫面上會維持引導準備狀態
+        
+        function updateScoreUI(data) {
+            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score;
+            if (data.disaster_kit_score < 60) {
+                document.getElementById('statusMessage').innerText = "🔴 警告：實體物資嚴重不足";
+                document.getElementById('statusMessage').className = "mt-3 text-sm text-red-400 font-bold";
+                document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-red-500";
+            } else {
+                document.getElementById('statusMessage').innerText = "🟢 實體包準備完善";
+                document.getElementById('statusMessage').className = "mt-3 text-sm text-green-400 font-bold";
+                document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
+            }
+        }
         window.onload = fetchUserProgress;
 
         // ==========================================
@@ -233,12 +294,10 @@
             try {
                 const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
                 if (!response.ok) throw new Error("雲端路由異常");
-                
                 const quizData = await response.json(); 
                 renderQuiz(quizData); 
-
             } catch (error) {
-                alert("🤖 提示：AI 智慧大腦生成情境失敗，請再試一次。");
+                alert("🤖 提示：AI 智慧大腦生成情境失敗，請確認 Vercel 設定。");
                 console.error(error);
             } finally {
                 btn.innerText = "🎲 重新產生情境";
