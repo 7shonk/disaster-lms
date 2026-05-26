@@ -129,22 +129,39 @@
         
         async function logout() { await supabaseClient.auth.signOut(); window.location.href = 'register.html'; }
 
-        // 綁定 checkPrepStatus
-        window.checkPrepStatus = function() {
+        // 綁定勾選框的監聽器
+        function setupCheckboxes() {
+            const checkboxes = document.querySelectorAll('.prep-check');
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', checkPrepStatus);
+            });
+        }
+
+        function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
             const btn = document.getElementById('startScanBtn');
-            if (!btn) return;
             const allChecked = Array.from(checkboxes).every(c => c.checked);
 
             if (allChecked) {
                 btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
-                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer-important');
                 btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
                 btn.href = "disasterlms://opencamera";
                 btn.onclick = triggerUIUpdate;
             } else {
+                btn.classList.add('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer-important');
+                btn.innerText = "🔒 請先勾選備齊物資";
                 btn.removeAttribute('href');
                 btn.onclick = null;
+            }
+        }
+
+        // 修改 DOMContentLoaded 綁定
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthAndInit();
+            setupCheckboxes(); // 初始化監聽
+        });
                 btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed";
                 <a id="startScanBtn" class="prevent-select block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed">
     🔒 請先勾選備齊物資
