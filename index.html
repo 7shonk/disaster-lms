@@ -7,10 +7,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* 強制防止選取，防止反白，強制游標變手指 */
+        .prevent-select {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .cursor-pointer-important {
+            cursor: pointer !important;
+        }
         @keyframes radar { 0% { transform: scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
         .radar-pulse { animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); }
-        /* 強制禁止選取，防止反白 */
-        .no-select { user-select: none; -webkit-user-select: none; }
     </style>
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex font-sans no-select">
@@ -140,7 +146,9 @@
                 btn.removeAttribute('href');
                 btn.onclick = null;
                 btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed";
-                btn.innerText = "🔒 請先勾選備齊物資";
+                <a id="startScanBtn" class="prevent-select block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 text-sm transition pointer-events-none cursor-not-allowed">
+    🔒 請先勾選備齊物資
+</a>
             }
         };
 
