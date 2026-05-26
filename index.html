@@ -78,23 +78,19 @@
         </div>
     </div>
 
-<script>
+    <script>
         // ==========================================
-        // 1. Supabase 設定
+        // 1. Supabase 設定與初始化
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
         const testUserId = 'f0bda093-7bb6-414a-97fc-9777b97d6320'; 
-
-        // 🔒 安全混淆防護金鑰 (完美繞過 GitHub 機器人檢查，24小時免關機穩定運行)
-        const GEMINI_API_KEY = ["AIzaSyCj", "3OrtQDQs", "JwculRE5", "SpwIM-Tm", "-xlj7ug"].join("");
-
         let currentMode = 'earthquake'; 
 
         // ==========================================
-        // 2. UI 切換
+        // 2. UI 模式切換邏輯
         // ==========================================
         function setDisasterMode(mode) {
             currentMode = mode;
@@ -121,7 +117,7 @@
         }
 
         // ==========================================
-        // 3. 從 Supabase 讀取資料
+        // 3. 從 Supabase 讀取資料並顯示
         // ==========================================
         async function fetchUserProgress() {
             try {
@@ -150,47 +146,23 @@
         window.onload = fetchUserProgress;
 
         // ==========================================
-        // 4. 直連 Google Gemini 雲端運作 (24小時不打烊)
+        // 4. 呼叫 Vercel 雲端 Serverless API (無伺服器架構)
         // ==========================================
         document.getElementById('startQuizBtn').addEventListener('click', async () => {
             const btn = document.getElementById('startQuizBtn');
             btn.innerText = "⏳ 構建虛擬情境中...";
             btn.disabled = true;
 
-            let scenarioPrompt = "";
-            if (currentMode === 'earthquake') {
-                scenarioPrompt = "情境：深夜突然發生規模 6.5 強震，屋內停電且物品散落。請針對【地震當下應變】或【摸黑尋找與使用避難包】設計一道引導式情境單選題。";
-            } else if (currentMode === 'typhoon') {
-                scenarioPrompt = "情境：強烈颱風登陸，你家已經停水停電進入第二天，外面風雨交加無法出門。請針對【長期停水電的物資分配】或【防颱居家準備不足時的補救】設計一道引導式情境單選題。";
-            } else if (currentMode === 'fire') {
-                scenarioPrompt = "情境：你住的大樓深夜發生火警，門外樓梯間已經充滿濃煙。請針對【火場逃生決策】或【如何運用身邊物資防煙】設計一道引導式情境單選題。";
-            }
-
-            const prompt = `你是一位防災教育專家，負責進行「斷點引導式教學」。
-            ${scenarioPrompt}
-            請務必回傳嚴格的標準 JSON 格式，不要夾帶 Markdown：
-            {
-              "question": "情境敘述 + 題目",
-              "options": ["選項A", "選項B", "選項C", "選項D"],
-              "correctAnswer": "正確選項的完整文字",
-              "explanation": "請先告知使用者他目前的觀念哪裡卡住了，然後給予正確的防護觀念指導。"
-            }`;
-
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-
-                const data = await response.json();
-                let jsonText = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
-                const quizData = JSON.parse(jsonText); 
+                // 向我們寫好的 Vercel 後端要題目
+                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
+                if (!response.ok) throw new Error("雲端路由異常，請確認 API 設定");
                 
+                const quizData = await response.json(); 
                 renderQuiz(quizData); 
 
             } catch (error) {
-                alert("生成情境失敗，請再試一次。");
+                alert("🤖 提示：AI 智慧大腦生成情境失敗，請再試一次。");
                 console.error(error);
             } finally {
                 btn.innerText = "🎲 重新產生情境";
@@ -254,3 +226,5 @@
             }
         }
     </script>
+</body>
+</html>
