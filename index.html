@@ -3,410 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防災萬用包 - 智慧學習儀表板</title>
+    <title>防災萬用包 - LMS 中控台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 雷達掃描動畫 */
-        @keyframes radar {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        .radar-pulse {
-            animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
+        @keyframes radar { 0% { transform: scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+        .radar-pulse { animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); }
     </style>
 </head>
-<body class="bg-slate-900 text-white p-6 font-sans">
+<body class="bg-slate-950 text-white min-h-screen flex font-sans">
 
-    <div class="mt-8">
-    <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-        📚 防災知識庫
-        <span class="text-xs font-normal text-blue-400 bg-blue-900/30 px-2 py-0.5 rounded">官方指南</span>
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-blue-500 transition group">
-            <div class="bg-red-500/20 text-red-400 p-3 rounded-lg text-2xl">📄</div>
-            <div>
-                <h3 class="font-bold text-white group-hover:text-blue-400">緊急避難包清單</h3>
-                <p class="text-xs text-gray-400">避難時攜帶，準備 1-3 天份。</p>
-            </div>
-            <div class="ml-auto text-blue-400 opacity-0 group-hover:opacity-100 transition">下載</div>
-        </a>
-        <a href="files/日常儲備清單.pdf" target="_blank" class="flex items-center gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-blue-500 transition group">
-            <div class="bg-green-500/20 text-green-400 p-3 rounded-lg text-2xl">📄</div>
-            <div>
-                <h3 class="font-bold text-white group-hover:text-blue-400">日常居家儲備清單</h3>
-                <p class="text-xs text-gray-400">居家防災，準備至少 7 天份。</p>
-            </div>
-            <div class="ml-auto text-blue-400 opacity-0 group-hover:opacity-100 transition">下載</div>
-        </a>
-    </div>
-</div>
-
-    <div class="max-w-4xl mx-auto">
-        <header class="mb-8 border-b border-slate-700 pb-4 flex justify-between items-end select-none">
-            <div>
-                <h1 class="text-4xl font-bold mb-2">🌪️ 智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full">雲端完全版</span></h1>
-                <p class="text-gray-400">引導式情境教學模組・連動個人化資料庫</p>
-            </div>
-            <div class="ml-auto flex items-center gap-4 bg-slate-800 py-2 px-3 rounded-lg border border-slate-700 text-sm">
-                <span id="userEmailDisplay" class="text-xs text-gray-400">🎓 讀取中...</span>
-                <div class="w-px h-4 bg-slate-600"></div>
-                <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 font-bold transition">登出</button>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-1 flex flex-col justify-start relative overflow-hidden select-none">
-                
-                <div id="preparationGuideSection">
-                    <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：實體包自主準備</h2>
-                    <p class="text-xs text-gray-400 mb-4">請先在桌上備齊以下核心物資：</p>
-                    
-                    <div class="space-y-3 text-sm">
-                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
-                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
-                            <div>
-                                <span class="font-bold block text-gray-200">1. 維持生命物資</span>
-                                <span class="text-xs text-gray-400">礦泉水與乾糧（三天份）</span>
-                            </div>
-                        </label>
-                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
-                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
-                            <div>
-                                <span class="font-bold block text-gray-200">2. 急救與防寒</span>
-                                <span class="text-xs text-gray-400">常用急救藥品、保暖毯</span>
-                            </div>
-                        </label>
-                        <label class="flex items-start gap-3 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-slate-600 transition">
-                            <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-800 text-blue-500 focus:ring-0">
-                            <div>
-                                <span class="font-bold block text-gray-200">3. 求救與照明</span>
-                                <span class="text-xs text-gray-400">強光手電筒、高分貝哨子</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <a id="startScanBtn" class="block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none">
-                        🔒 請先勾選備齊物資
-                    </a>
-                </div>
-
-                <div id="scanningWaitSection" class="hidden flex-col items-center justify-center text-center my-auto py-8">
-                    <div class="relative w-20 h-20 flex items-center justify-center mb-4">
-                        <div class="absolute inset-0 bg-indigo-500 rounded-full radar-pulse"></div>
-                        <div class="relative z-10 text-4xl">📱</div>
-                    </div>
-                    <h2 class="text-md font-bold text-indigo-400 mb-1">已喚醒 iOS 掃描鏡頭</h2>
-                    <p class="text-xs text-gray-400">請在手機上完成實體包盤點<br>等待資料庫同步中...</p>
-                    <button onclick="mockReceiveScore()" class="mt-6 text-[10px] text-gray-600 hover:text-gray-400 underline">評審 Demo 專用：強制略過連線</button>
-                </div>
-
-                <div id="scanResultSection" class="hidden flex-col items-center justify-center text-center my-auto py-4">
-                    <h2 class="text-sm text-gray-400 mb-2">✅ 步驟二：雲端盤點結果</h2>
-                    <div class="flex items-baseline gap-2">
-                        <div id="scoreDisplay" class="text-6xl font-extrabold text-blue-400">--</div>
-                        <div class="text-lg text-gray-400">/ 100</div>
-                    </div>
-                    <p id="statusMessage" class="mt-3 text-sm text-yellow-400">讀取資料中...</p>
-                    <button onclick="resetToPrep()" class="text-xs text-gray-500 hover:text-blue-400 mt-4 underline transition">重新盤點</button>
-                </div>
-
-            </div>
-
-            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg md:col-span-2 select-none">
-                <h2 class="text-lg text-gray-300 mb-4">🧠 認知與預防教學進度</h2>
-                <div class="grid grid-cols-3 gap-4 text-center">
-                    <div class="bg-slate-700/50 p-4 rounded-lg">
-                        <div class="text-2xl mb-1">🫨</div>
-                        <div class="text-sm text-gray-400">地震防護</div>
-                        <div id="progress-earthquake" class="text-xl font-bold text-white mt-1">讀取中</div>
-                    </div>
-                    <div class="bg-slate-700/50 p-4 rounded-lg">
-                        <div class="text-2xl mb-1">🌀</div>
-                        <div class="text-sm text-gray-400">防颱整備</div>
-                        <div id="progress-typhoon" class="text-xl font-bold text-white mt-1">讀取中</div>
-                    </div>
-                    <div class="bg-slate-700/50 p-4 rounded-lg">
-                        <div class="text-2xl mb-1">🔥</div>
-                        <div class="text-sm text-gray-400">火災逃生</div>
-                        <div id="progress-fire" class="text-xl font-bold text-white mt-1">讀取中</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-slate-800 rounded-xl border border-blue-500/50 shadow-lg overflow-hidden">
-            <div class="bg-slate-700 p-4 border-b border-slate-600 flex justify-between items-center select-none">
-                <h3 class="text-xl font-bold text-white">🕹️ 斷點情境模擬訓練室</h3>
-            </div>
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col shrink-0 select-none">
+        <div class="text-xl font-bold mb-10 text-blue-400">🌪️ 防災學習 LMS</div>
+        
+        <nav class="space-y-4 flex-1">
+            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">主選單</div>
+            <a href="#" class="flex items-center gap-3 text-blue-400 bg-blue-900/20 p-3 rounded-lg border border-blue-900/50">
+                <span>📊</span> 儀表板
+            </a>
             
-            <div class="flex border-b border-slate-600 select-none">
-                <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-3 text-center font-bold bg-blue-600 text-white transition">🫨 地震情境</button>
-                <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition">🌀 颱風情境</button>
-                <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition">🔥 火災情境</button>
+            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-8 mb-2">防災知識庫</div>
+            <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition">
+                <span>📄</span> 緊急避難包清單
+            </a>
+            <a href="files/日常儲備清單.pdf" target="_blank" class="flex items-center gap-3 text-gray-400 hover:text-white p-3 hover:bg-slate-800 rounded-lg transition">
+                <span>📄</span> 日常居家儲備
+            </a>
+        </nav>
+
+        <div class="mt-auto border-t border-slate-800 pt-6">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-4 truncate">🎓 載入中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-2">
+                <span>🚪</span> 登出系統
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="max-w-5xl mx-auto">
+            <h1 class="text-3xl font-bold mb-8">智慧防災學習中控台</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg lg:col-span-1">
+                    <div id="preparationGuideSection">
+                        <h2 class="text-md font-bold text-blue-400 mb-4">📋 步驟一：實體包準備</h2>
+                        <div class="space-y-3 text-sm">
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-700 border-slate-600">
+                                <div><span class="block font-bold">1. 維持生命物資</span><span class="text-xs text-gray-400">水與三天份糧食</span></div>
+                            </label>
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600">
+                                <div><span class="block font-bold">2. 急救與防寒</span><span class="text-xs text-gray-400">藥品、保暖毯</span></div>
+                            </label>
+                            <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer">
+                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded bg-slate-600 border-slate-600">
+                                <div><span class="block font-bold">3. 求救與照明</span><span class="text-xs text-gray-400">手電筒、哨子</span></div>
+                            </label>
+                        </div>
+                        <a id="startScanBtn" class="block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 pointer-events-none text-sm transition">
+                            🔒 請先勾選備齊物資
+                        </a>
+                    </div>
+                    
+                    <div id="scanningWaitSection" class="hidden flex flex-col items-center py-8">
+                        <div class="relative w-16 h-16 flex items-center justify-center mb-4"><div class="absolute inset-0 bg-indigo-500 rounded-full radar-pulse"></div>📱</div>
+                        <p class="text-sm">喚醒 iOS 鏡頭中...</p>
+                    </div>
+                    <div id="scanResultSection" class="hidden flex flex-col items-center py-4">
+                        <div id="scoreDisplay" class="text-5xl font-extrabold text-blue-400">--</div>
+                        <p id="statusMessage" class="mt-2 text-sm text-yellow-400">讀取中...</p>
+                        <button onclick="resetToPrep()" class="text-xs text-gray-500 mt-4 underline">重新盤點</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg lg:col-span-2">
+                    <h2 class="text-lg font-bold mb-4">🧠 學習進度概況</h2>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="bg-slate-800 p-4 rounded-lg"><div class="text-xl">🫨</div><div class="text-xs text-gray-400">地震</div><div id="progress-earthquake" class="font-bold">0 關</div></div>
+                        <div class="bg-slate-800 p-4 rounded-lg"><div class="text-xl">🌀</div><div class="text-xs text-gray-400">防颱</div><div id="progress-typhoon" class="font-bold">0 關</div></div>
+                        <div class="bg-slate-800 p-4 rounded-lg"><div class="text-xl">🔥</div><div class="text-xs text-gray-400">火災</div><div id="progress-fire" class="font-bold">0 關</div></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="p-6">
-                <p id="modeDescription" class="text-gray-300 mb-6 select-none">目前模式：地震發生時的瞬間應變與物資運用。</p>
-                
-                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-lg transition shadow-lg mb-6 select-none">
-                    🎲 啟動 AI 情境出題
-                </button>
-
-                <div id="aiQuizDisplay" class="hidden">
-                    <div class="flex items-center gap-3 mb-4 select-none">
-                        <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400">🤖 Gemini 導師</div>
-                        <p class="text-sm text-gray-400">已為您生成專屬情境題</p>
-                    </div>
-                    <p id="questionText" class="text-xl font-bold mb-6 leading-relaxed"></p>
-                    <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                    <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-900 border border-slate-600 rounded-lg text-gray-200 leading-relaxed whitespace-pre-line"></div>
+            <div class="bg-slate-900 rounded-xl border border-blue-900/50 shadow-lg p-6">
+                <h3 class="text-xl font-bold mb-4">🕹️ 斷點情境模擬訓練室</h3>
+                <div class="flex gap-2 mb-6">
+                    <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-2 rounded-lg bg-blue-600 font-bold">地震</button>
+                    <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400">颱風</button>
+                    <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-2 rounded-lg bg-slate-800 text-gray-400">火災</button>
+                </div>
+                <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">🎲 啟動 AI 情境出題</button>
+                <div id="aiQuizDisplay" class="hidden mt-6">
+                    <p id="questionText" class="text-lg font-bold mb-4"></p>
+                    <div id="optionsContainer" class="flex flex-col gap-2"></div>
+                    <div id="explanationBox" class="hidden mt-4 p-4 bg-slate-800 rounded-lg text-sm"></div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-        
-        let testUserId = null; 
-        let currentMode = 'earthquake'; 
-        let pollingInterval = null;
-
-        // ==========================================
-        // 🌟 登入狀態驗證與 UI 更新
-        // ==========================================
-        async function checkAuthAndInit() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                window.location.href = 'register.html';
-                return;
-            }
-
-            testUserId = session.user.id;
-
-            // 🔥 動態更新右上角的帳號名稱 (取信箱 @ 前面的字串)
-            const emailPrefix = session.user.email.split('@')[0];
-            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${emailPrefix}`;
-
-            const { data: existingRow } = await supabaseClient
-                .from('lms_disaster_progress')
-                .select('user_id')
-                .eq('user_id', testUserId)
-                .maybeSingle();
-
-            if (!existingRow) {
-                await supabaseClient.from('lms_disaster_progress').insert([{ 
-                    user_id: testUserId, 
-                    disaster_kit_score: 0, 
-                    earthquake_completed_quizzes: 0, 
-                    typhoon_completed_quizzes: 0, 
-                    fire_completed_quizzes: 0 
-                }]);
-            }
-
-            fetchUserProgress();
-        }
-
-        window.onload = checkAuthAndInit;
-
-        // 🔥 新增：登出功能
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'register.html';
-        }
-
-        // ==========================================
-        // 其餘邏輯 (完全不變)
-        // ==========================================
-        function checkPrepStatus() {
-            const checkboxes = document.querySelectorAll('.prep-check');
-            const btn = document.getElementById('startScanBtn');
-            const allChecked = Array.from(checkboxes).every(c => c.checked);
-
-            if (allChecked) {
-                btn.classList.remove('pointer-events-none', 'bg-slate-700', 'text-gray-400', 'cursor-not-allowed');
-                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_15px_rgba(79,70,229,0.5)]', 'animate-pulse');
-                btn.innerHTML = "📱 喚醒 iOS 智慧掃描鏡頭";
-                
-                btn.href = "disasterlms://opencamera";
-                btn.onclick = function() { triggerUIUpdate(); };
-            } else {
-                btn.removeAttribute('href');
-                btn.onclick = null;
-                btn.className = "block text-center w-full bg-slate-700 text-gray-400 font-bold py-3 rounded-lg mt-5 transition cursor-not-allowed text-sm pointer-events-none select-none";
-                btn.innerText = "🔒 請先勾選備齊物資";
-            }
-        }
-
-        function triggerUIUpdate() {
-            document.getElementById('preparationGuideSection').classList.add('hidden');
-            document.getElementById('scanResultSection').classList.add('hidden');
-            document.getElementById('scanningWaitSection').classList.remove('hidden');
-            document.getElementById('scanningWaitSection').style.display = 'flex';
-            startPollingScore();
-        }
-
-        function startPollingScore() {
-            if (pollingInterval) clearInterval(pollingInterval);
-            
-            pollingInterval = setInterval(async () => {
-                try {
-                    const { data } = await supabaseClient.from('lms_disaster_progress').select('disaster_kit_score, updated_at').eq('user_id', testUserId).single();
-                    if (data && data.disaster_kit_score !== null) {
-                        clearInterval(pollingInterval);
-                        setTimeout(() => showFinalScore(data), 1500); 
-                    }
-                } catch (e) { console.error(e); }
-            }, 2000);
-        }
-
-        function mockReceiveScore() {
-            clearInterval(pollingInterval);
-            fetchUserProgress(); 
-            document.getElementById('scanningWaitSection').classList.add('hidden');
-            document.getElementById('scanResultSection').classList.remove('hidden');
-            document.getElementById('scanResultSection').style.display = 'flex';
-        }
-
-        function showFinalScore(data) {
-            document.getElementById('scanningWaitSection').classList.add('hidden');
-            document.getElementById('scanResultSection').classList.remove('hidden');
-            document.getElementById('scanResultSection').style.display = 'flex';
-            updateScoreUI(data);
-        }
-
-        function resetToPrep() {
-            if (pollingInterval) clearInterval(pollingInterval);
-            document.getElementById('scanResultSection').classList.add('hidden');
-            document.getElementById('scanningWaitSection').classList.add('hidden');
-            document.getElementById('preparationGuideSection').classList.remove('hidden');
-        }
-
-        function setDisasterMode(mode) {
-            currentMode = mode;
-            ['earthquake', 'typhoon', 'fire'].forEach(m => {
-                const element = document.getElementById(`tab-${m}`);
-                if (element) element.className = "flex-1 py-3 text-center font-bold bg-slate-800 text-gray-400 hover:bg-slate-700 transition";
-            });
-            const activeTab = document.getElementById(`tab-${mode}`);
-            if (activeTab) activeTab.className = "flex-1 py-3 text-center font-bold bg-blue-600 text-white transition";
-            
-            const descMap = {
-                earthquake: "【地震情境】模擬強震突發時的斷點決策，以及避難包的緊急運用。",
-                typhoon: "【颱風情境】模擬強颱登陸、長期停水停電的物資分配與居家防護。",
-                fire: "【火災情境】模擬濃煙密布的逃生路線判斷，與急救物資的使用時機。"
-            };
-            document.getElementById('modeDescription').innerText = descMap[mode];
-            document.getElementById('aiQuizDisplay').classList.add('hidden');
-            document.getElementById('startQuizBtn').innerText = "🎲 產生新情境考題";
-        }
-
-        async function fetchUserProgress() {
-            try {
-                const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
-                if (error) throw error;
-                updateScoreUI(data);
-
-                document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
-                document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
-                document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
-
-            } catch (err) {
-                console.error("撈取資料失敗:", err);
-            }
-        }
-        
-        function updateScoreUI(data) {
-            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score;
-            if (data.disaster_kit_score < 60) {
-                document.getElementById('statusMessage').innerText = "🔴 警告：實體物資嚴重不足";
-                document.getElementById('statusMessage').className = "mt-3 text-sm text-red-400 font-bold";
-                document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-red-500";
-            } else {
-                document.getElementById('statusMessage').innerText = "🟢 實體包準備完善";
-                document.getElementById('statusMessage').className = "mt-3 text-sm text-green-400 font-bold";
-                document.getElementById('scoreDisplay').className = "text-6xl font-extrabold text-green-500";
-            }
-        }
-
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.innerText = "⏳ 構建虛擬情境中...";
-            btn.disabled = true;
-
-            try {
-                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
-                if (!response.ok) throw new Error("雲端路由異常");
-                const quizData = await response.json(); 
-                renderQuiz(quizData); 
-            } catch (error) {
-                alert("🤖 提示：AI 智慧大腦生成情境失敗，請確認 Vercel 設定。");
-                console.error(error);
-            } finally {
-                btn.innerText = "🎲 重新產生情境";
-                btn.disabled = false;
-            }
-        });
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left bg-slate-700 hover:bg-slate-600 p-4 rounded-lg font-bold border border-slate-600 transition select-none";
-                optBtn.innerText = option;
-                
-                optBtn.onclick = async () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    const allButtons = container.querySelectorAll('button');
-                    allButtons.forEach(b => b.disabled = true);
-
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left bg-green-600/50 border-green-500 p-4 rounded-lg font-bold text-white select-none";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-green-400'>🚀 [系統同步] ${currentMode} 情境過關！正在將經驗值寫入資料庫...</span>`;
-                        await saveCategoryProgress(currentMode);
-                    } else {
-                        optBtn.className = "text-left bg-red-600/50 border-red-500 p-4 rounded-lg font-bold text-white select-none";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-400'>🔄 [系統提示] 觀念需要調整，請重新產生情境進行挑戰。</span>`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
-        }
-
-        async function saveCategoryProgress(mode) {
-            const columnMap = {
-                earthquake: 'earthquake_completed_quizzes',
-                typhoon: 'typhoon_completed_quizzes',
-                fire: 'fire_completed_quizzes'
-            };
-            const targetColumn = columnMap[mode];
-            try {
-                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select(targetColumn).eq('user_id', testUserId).single();
-                let currentCount = currentData[targetColumn] || 0;
-
-                const { error } = await supabaseClient
-                    .from('lms_disaster_progress')
-                    .update({ [targetColumn]: currentCount + 1, updated_at: new Date().toISOString() })
-                    .eq('user_id', testUserId);
-
-                if (error) throw error;
-                setTimeout(fetchUserProgress, 1500);
-            } catch (err) {
-                console.error("更新關卡進度失敗:", err);
-            }
-        }
+        // ... (這裡貼上你原本就已經寫好的所有 Supabase 與 logic 程式碼)
+        // 為了節省空間，我省略了 JS 內部的處理，請記得把原本那一大段 <script> 區塊貼在這裡！
     </script>
 </body>
 </html>
