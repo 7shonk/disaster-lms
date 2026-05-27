@@ -14,7 +14,7 @@
 </head>
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
@@ -39,14 +39,22 @@
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
                 <div class="space-y-1">
                     <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span></a>
-                    <a href="#" class="flex items-center gap-4 text-emerald-400 bg-emerald-950/40 p-2 rounded-xl border border-emerald-900/30 whitespace-nowrap pl-2"><span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">民眾急救自救</span></a>
+                    <a href="#" class="flex items-center gap-4 text-emerald-400 bg-emerald-950/40 p-2 rounded-xl border border-emerald-900/30 whitespace-nowrap pl-2"><span class="text-lg">橫</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">民眾急救自救</span></a>
                 </div>
             </div>
         </nav>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 p-5 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-4xl mx-auto w-full">
             
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
@@ -56,7 +64,7 @@
                 <span class="bg-emerald-950 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold border border-emerald-900/50 no-select whitespace-nowrap">內政部急救手冊對齊</span>
             </header>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+            <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：搶救生命黃金 4 分鐘</h2>
                     <p class="text-xs text-gray-400 leading-relaxed mb-4">
@@ -145,12 +153,23 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         let testUserId = null; 
 
-        async function initAuth() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = 'register.html'; return; }
-            testUserId = session.user.id;
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                testUserId = session.user.id;
+
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+            } catch (err) { console.error(err); }
         }
-        window.addEventListener('DOMContentLoaded', initAuth);
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
 
         async function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
@@ -168,9 +187,9 @@
                 document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
                 
                 if (question.includes("CPR") || question.includes("心跳") || question.includes("倒下")) {
-                    responseText.innerHTML = `⚠️ <b>【急救口訣：叫、叫、壓、電】</b>\n\n根據《民眾自救手冊》指引，若發現患者倒下無反應：\n1. <b>叫</b>：拍打患者雙肩確認意識與呼吸。\n2. <b>叫</b>：大聲呼救，請旁人打 119 並拿取附近 AED。\n3. <b>壓</b>：胸外按壓（用力壓、快快壓、胸回彈、莫中斷），深度至少 5 公分，速率每鍵 100-120 次/分。\n4. <b>電</b>：依照 AED 語音指示操作，直到救護人員接手。`;
+                    responseText.innerHTML = `⚠️ <b>【急救口訣：叫、叫、壓、電】</b>\n\n根據《民眾自救手冊》指引，若發現患者倒下無反應：\n1. <b>叫</b>：拍打患者雙肩確認意識與呼吸。\n2. <b>叫</b>：大聲呼救，請旁人打 119 並拿取附近 AED。\n3. <b>壓</b>：胸外按壓（用力壓、快快壓、胸回彈、莫中斷），深度至少 5 公分，速率每分鐘 100-120 次/分。\n4. <b>電</b>：依照 AED 語音指示操作，直到救護人員接手。`;
                 } else if (question.includes("噎到") || question.includes("哽塞") || question.includes("哈姆立克")) {
-                    responseText.innerHTML = `🚨 <b>【異物哽塞處置：哈姆立克法】</b>\n\n若患者雙手掐脖、無法發聲咳嗽：\n施救者站在患者後方，一手握拳，虎口向內放在患者肚臍與劍突（胸骨下緣）之間，另一手抱住拳頭，快速<b>向內、向上</b>擠壓，直到異物吐出。`;
+                    responseText.innerHTML = `🚨 <b>【異物哽塞處置：哈姆立克法】</b>\n\n若患者雙手掐脖、無法發聲咳嗽：\n施救者站在患者後方，一手握拳，虎口向內放在患者肚臍與劍突之間，另一手抱住拳頭，快速<b>向內、向上</b>擠壓，直到異物吐出。`;
                 } else {
                     responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。急救的核心在於「盡早啟動求救系統(119)」。在救護車抵達前，您的及時處置（CPR與AED）將是挽救生命的關鍵。`;
                 }
