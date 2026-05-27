@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>颱洪災害整備教室 - LMS</title>
+    <title>颱洪整備教室 - LMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -19,8 +19,14 @@
             <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
-            <div><a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span></a></div>
-            <div><a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span></a></div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span></a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span></a>
+            </div>
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
                 <div class="space-y-1">
@@ -44,123 +50,64 @@
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 class="text-3xl font-black mb-2 gradient-text">🌀 颱洪災害整備教室</h1>
-                    <p class="text-gray-400 text-xs">專攻防颱整備、土石流警戒與強制撤離法規導讀。</p>
+                    <p class="text-gray-400 text-xs">專攻防颱整備、土石流警戒與強制撤離前置作業。</p>
                 </div>
-                <span class="bg-teal-950 text-teal-400 text-xs px-3 py-1 rounded-full font-bold border border-teal-900/50 no-select">颱洪災害防救手冊對齊</span>
+                <span class="bg-teal-950 text-teal-400 text-xs px-3 py-1 rounded-full font-bold border border-teal-900/50 no-select whitespace-nowrap">颱洪災害防救手冊對齊</span>
             </header>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防颱整備指引</h2>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
-                        颱風常伴隨強風與豪雨。重點在於事前清理排水溝、固定門窗，若居住於土石流潛勢區，須配合政府實施預防性撤離。
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        颱風來臨前，請務必清理排水溝、固定陽台盆栽並備妥 7 天份飲用水。請勾選下方清單以確保各項準備到位！
                     </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《颱洪災害防救手冊.pdf》</span>
-                    </div>
                 </div>
-                <a href="files/防災宣導教學手冊-颱洪災害防救-new.pdf" target="_blank" class="w-full md:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-3.5 px-5 rounded-xl transition-all flex flex-col items-center justify-center gap-1 group border border-teal-400 text-sm">
-                    <span class="text-xl group-hover:scale-110 transition-transform">📘</span><span>開啟颱洪防護課本</span>
+                <a href="files/防災宣導教學手冊-颱洪災害防救-new.pdf" target="_blank" class="w-full md:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-3.5 px-5 rounded-xl transition-all flex justify-center items-center gap-2 group cursor-pointer border border-teal-400 text-sm whitespace-nowrap">
+                    <span class="text-xl">📘</span> 開啟防颱課本
                 </a>
             </div>
 
-            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase">🕹️ 訓練一：AI 斷點情境模擬</h3>
-                </div>
-                <div class="p-6">
-                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-teal-400 border border-slate-700 hover:border-teal-500 font-bold py-3.5 px-6 rounded-xl transition text-sm flex justify-center gap-2">
-                        <span>🎲</span> 啟動 AI 颱風情境出題
-                    </button>
-                    <div id="aiQuizDisplay" class="hidden">
-                        <div class="flex items-center gap-3 mb-4"><div class="bg-teal-500/20 px-3 py-1.5 rounded-lg text-xs text-teal-400 font-bold">🤖 Gemini 導師</div></div>
-                        <p id="questionText" class="text-md font-bold mb-6 text-gray-200"></p>
-                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 whitespace-pre-line"></div>
-                    </div>
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6">
+                <h3 class="text-md font-bold text-teal-400 mb-4 flex items-center gap-2">✅ 訓練一：防颱前夕整備清單</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-3 cursor-pointer hover:border-slate-600">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-teal-500 focus:ring-0">
+                        <span class="text-sm font-bold text-gray-300">固定陽台盆栽與懸掛物</span>
+                    </label>
+                    <label class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-3 cursor-pointer hover:border-slate-600">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-teal-500 focus:ring-0">
+                        <span class="text-sm font-bold text-gray-300">清理住家排水溝與落水孔</span>
+                    </label>
+                    <label class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-3 cursor-pointer hover:border-slate-600">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-teal-500 focus:ring-0">
+                        <span class="text-sm font-bold text-gray-300">確認窗戶緊閉並貼妥膠帶</span>
+                    </label>
+                    <label class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-3 cursor-pointer hover:border-slate-600">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-teal-500 focus:ring-0">
+                        <span class="text-sm font-bold text-gray-300">備妥手電筒、電池與收音機</span>
+                    </label>
                 </div>
             </div>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-md font-bold text-teal-400 mb-2">💬 訓練二：防颱文本 AI 智能詢問區</h3>
+                <h3 class="text-md font-bold text-teal-400 mb-2 flex items-center gap-2">💬 訓練二：防颱文本 AI 智能詢問區</h3>
                 <div class="space-y-4">
-                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-500 focus:ring-1 rounded-xl p-4 text-sm text-gray-200" placeholder="例如輸入：『窗戶貼膠帶有用嗎？』或『土石流撤離規定』..."></textarea>
-                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs flex gap-2">
-                        <span>💬</span> 送出詢問 AI 導師
-                    </button>
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-500 rounded-xl p-4 text-sm text-gray-200" placeholder="詢問防颱問題..."></textarea>
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs">送出詢問</button>
                 </div>
                 <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
-                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                    <p id="inquiryResponseText" class="text-xs text-gray-300"></p>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
-        const currentMode = 'typhoon';
-        // (Supabase 初始化代碼與 earthquake 相同，此處省略以節省篇幅)
-
+        // (同前述邏輯...)
         async function submitInquiry() {
-            const inputEl = document.getElementById('userInquiryInput');
-            const btnEl = document.getElementById('sendInquiryBtn');
-            const responseBox = document.getElementById('inquiryResponseBox');
+            const question = document.getElementById('userInquiryInput').value;
             const responseText = document.getElementById('inquiryResponseText');
-            
-            if (!inputEl.value.trim()) return;
-            const question = inputEl.value.trim();
-            btnEl.innerText = "⏳ 分析中...";
-            
-            setTimeout(async () => {
-                responseBox.classList.remove('hidden');
-                
-                if (question.includes("膠帶") || question.includes("玻璃")) {
-                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：膠帶無法增加抗風力】</b>\n\n根據《颱洪災害防救手冊》，在玻璃上貼「X」字型膠帶<b>無法增加玻璃的抗風壓能力</b>。其主要作用是防止玻璃破裂時碎片飛散傷人。最佳的防護方式是加裝防颱百葉窗或強化玻璃。`;
-                } else if (question.includes("撤離") || question.includes("土石流")) {
-                    responseText.innerHTML = `🚨 <b>【災防法規：強制撤離】</b>\n\n依據《災害防救法》第24條，為保護人民生命安全，地方政府於災害發生之虞時，可劃設警戒區並進行<b>預防性強制撤離</b>。居住於土石流潛勢區的民眾，收到廣播應立即攜帶「緊急避難包」前往指定收容所。`;
-                } else {
-                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。防颱重點在於：1. 事前清理排水溝 2. 準備7天份日常儲備物資 3. 避免前往海邊觀浪或山區。`;
-                }
-                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
-            }, 1000);
-        }
-
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.disabled = true;
-            renderQuiz({
-                question: "颱風來臨前，氣象局發布豪雨特報，你家住在低窪地區或土石流潛勢區，你該怎麼做？",
-                options: ["A. 趕快去超市買生鮮蔬菜，然後緊閉門窗待在家中", "B. 配合村里長廣播，攜帶緊急避難包，提早撤離至安全的收容所", "C. 在門口堆幾個沙包，然後安心去睡覺"],
-                correctAnswer: "B. 配合村里長廣播，攜帶緊急避難包，提早撤離至安全的收容所",
-                explanation: "根據颱洪手冊指引，居住在高風險區域(如土石流潛勢區)的民眾，應在風雨變大前，配合政府實施「預防性疏散撤離」，這才是保命的最根本法則。"
-            });
-            btn.innerHTML = "<span>🎲</span> 重新產生情境";
-            btn.disabled = false;
-        });
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
-                optBtn.innerText = option;
-                optBtn.onclick = () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    container.querySelectorAll('button').forEach(b => b.disabled = true);
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left w-full bg-teal-900/40 border-teal-500/50 p-4 rounded-xl font-bold text-teal-400";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n${quiz.explanation}`;
-                    } else {
-                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！</b>\n\n${quiz.explanation}`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
+            document.getElementById('inquiryResponseBox').classList.remove('hidden');
+            responseText.innerText = "🤖 AI 導師分析中：" + (question.includes("膠帶") ? "窗戶貼膠帶主要是防止玻璃破碎飛散，無法增加抗風強度。" : "請保持居家周遭排水通暢，並備足物資。");
         }
     </script>
 </body>
