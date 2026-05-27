@@ -3,19 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防災萬用包 - LMS 智慧中控台</title>
+    <title>防災學習大廳 - LMS 智慧中控台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 雷達掃描動畫 */
-        @keyframes radar {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        .radar-pulse {
-            animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
         /* 側邊欄收放過渡動畫 */
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
@@ -24,124 +15,142 @@
 <body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
 
     <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-        <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
-            <span class="text-xl">🌪️</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
-        </div>
+    <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
+        <span class="text-xl">🌪️</span>
+        <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+    </div>
+    
+    <nav class="space-y-2 flex-1">
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">大廳導航</div>
         
-        <nav class="space-y-4 flex-1">
-            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
-            
-            <a href="#" class="flex items-center gap-4 text-blue-400 bg-blue-950/40 p-2.5 rounded-xl border border-blue-900/30 whitespace-nowrap pl-2">
-                <span class="text-lg">📊</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">學習中控台</span>
-            </a>
+        <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+            <span class="text-lg">🏠</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">回到大廳</span>
+        </a>
 
-            <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 hover:bg-slate-800 rounded-xl transition whitespace-nowrap pl-2">
-                <span class="text-lg">🧮</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">防災物資準備</span>
-            </a>
-            
-            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-6 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">內政部知識庫</div>
-            <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 hover:bg-slate-800 rounded-xl transition whitespace-nowrap pl-2">
-                <span class="text-lg">📄</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">緊急避難包清單</span>
-            </a>
-        </nav>
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-6 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">防災教室</div>
 
-        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
-            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
-            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 hover:bg-red-500/10 rounded-xl transition pl-2">
-                <span class="text-lg">🚪</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
-            </button>
-        </div>
-    </aside>
+        <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+            <span class="text-lg">🫨</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震預防</span>
+        </a>
+
+        <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+            <span class="text-lg">🌀</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱風預防</span>
+        </a>
+
+        <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+            <span class="text-lg">🔥</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災預防</span>
+        </a>
+
+        <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+            <span class="text-lg">🧮</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">物資準備教室</span>
+        </a>
+    </nav>
+    
+    <div class="border-t border-slate-800 pt-4 mt-auto">
+        <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2">
+            <span class="text-lg">🚪</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出</span>
+        </button>
+    </div>
+</aside>
 
     <main class="flex-1 p-6 md:p-8 overflow-y-auto">
         <div class="max-w-5xl mx-auto">
             
             <header class="mb-8 border-b border-slate-800 pb-4 no-select">
-                <h1 class="text-3xl font-bold mb-2">智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full ml-2">雲端完全版</span></h1>
-                <p class="text-gray-400 text-sm">引導式情境教學模組・跨系統用戶生態帳號連動</p>
+                <h1 class="text-3xl font-bold mb-2">智慧防災學習大廳 <span class="text-sm font-normal text-emerald-400 bg-emerald-900/30 px-3 py-1 rounded-full ml-2">主控樞紐</span></h1>
+                <p class="text-gray-400 text-sm">請選擇欲前往的互動式災害模擬教室或盤點實體包物資</p>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-lg lg:col-span-1 flex flex-col justify-between relative overflow-hidden">
-                    
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-lg mb-8 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div class="no-select">
-                        <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：實體物資智慧盤點</h2>
-                        <p class="text-xs text-gray-400 mb-6">點擊卡片跳轉進行家庭防災物資備料精算</p>
+                        <h2 class="text-lg font-bold text-blue-400 mb-1">📋 步驟一：實體物資智慧盤點</h2>
+                        <p class="text-sm text-gray-400">點擊右側卡片可直接跳轉進行家庭防災物資備料精算</p>
                     </div>
 
-                    <a href="calculator.html" class="block bg-slate-950/80 hover:bg-slate-800/60 p-6 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center my-auto group cursor-pointer shadow-inner">
-                        <h2 class="text-xs text-gray-400 mb-2 no-select">✅ 實體包雲端盤點結果</h2>
+                    <a href="calculator.html" class="w-full md:w-72 block bg-slate-950/80 hover:bg-slate-800/60 p-5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center group cursor-pointer shadow-inner">
+                        <h2 class="text-xs text-gray-400 mb-1 no-select">✅ 實體包雲端盤點結果</h2>
                         <div class="flex items-baseline justify-center gap-1">
-                            <div id="scoreDisplay" class="text-6xl font-black text-sky-400 tracking-tight transition-colors">--</div>
-                            <div class="text-sm text-gray-500 font-medium">/ 100</div>
+                            <div id="scoreDisplay" class="text-5xl font-black text-sky-400 tracking-tight transition-colors">--</div>
+                            <div class="text-xs text-gray-500 font-medium">/ 100</div>
                         </div>
-                        <p id="statusMessage" class="mt-3 text-xs text-yellow-400 font-semibold transition-all">同步中...</p>
-                        <div class="mt-4 text-[11px] text-sky-400 font-bold opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
-                            <span>🧮</span> 點擊進入個人化物資清單 ➔
+                        <p id="statusMessage" class="mt-2 text-xs text-yellow-400 font-semibold transition-all">同步中...</p>
+                        <div class="mt-3 text-[11px] text-sky-400 font-bold opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                            <span>🧮</span> 進入個人化物資清單 ➔
                         </div>
                     </a>
-
-                    <div class="text-[10px] text-gray-600 text-center mt-4 no-select">
-                        數據自動對齊 lms_disaster_progress
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-lg lg:col-span-2 flex flex-col justify-between">
-                    <h2 class="text-lg font-bold text-gray-300 mb-4 no-select">🧠 認知與預防教學進度</h2>
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/40">
-                            <div class="text-2xl mb-1">🫨</div>
-                            <div class="text-xs text-gray-400">地震防護</div>
-                            <div id="progress-earthquake" class="text-lg font-bold text-white mt-1">讀取中</div>
-                        </div>
-                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/40">
-                            <div class="text-2xl mb-1">🌀</div>
-                            <div class="text-xs text-gray-400">防颱整備</div>
-                            <div id="progress-typhoon" class="text-lg font-bold text-white mt-1">讀取中</div>
-                        </div>
-                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/40">
-                            <div class="text-2xl mb-1">🔥</div>
-                            <div class="text-xs text-gray-400">火災逃生</div>
-                            <div id="progress-fire" class="text-lg font-bold text-white mt-1">讀取中</div>
-                        </div>
-                    </div>
-                    <div class="text-[11px] text-gray-500 mt-4 text-right no-select">數據已與 AI 訓練資料庫即時同步</div>
                 </div>
             </div>
 
-            <div class="bg-slate-900 rounded-2xl border border-blue-900/40 shadow-lg overflow-hidden">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-                    <h3 class="text-md font-bold text-white">🕹️ 斷點情境模擬訓練室</h3>
-                </div>
+            <h2 class="text-xl font-bold text-gray-300 mb-4 no-select">🚪 防災情境模擬教室</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <div class="flex border-b border-slate-800 no-select">
-                    <button onclick="setDisasterMode('earthquake')" id="tab-earthquake" class="flex-1 py-3 text-center text-sm font-bold bg-blue-600 text-white transition">🫨 地震情境</button>
-                    <button onclick="setDisasterMode('typhoon')" id="tab-typhoon" class="flex-1 py-3 text-center text-sm font-bold bg-slate-900 text-gray-400 hover:bg-slate-800 transition">🌀 颱風情境</button>
-                    <button onclick="setDisasterMode('fire')" id="tab-fire" class="flex-1 py-3 text-center text-sm font-bold bg-slate-900 text-gray-400 hover:bg-slate-800 transition">🔥 火災情境</button>
-                </div>
-
-                <div class="p-6">
-                    <p id="modeDescription" class="text-sm text-gray-300 mb-6 no-select">目前模式：地震發生時的瞬間應變與物資運用。</p>
-                    
-                    <button id="startQuizBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg mb-6 text-sm">
-                        🎲 啟動 AI 情境出題
-                    </button>
-
-                    <div id="aiQuizDisplay" class="hidden">
-                        <div class="flex items-center gap-3 mb-4 no-select">
-                            <div class="bg-blue-500/20 p-2 rounded-lg text-sm text-blue-400 font-bold">🤖 Gemini 導師</div>
-                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
+                <a href="earthquake.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-3xl bg-blue-950/60 p-3 rounded-xl border border-blue-900/30">🫨</span>
+                            <span class="text-xs font-semibold text-blue-400 bg-blue-900/20 px-2.5 py-1 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">點擊進入教室</span>
                         </div>
-                        <p id="questionText" class="text-lg font-bold mb-6 leading-relaxed"></p>
-                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-gray-200 leading-relaxed whitespace-pre-line"></div>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-blue-400 transition-colors">地震預防與應變教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">模擬強震突發時的斷點決策、黃金避難掩護動作，以及避難包的緊急運用時機。</p>
                     </div>
-                </div>
+                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組代號：EQ-01</span>
+                        <span>搭載 Gemini 智慧出題引擎</span>
+                    </div>
+                </a>
+
+                <a href="typhoon.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-teal-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-3xl bg-teal-950/60 p-3 rounded-xl border border-teal-900/30">🌀</span>
+                            <span class="text-xs font-semibold text-teal-400 bg-teal-900/20 px-2.5 py-1 rounded-full group-hover:bg-teal-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-teal-400 transition-colors">颱風防颱整備教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">模擬強颱登陸、土石流警戒、長期停水停電時的物資合理分配與居家防護措施。</p>
+                    </div>
+                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組代號：TY-02</span>
+                        <span>搭載 Gemini 智慧出題引擎</span>
+                    </div>
+                </a>
+
+                <a href="fire.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-red-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-3xl bg-red-950/60 p-3 rounded-xl border border-red-900/30">🔥</span>
+                            <span class="text-xs font-semibold text-red-400 bg-red-900/20 px-2.5 py-1 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-red-400 transition-colors">火災安全逃生教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">模擬濃煙密布時的逃生路線判斷、關門避難抉擇，與急救滅火物資的使用時機。</p>
+                    </div>
+                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組代號：FR-03</span>
+                        <span>搭載 Gemini 智慧出題引擎</span>
+                    </div>
+                </a>
+
+                <a href="calculator.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-3xl bg-purple-950/60 p-3 rounded-xl border border-purple-900/30">🧮</span>
+                            <span class="text-xs font-semibold text-purple-400 bg-purple-900/20 px-2.5 py-1 rounded-full group-hover:bg-purple-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-purple-400 transition-colors">緊急避難包精算教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">根據您的同住家庭人數、年齡層與特殊需求，量身打造最科學化的避難包配置清單。</p>
+                    </div>
+                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組代號：KT-04</span>
+                        <span>搭載個人化動態配置清單</span>
+                    </div>
+                </a>
+
             </div>
             
         </div>
@@ -149,14 +158,13 @@
 
     <script>
         // ==========================================
-        // 1. Supabase 設定與初始化
+        // Supabase 設定與大廳分數即時更新
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
         let testUserId = null; 
-        let currentMode = 'earthquake'; 
 
         async function checkAuthAndInit() {
             try {
@@ -174,22 +182,7 @@
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
 
-                const { data: existingRow } = await supabaseClient
-                    .from('lms_disaster_progress')
-                    .select('user_id')
-                    .eq('user_id', testUserId)
-                    .maybeSingle();
-
-                if (!existingRow) {
-                    await supabaseClient.from('lms_disaster_progress').insert([{ 
-                        user_id: testUserId, 
-                        disaster_kit_score: 0, 
-                        earthquake_completed_quizzes: 0, 
-                        typhoon_completed_quizzes: 0, 
-                        fire_completed_quizzes: 0 
-                    }]);
-                }
-
+                // 首次拉取分數並啟動 3 秒輪詢
                 fetchUserProgress();
                 initRealtimeScore();
             } catch (err) {
@@ -204,9 +197,6 @@
             window.location.href = 'register.html';
         }
 
-        // ==========================================
-        // 2. 智慧分數即時雲端動態捕獲 (每 3 秒自動同步)
-        // ==========================================
         function initRealtimeScore() {
             setInterval(async () => {
                 if (!testUserId) return;
@@ -223,37 +213,11 @@
             }, 3000);
         }
 
-        // ==========================================
-        // 3. 災害模式與資料庫數據連動
-        // ==========================================
-        function setDisasterMode(mode) {
-            currentMode = mode;
-            ['earthquake', 'typhoon', 'fire'].forEach(m => {
-                const element = document.getElementById(`tab-${m}`);
-                if (element) element.className = "flex-1 py-3 text-center text-sm font-bold bg-slate-900 text-gray-400 hover:bg-slate-800 transition";
-            });
-            const activeTab = document.getElementById(`tab-${mode}`);
-            if (activeTab) activeTab.className = "flex-1 py-3 text-center text-sm font-bold bg-blue-600 text-white transition";
-            
-            const descMap = {
-                earthquake: "【地震情境】模擬強震突發時的斷點決策，以及避難包的緊急運用。",
-                typhoon: "【颱風情境】模擬強颱登陸、長期停水停電的物資分配與居家防護。",
-                fire: "【火災情境】模擬濃煙密布的逃生路線判斷，與急救物資的使用時機。"
-            };
-            document.getElementById('modeDescription').innerText = descMap[mode];
-            document.getElementById('aiQuizDisplay').classList.add('hidden');
-            document.getElementById('startQuizBtn').innerText = "🎲 啟動 AI 情境出題";
-        }
-
         async function fetchUserProgress() {
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
                 if (error) throw error;
                 updateScoreUI(data);
-
-                document.getElementById('progress-earthquake').innerText = `${data.earthquake_completed_quizzes || 0} 關`;
-                document.getElementById('progress-typhoon').innerText = `${data.typhoon_completed_quizzes || 0} 關`;
-                document.getElementById('progress-fire').innerText = `${data.fire_completed_quizzes || 0} 關`;
             } catch (err) {
                 console.error("同步數據失敗:", err);
             }
@@ -267,82 +231,13 @@
             scoreDisplay.innerText = data.disaster_kit_score;
             if (data.disaster_kit_score < 60) {
                 statusMessage.innerText = "🔴 警告：實體物資嚴重不足";
-                statusMessage.className = "mt-3 text-xs text-red-400 font-bold";
-                scoreDisplay.className = "text-6xl font-black text-red-500 tracking-tight";
+                statusMessage.className = "mt-2 text-xs text-red-400 font-bold";
+                scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight";
             } else {
                 statusMessage.innerText = "🟢 實體包物資盤點完善";
-                statusMessage.className = "mt-3 text-xs text-green-400 font-bold";
-                scoreDisplay.className = "text-6xl font-black text-emerald-400 tracking-tight";
+                statusMessage.className = "mt-2 text-xs text-green-400 font-bold";
+                scoreDisplay.className = "text-5xl font-black text-emerald-400 tracking-tight";
             }
-        }
-
-        // ==========================================
-        // 4. Gemini API 生成虛擬環境考題
-        // ==========================================
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.innerText = "⏳ 構建智慧情境中...";
-            btn.disabled = true;
-
-            try {
-                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
-                if (!response.ok) throw new Error("網路連線逾時");
-                const quizData = await response.json(); 
-                renderQuiz(quizData); 
-            } catch (error) {
-                alert("🤖 Gemini 導師提示：雲端神經網路連線逾時，請再試一次！");
-                console.error(error);
-            } finally {
-                btn.innerText = "🎲 重新產生情境";
-                btn.disabled = false;
-            }
-        });
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700/80 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm";
-                optBtn.innerText = option;
-                
-                optBtn.onclick = async () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    const allButtons = container.querySelectorAll('button');
-                    allButtons.forEach(b => b.disabled = true);
-
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left w-full bg-green-600/30 border-green-500 p-4 rounded-xl font-bold text-green-400";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-green-400'>🚀 [資料庫同步] 經驗值已成功寫入雲端！</span>`;
-                        await saveCategoryProgress(currentMode);
-                    } else {
-                        optBtn.className = "text-left w-full bg-red-600/30 border-red-500 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！</b>\n\n<b>AI 導師回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-500'>🔄 觀念需要調整，建議更換災害模式重新挑戰。</span>`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
-        }
-
-        async function saveCategoryProgress(mode) {
-            const columnMap = { earthquake: 'earthquake_completed_quizzes', typhoon: 'typhoon_completed_quizzes', fire: 'fire_completed_quizzes' };
-            const targetColumn = columnMap[mode];
-            try {
-                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select(targetColumn).eq('user_id', testUserId).single();
-                let currentCount = currentData[targetColumn] || 0;
-
-                const { error } = await supabaseClient
-                    .from('lms_disaster_progress')
-                    .update({ [targetColumn]: currentCount + 1, updated_at: new Date().toISOString() })
-                    .eq('user_id', testUserId);
-
-                if (error) throw error;
-                setTimeout(fetchUserProgress, 1000);
-            } catch (err) { console.error(err); }
         }
     </script>
 </body>
