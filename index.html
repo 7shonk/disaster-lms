@@ -212,16 +212,16 @@
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) { window.location.href = 'register.html'; return; }
                 
-                // 🛠️ 核心修正：動態取得當前登入使用者的精確 UID
                 testUserId = session.user.id;
 
                 const emailPrefix = session.user.email.split('@')[0];
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
 
-                // 立即獲取一次最新數據
+                // 🛠️ 核心防呆修正：檢查此新註冊帳號在進度表中有沒有資料列，若無，自動建立一筆(分數預設為0)
+                await ensureUserProgressRow();
+
                 fetchUserProgress();
-                // 啟動專屬 UID 的實時輪詢更新
                 initRealtimeScore();
             } catch (err) { console.error(err); }
         }
@@ -233,7 +233,33 @@
             window.location.href = 'register.html';
         }
 
-        // 🛠️ 核心修正：輪詢時確保帶入當前精確的 testUserId 去撈取，不鎖死髒數據
+        // 🛠️ 核心防呆建置函數
+        async function ensureUserProgressRow() {
+            if (!testUserId) return;
+            try {
+                const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                    .select('user_id')
+                    .eq('user_id', testUserId);
+                
+                // 如果回傳的資料長度為 0，說明是全新帳號，幫他 insert 初始列
+                if (!data || data.length === 0) {
+                    await supabaseClient.from('lms_disaster_progress').insert([
+                        { 
+                            user_id: testUserId, 
+                            disaster_kit_score: 0,
+                            earthquake_completed_quizzes: 0,
+                            typhoon_completed_quizzes: 0,
+                            fire_completed_quizzes: 0,
+                            total_correct_answers: 0,
+                            total_answered_questions: 0,
+                            updated_at: new Date().toISOString()
+                        }
+                    ]);
+                    console.log("🚀 已為新註冊使用者成功初始化資料列！");
+                }
+            } catch (e) { console.error("初始化進度表失敗:", e); }
+        }
+
         function initRealtimeScore() {
             setInterval(async () => {
                 if (!testUserId) return;
@@ -245,8 +271,8 @@
                     if (data && !error) { 
                         updateScoreUI(data); 
                     }
-                } catch(e) { console.error("實時即時重新整理失敗:", e); }
-            }, 2500); // 縮短至 2.5 秒輪詢，Demo 體感更即時
+                } catch(e) { console.error("實時更新錯誤:", e); }
+            }, 2500); 
         }
 
         async function fetchUserProgress() {
@@ -256,8 +282,7 @@
                     .select('*')
                     .eq('user_id', testUserId)
                     .single();
-                if (error) throw error;
-                updateScoreUI(data);
+                if (!error && data) updateScoreUI(data);
             } catch (err) { console.error(err); }
         }
         
@@ -272,7 +297,7 @@
             if (score < 60) {
                 statusMessage.innerText = "🔴 警告：實體物資嚴重不足";
                 statusMessage.className = "mt-1 text-[11px] text-red-400 font-bold";
-                scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight animate-pulse";
+                scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight";
             } else {
                 statusMessage.innerText = "🟢 實體包物資盤點完善";
                 statusMessage.className = "mt-1 text-[11px] text-green-400 font-bold";
