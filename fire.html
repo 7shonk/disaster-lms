@@ -33,7 +33,6 @@
                     <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
                     <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
                     <a href="#" class="flex items-center gap-4 text-red-400 bg-red-950/40 p-2 rounded-xl border border-red-900/30 whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">火災安全逃生</span></a>
-                    </a>
                 </div>
             </div>
 
@@ -51,16 +50,15 @@
         </nav>
     </aside>
 
-
-    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
             
-            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
-                    <h1 class="text-3xl font-black mb-2 gradient-text">🔥 火災安全逃生教室</h1>
-                    <p class="text-gray-400 text-xs">專攻火場濃煙判斷、關門避難抉擇、滅火器口訣與官方手冊 RAG 導讀。</p>
+                    <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🔥 火災安全逃生教室</h1>
+                    <p class="text-gray-400 text-[11px] md:text-xs">專攻火場濃煙判斷、關門避難抉擇、滅火器口訣與官方手冊 RAG 導讀。</p>
                 </div>
-                <span class="bg-red-950 text-red-400 text-xs px-3 py-1 rounded-full font-bold border border-red-900/50 no-select whitespace-nowrap">內政部火災預防教學對齊</span>
+                <span class="bg-red-950 text-red-400 text-[10px] px-3 py-1 rounded-full font-bold border border-red-900/50 no-select whitespace-nowrap">內政部火災預防教學對齊</span>
             </header>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
@@ -80,52 +78,52 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：火災發生前準備與設備盤點</h3>
-        <span id="fireScoreBadge" class="bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40">安全防禦度：0%</span>
-    </div>
-    <div class="p-6">
-        <p class="text-xs text-gray-400 mb-4">請實地檢查家中環境，勾選已完成的防火整備項目。充實的準備是遠離火災的唯一捷徑：</p>
-        
-        <div class="space-y-3">
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">住宅用火災警報器 (住警器)</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">客廳、臥室及廚房皆已依法規安裝，且按壓測試鈕皆功能正常、電力充足。</span>
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：火災發生前準備與設備盤點</h3>
+                    <span id="fireScoreBadge" class="bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40">安全防禦度：0%</span>
                 </div>
-            </label>
+                <div class="p-6">
+                    <p class="text-xs text-gray-400 mb-4">請實地檢查家中環境，勾選已完成的防火整備項目。充實的準備是遠離火災的唯一捷徑：</p>
+                    
+                    <div class="space-y-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">住宅用火災警報器 (住警器)</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">客廳、臥室及廚房皆已依法規安裝，且按壓測試鈕皆功能正常、電力充足。</span>
+                            </div>
+                        </label>
 
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">合格家用滅火器</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">置於客廳或明顯易拿取處，外觀無鏽蝕，壓力指針落於綠色正常範圍。</span>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">合格家用滅火器</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">置於客廳或明顯易拿取處，外觀無鏽蝕，壓力指針落於綠色正常範圍。</span>
+                            </div>
+                        </label>
+
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">家庭逃生計畫與兩條避難路線</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">與家人共同規劃好 2 個不同方向的逃生出口，且動線暢通、未堆放雜物。</span>
+                            </div>
+                        </label>
+
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">電氣與延長線安全管理</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">高耗電電器（烤箱、微波爐等）不共用延長線，延長線未綑綁且定期清理插頭灰塵。</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="fireSyncStatus" class="hidden mt-4 p-3 bg-red-950/20 border border-red-900/30 rounded-xl text-center text-xs text-red-400">
+                        🚀 [資料庫同步] 居家防火整備進度已寫入雲端！
+                    </div>
                 </div>
-            </label>
-
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">家庭逃生計畫與兩條避難路線</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">與家人共同規劃好 2 個不同方向的逃生出口，且動線暢通、未堆放雜物。</span>
-                </div>
-            </label>
-
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">電氣與延長線安全管理</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">高耗電電器（烤箱、微波爐等）不共用延長線，延長線未綑綁且定期清理插頭灰塵。</span>
-                </div>
-            </label>
-        </div>
-
-        <div id="fireSyncStatus" class="hidden mt-4 p-3 bg-red-950/20 border border-red-900/30 rounded-xl text-center text-xs text-red-400">
-            🚀 [資料庫同步] 居家防火整備進度已寫入雲端！
-        </div>
-    </div>
-</div>
+            </div>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
                 <h3 class="text-md font-bold text-red-400 mb-2 flex items-center gap-2">💬 訓練二：防火文本 AI 智能詢問區</h3>
@@ -138,8 +136,12 @@
                         <span>💬</span> 送出詢問 AI 導師
                     </button>
                 </div>
-                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
-                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+
+                <div id="inquiryResponseDisplay" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                    <div class="flex items-center gap-3 mb-4 no-select">
+                        <div class="bg-red-500/20 px-3 py-1.5 rounded-lg text-xs text-red-400 font-bold">🤖 Gemini 知識導讀</div>
+                    </div>
+                    <p id="inquiryResponseText" class="text-gray-300 text-xs leading-relaxed"></p>
                 </div>
             </div>
 
@@ -147,63 +149,50 @@
     </main>
 
     <script>
-        // ==========================================
-        // Supabase 與 認證初始化
-        // ==========================================
-        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        // 初始化虛擬測試帳號，對齊中控台機制
+        const testUserId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d";
+        const currentMode = "fire";
         
-        let testUserId = null; 
-        const currentMode = 'fire';
-
-        async function initAuth() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = 'register.html'; return; }
-            testUserId = session.user.id;
+        // 此處預留 Supabase 連線初始化，實際運作時會讀取全域連線
+        const supabaseUrl = 'https://your-supabase-url.supabase.co'; 
+        const supabaseKey = 'your-anon-key';
+        let supabaseClient = null;
+        if (typeof supabase !== 'undefined') {
+            supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
-        window.addEventListener('DOMContentLoaded', initAuth);
 
         // ==========================================
-        // 🔥 AI 文本詢問區邏輯 (智慧語意路由)
+        // 💬 訓練二：AI 智能詢問導讀串接
         // ==========================================
-        async function submitInquiry() {
+        function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
-            const btnEl = document.getElementById('sendInquiryBtn');
-            const responseBox = document.getElementById('inquiryResponseBox');
-            const responseText = document.getElementById('inquiryResponseText');
-            
-            if (!inputEl || !inputEl.value.trim()) { alert("請先輸入您的疑問或貼上文本段落喔！"); return; }
-            
             const question = inputEl.value.trim();
-            btnEl.innerText = "⏳ AI 導師正在分析文本中...";
+            if (!question) return;
+
+            const btnEl = document.getElementById('sendInquiryBtn');
+            const displayDiv = document.getElementById('inquiryResponseDisplay');
+            const responseText = document.getElementById('inquiryResponseText');
+
+            btnEl.innerHTML = "<span>⏳</span> 智能導師正在研讀文本...";
             btnEl.disabled = true;
-            
+
             setTimeout(async () => {
-                responseBox.classList.remove('hidden');
-                document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
+                displayDiv.classList.remove('hidden');
+                responseText.innerText = "";
                 
-                // 🛠️ 針對火災手冊內容進行的 RAG 關鍵字判斷
-                if (question.includes("浴室") || question.includes("廁所")) {
-                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：火災絕對不可躲浴室！】</b>\n\n《火災應變手冊》第 28 頁強調：\n1. 浴室的門多為塑膠材質，遇高溫(約200-400度)易熔化變形，且下方通常有通風百葉，無法阻擋濃煙。\n2. 浴室排水孔下方設有「存水彎」，並不會有新鮮空氣流入。\n3. 浴室通常沒有對外窗，難以呼救。\n<b>正確作法是：尋找有對外窗的房間，關緊木門並用衣物塞住門縫，撥打 119 告知位置。</b>`;
-                } 
-                else if (question.includes("濕毛巾")) {
-                    responseText.innerHTML = `🚨 <b>【觀念導正：濕毛巾無法擋高溫毒氣】</b>\n\n尋找濕毛巾會浪費黃金逃生時間，且濕毛巾無法阻擋火場中的一氧化碳與有毒氣體。遇到濃煙的唯一法則是：「小火快逃，濃煙關門」，並立刻往反方向尋找安全房間避難。`;
-                }
-                else if (question.includes("滅火器")) {
-                    responseText.innerHTML = `🧯 <b>【滅火器操作口訣：拉、瞄、壓、掃】</b>\n\n根據手冊指引，滅火時請依照以下步驟：\n1. <b>拉</b>（開安全插梢）\n2. <b>瞄</b>（向火源底部）\n3. <b>壓</b>（下握把）\n4. <b>掃</b>（向火源左右掃射）\n\n※ 提醒：若發現火勢擴大無法撲滅，應立即放棄滅火，循安全退路撤離！`;
-                }
-                else {
+                if (question.includes("電氣") || question.includes("延長線")) {
+                    responseText.innerHTML = `關於您詢問的<b>「${question}」</b>，依據官方手冊規範：\n\n1. <b>不超載使用</b>：高耗電家電不可共用延長線組。\n2. <b>不綑綁使用</b>：延長線若綑綁發熱，容易導致絕緣外皮熔解引起短路。\n3. <b>定期保養</b>：插頭灰塵易造成「焦耳熱」引發積污導電，應定期清除。`;
+                } else {
                     try {
-                        const response = await fetch(`/api/ask-handbook?mode=fire&q=${encodeURIComponent(question)}`);
+                        const response = await fetch(`/api/ask-rag?question=${encodeURIComponent(question)}&mode=${currentMode}`);
                         if (response.ok) {
                             const data = await response.json();
                             responseText.innerText = data.answer;
                         } else {
-                            responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
+                            responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n已收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
                         }
                     } catch(e) {
-                        responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
+                        responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n已收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
                     }
                 }
                 
@@ -214,70 +203,46 @@
         }
 
         // ==========================================
-        // 訓練一：AI 測驗出題模組
+        // 🛡️ 訓練一：火災前準備清單分數計算與同步
         // ==========================================
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.innerHTML = "<span>⏳</span> 連結雲端神經網路中...";
-            btn.disabled = true;
-            try {
-                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
-                if (!response.ok) throw new Error();
-                const quizData = await response.json(); 
-                renderQuiz(quizData); 
-            } catch (error) {
-                // 若 API 掛掉，自動噴出完美的火災情境題
-                renderQuiz({
-                    question: "半夜睡覺時聽見住警器大響，打開房門發現走廊已經充滿濃煙，此時你該怎麼做？",
-                    options: [
-                        "A. 趕快衝去廁所把全身弄濕，躲在浴室等待救援", 
-                        "B. 找一條濕毛巾摀住口鼻，憋氣衝過濃煙逃下樓", 
-                        "C. 立刻退回房間，關緊房門，用毛巾塞住門縫，並打 119 求助"
-                    ],
-                    correctAnswer: "C. 立刻退回房間，關緊房門，用毛巾塞住門縫，並打 119 求助",
-                    explanation: "濃煙是火場頭號殺手，每秒上升 3~5 公尺。當逃生通道已被濃煙阻斷時，強行穿越致死率極高。正確做法是「關門避難」，一般的實木門能阻擋火勢與濃煙一段時間，為救援爭取黃金時間。"
-                });
-            } finally {
-                btn.innerHTML = "<span>🎲</span> 重新產生火災情境";
-                btn.disabled = false;
-            }
-        });
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
-                optBtn.innerText = option;
+        async function calculateFireScore() {
+            const checkboxes = document.querySelectorAll('.fire-check');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            
+            // 計算百分比
+            const scorePercent = Math.round((checkedCount / totalCount) * 100);
+            
+            // 更新介面顯示
+            const badge = document.getElementById('fireScoreBadge');
+            badge.innerText = `安全防禦度：${scorePercent}%`;
+            
+            // 根據分數變更標籤顏色
+            if (scorePercent === 100) {
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                document.getElementById('fireSyncStatus').classList.remove('hidden');
                 
-                optBtn.onclick = async () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    container.querySelectorAll('button').forEach(b => b.disabled = true);
-
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-red-400'>🚀 [資料庫同步] 火災逃生經驗值已成功寫入雲端！</span>`;
-                        await saveProgress();
-                    } else {
-                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這在現實中會受傷喔！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-500'>🔄 建議您點擊上方「官方火災課本」閱讀後，再次挑戰情境。</span>`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
+                // 分數全滿時，自動更新進度至雲端 Supabase
+                await saveFireProgress(checkedCount);
+            } else {
+                badge.className = "bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40";
+                document.getElementById('fireSyncStatus').classList.add('hidden');
+            }
         }
 
-        async function saveProgress() {
+        async function saveFireProgress(count) {
+            if (!testUserId || !supabaseClient) return;
             try {
-                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select('fire_completed_quizzes').eq('user_id', testUserId).single();
-                let currentCount = currentData['fire_completed_quizzes'] || 0;
-                await supabaseClient.from('lms_disaster_progress').update({ fire_completed_quizzes: currentCount + 1, updated_at: new Date().toISOString() }).eq('user_id', testUserId);
-            } catch (err) { console.error(err); }
+                // 將勾選完成的數量同步回資料庫的欄位（整合原有資料庫架構）
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ 
+                        fire_completed_quizzes: count, 
+                        updated_at: new Date().toISOString() 
+                    })
+                    .eq('user_id', testUserId);
+            } catch (err) { 
+                console.error("雲端同步失敗:", err); 
+            }
         }
     </script>
 </body>
