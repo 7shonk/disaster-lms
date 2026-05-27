@@ -14,11 +14,12 @@
 </head>
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
+        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
@@ -58,10 +59,18 @@
                 </div>
             </div>
         </nav>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-4xl mx-auto w-full">
             
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
@@ -117,7 +126,7 @@
                             <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
                             <div class="flex-1 min-w-0">
                                 <span class="text-gray-300 text-sm font-bold block">液晶電視與懸掛物防掉落</span>
-                                <span class="text-xs text-gray-500 block mt-0.5">液晶電視已用防傾倒鐵線/防震綁帶固定在電視櫃或牆面上，床頭上方未擺放裝飾物。</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">液晶電視已用防傾倒鐵線/防震綁帶固定在電視櫃或牆面上，床頭上方未擺放重物。</span>
                             </div>
                         </label>
 
@@ -167,12 +176,23 @@
         let testUserId = null; 
         const currentMode = 'earthquake';
 
-        async function initAuth() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = 'register.html'; return; }
-            testUserId = session.user.id;
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                testUserId = session.user.id;
+
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+            } catch (err) { console.error(err); }
         }
-        window.addEventListener('DOMContentLoaded', initAuth);
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
 
         async function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
@@ -190,11 +210,11 @@
                 document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
                 
                 if (question.includes("黃金三角") || question.includes("生命三角")) {
-                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：黃金三角是錯誤資訊！】</b>\n\n根據消防署《地震災害防救援宣導手冊》明確指出，網路流傳的「黃金三角」都被認定為<b>錯誤資訊</b>。請務必遵循官方<b>「趴下、掩護、穩住」</b>的標準防護動作！`;
+                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：黃金三角是錯誤資訊！】</b>\n\n根據消防署《地震災害防救援宣導手冊》明確指出，網路流傳的「黃金三角」或「生命三角」都被認定為<b>錯誤資訊</b>。請務必遵循官方<b>「趴下、掩護、穩住」</b>的標準防護動作，留在堅固桌子底下保護頭部！`;
                 } else if (question.includes("家具固定") || question.includes("電視") || question.includes("冰箱")) {
-                    responseText.innerHTML = `⚙️ <b>【手冊指引：居家家具固定防震指南】</b>\n\n根據《家具固定防震準備手冊》規範，地震搖晃時大型重家具極易翻倒：\n1. 大型櫥櫃使用 L 型金屬片固定牆壁。\n2. 電視以防傾倒鐵線將其固定於桌面。`;
+                    responseText.innerHTML = `⚙️ <b>【手冊指引：居家家具固定防震指南】</b>\n\n根據《家具固定防震準備手冊》規範，強震來臨前應完成：\n1. 大型櫥櫃使用 L 型金屬固定牆柱。\n2. 電視背面以防傾倒鐵線鎖在櫃體或牆面，避免震時位移傾倒砸傷家人。`;
                 } else {
-                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。根據《防震手冊》指引，強震來襲時第一時間應就地進行頭頸部防護，避免在劇烈搖晃時隨意走動。`;
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。根據《防震手冊》指引，強震來襲時最重要是就地進行頭頸部防護（趴下、掩護、穩住），不可在劇烈搖晃時驚慌奔跑。`;
                 }
                 btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
                 btnEl.disabled = false;
@@ -202,6 +222,9 @@
             }, 1200);
         }
 
+        // ==========================================
+        // 🛡️ 地震前準備清單分數計算與同步
+        // ==========================================
         async function calculateEarthquakeScore() {
             const checkboxes = document.querySelectorAll('.eq-check');
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
