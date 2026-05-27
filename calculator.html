@@ -20,25 +20,36 @@
             <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
+        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
-                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                    <span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl transition whitespace-nowrap pl-2 hover:bg-slate-800">
+                    <span class="text-lg">🏠</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
                 </a>
             </div>
+
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
                 <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">
-                    <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
+                    <span class="text-lg">🧮</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
                 </a>
             </div>
+            
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
+                    </a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
+                    </a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -67,35 +78,29 @@
                     <span>開啟避難包指南</span>
                 </a>
             </div>
-            
-                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
-            </header>
 
             <div class="flex gap-4 mb-6 no-select">
                 <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1">
                     <span class="text-xl">🎒</span>
                     <span>緊急避難包 (1~3天)</span>
-                    <span class="text-[10px] font-normal opacity-80">抓了就跑，支援 AI 盤點</span>
                 </button>
                 <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800">
                     <span class="text-xl">🏡</span>
                     <span>日常居家儲備 (7天)</span>
-                    <span class="text-[10px] font-normal opacity-80">災後宅家，採買參考清單</span>
                 </button>
             </div>
 
             <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
-                        <div class="grid grid-cols-5 gap-2" id="peopleSelector">
-                            </div>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5">👨‍👩‍👧 家庭同住總人數</label>
+                        <div class="grid grid-cols-5 gap-2" id="peopleSelector"></div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">🐾 是否有毛小孩 (貓/狗)</label>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5">🐾 是否有毛小孩 (貓/狗)</label>
                         <div class="flex gap-3">
-                            <button onclick="setPet(true)" id="petBtn-true" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 transition cursor-pointer text-sm">有寵物 🐶</button>
-                            <button onclick="setPet(false)" id="petBtn-false" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 transition cursor-pointer text-sm">無寵物 🚫</button>
+                            <button onclick="setPet(true)" id="petBtn-true" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 transition text-sm">有寵物 🐶</button>
+                            <button onclick="setPet(false)" id="petBtn-false" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 transition text-sm">無寵物 🚫</button>
                         </div>
                     </div>
                 </div>
@@ -106,12 +111,9 @@
                     <h2 class="text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
                     <span id="summaryBadge" class="text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
                 </div>
-
-                <div id="dynamicListContent" class="space-y-6">
-                    </div>
-
+                <div id="dynamicListContent" class="space-y-6"></div>
                 <div id="scanActionArea" class="pt-6 mt-6 border-t border-slate-800">
-                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed no-select">
+                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed">
                         🔒 請先在上方打勾確認備齊桌上實物
                     </a>
                 </div>
