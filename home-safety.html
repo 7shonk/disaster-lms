@@ -14,7 +14,7 @@
 </head>
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
@@ -43,12 +43,20 @@
                 </div>
             </div>
         </nav>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 p-5 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-4xl mx-auto w-full">
             
-            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
+            <header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 md:px-0">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🚪 居家綜合安全教室</h1>
                     <p class="text-gray-400 text-[11px] md:text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
@@ -56,7 +64,7 @@
                 <span class="bg-yellow-950 text-yellow-400 text-xs px-3 py-1 rounded-full font-bold border border-yellow-900/50 no-select whitespace-nowrap">內政部家庭防災手冊對齊</span>
             </header>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+            <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防範居家隱形殺手</h2>
                     <p class="text-xs text-gray-400 leading-relaxed mb-4">
@@ -142,12 +150,23 @@
         let testUserId = null; 
         const currentMode = 'home-safety';
 
-        async function initAuth() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = 'register.html'; return; }
-            testUserId = session.user.id;
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                testUserId = session.user.id;
+
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+            } catch (err) { console.error(err); }
         }
-        window.addEventListener('DOMContentLoaded', initAuth);
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
 
         async function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
