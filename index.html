@@ -103,62 +103,69 @@
     </main>
 
     <script>
-        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+    const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    
+    let testUserId = null; 
+
+    async function init() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) { 
+            console.log("未登入，跳轉中...");
+            window.location.href = 'register.html'; 
+            return; 
+        }
+        testUserId = session.user.id;
+        console.log("當前使用者 ID:", testUserId); // 👈 檢查這個 ID 是否跟資料庫裡的 user_id 一模一樣
         
-        let testUserId = null; 
+        fetchLatestProgress();
+        setInterval(fetchLatestProgress, 3000); 
+    }
 
-        async function init() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = 'register.html'; return; }
-            testUserId = session.user.id;
+    async function fetchLatestProgress() {
+        if (!testUserId) return;
+        
+        console.log("正在嘗試同步資料...");
+        
+        const { data, error } = await supabaseClient
+            .from('lms_disaster_progress')
+            .select('*')
+            .eq('user_id', testUserId)
+            .order('updated_at', { ascending: false })
+            .limit(1);
 
-            const { data: profile } = await supabaseClient.from('lms_disaster_progress')
-                .select('student_name').eq('user_id', testUserId).maybeSingle();
-            
-            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${profile?.student_name || session.user.email.split('@')[0]}`;
-            
-            fetchLatestProgress();
-            setInterval(fetchLatestProgress, 3000); 
+        if (error) {
+            console.error("Supabase 查詢錯誤:", error); // 👈 如果這裡報錯，請告訴我錯誤訊息
+            return;
         }
 
-        async function fetchLatestProgress() {
-            if (!testUserId) return;
-            const { data, error } = await supabaseClient.from('lms_disaster_progress')
-                .select('*')
-                .eq('user_id', testUserId)
-                .order('updated_at', { ascending: false })
-                .limit(1);
-
-            if (data && data.length > 0 && !error) {
-                updateUI(data[0]);
-            }
+        if (data && data.length > 0) {
+            console.log("同步成功，取得資料:", data[0]); // 👈 如果這裡顯示資料，代表撈到了！
+            updateUI(data[0]);
+        } else {
+            console.warn("該使用者在資料庫中查無資料");
         }
+    }
 
-        function updateUI(data) {
-            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score || 0;
-            document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "尚未盤點，請使用 App 進行拍照。";
-            
-            // 渲染清單
-            const mList = document.getElementById('missingItemsList');
-            const oList = document.getElementById('overstockedItemsList');
-            
-            mList.innerHTML = (data.missing_items || []).length > 0 
-                ? data.missing_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
-                : "無缺失項目 🎉";
-                
-            oList.innerHTML = (data.overstocked_items || []).length > 0 
-                ? data.overstocked_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
-                : "無過多贅物 👍";
-        }
+    function updateUI(data) {
+        // UI 更新邏輯 (保持不變)
+        document.getElementById('scoreDisplay').innerText = data.disaster_kit_score || 0;
+        document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "尚無建議";
+        
+        const mList = document.getElementById('missingItemsList');
+        const oList = document.getElementById('overstockedItemsList');
+        
+        if(mList) mList.innerHTML = (data.missing_items || []).map(i => `<div class="mb-1">• ${i}</div>`).join('') || "無缺失";
+        if(oList) oList.innerHTML = (data.overstocked_items || []).map(i => `<div class="mb-1">• ${i}</div>`).join('') || "無贅物";
+    }
 
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'register.html';
-        }
+    async function logout() {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'register.html';
+    }
 
-        window.addEventListener('DOMContentLoaded', init);
-    </script>
+    window.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
