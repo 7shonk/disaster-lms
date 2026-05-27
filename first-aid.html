@@ -77,47 +77,44 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：全民急救自救與 AED 認知盤點</h3>
+        <span id="aidScoreBadge" class="bg-emerald-950 text-emerald-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-emerald-900/40">自救熟練度：0%</span>
+    </div>
+    <div class="p-6">
+        <p class="text-xs text-gray-400 mb-4">當身邊的人突然倒下，以下自救及搶救程序您是否已經熟記、並完成鄰近設備勘查？</p>
+        
+        <div class="space-y-3">
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateAidScore()" class="aid-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-emerald-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">熟記 CPR 口訣與壓胸核心技術</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">熟知「叫、叫、壓、電」步驟，並理解胸外按壓要求（深度5公分、速率100~120次/分）。</span>
                 </div>
-                <div class="p-6">
-                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 hover:border-emerald-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
-                        <span>🎲</span> 啟動 AI 急救情境出題
-                    </button>
+            </label>
 
-                    <div id="aiQuizDisplay" class="hidden">
-                        <div class="flex items-center gap-3 mb-4 no-select">
-                            <div class="bg-emerald-500/20 px-3 py-1.5 rounded-lg text-xs text-emerald-400 font-bold">🤖 Gemini 導師</div>
-                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
-                        </div>
-                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
-                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
-                    </div>
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateAidScore()" class="aid-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-emerald-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">掌握異物哽塞哈姆立克法操作</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">精確理解成人雙手掐脖時的施救站姿，以及「肚臍與劍突間」向內向上擠壓之手勢。</span>
                 </div>
-            </div>
+            </label>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：急救文本 AI 智能詢問區</h3>
-                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
-                    在研讀《民眾自救手冊》時，對於「CPR 步驟」或「哈姆立克法」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
-                </p>
-                <div class="space-y-4">
-                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『身邊的人突然倒下沒有心跳怎麼辦？』、『吃飯噎到怎麼辦？』..."></textarea>
-                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-emerald-600/10 flex items-center gap-2 cursor-pointer">
-                        <span>💬</span> 送出詢問 AI 導師
-                    </button>
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateAidScore()" class="aid-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-emerald-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">實地確認住家鄰近的 AED 設置點</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">已明確查出距離目前住家或公司最近的 AED（自動體外心臟電擊去顫器）具體擺放位置。</span>
                 </div>
-                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
-                    <div class="flex items-center gap-2 mb-3 no-select">
-                        <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">🤖 文本導讀回饋</span>
-                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
-                    </div>
-                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
-                </div>
-            </div>
-
+            </label>
         </div>
+
+        <div id="aidSyncStatus" class="hidden mt-4 p-3 bg-emerald-950/20 border border-emerald-900/30 rounded-xl text-center text-xs text-emerald-400">
+            🚀 [資料庫同步] 緊急自救熟練度進度已成功記錄！
+        </div>
+    </div>
+</div>
     </main>
 
     <script>
