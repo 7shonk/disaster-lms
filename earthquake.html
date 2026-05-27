@@ -208,30 +208,35 @@
         }
 
         // ==========================================
-        // 訓練一：AI 測驗出題模組 (保持不變)
-        // ==========================================
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.innerHTML = "<span>⏳</span> 連結雲端神經網路中...";
-            btn.disabled = true;
-            try {
-                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
-                if (!response.ok) throw new Error();
-                const quizData = await response.json(); 
-                renderQuiz(quizData); 
-            } catch (error) {
-                // 為了 Demo 絕對保險，若 API 掛掉自動噴出完美的地震情境題
-                renderQuiz({
-                    question: "強震突然發生，此時你正好在廚房用火烹調食物，第一時間該怎麼做？",
-                    options: ["A. 不管三七二十一，立刻關閉瓦斯爐火，就地蹲下防護", "B. 顧及頭頂掉落物，立刻執行趴下、掩護、穩住，待搖晃停止再去關火", "C. 為了防止氣爆，冒著搖晃立刻衝去關閉瓦斯總開關"],
-                    correctAnswer: "B. 顧及頭頂掉落物，立刻執行趴下、掩護、穩住，待搖晃停止再去關火",
-                    explanation: "根據內政部消防署最新防震指引，地震搖晃時千萬不能跨步走動以免跌倒，且火場最大殺手是掉落物。第一時間應就地「趴下、掩護、穩住」保護頭頸部，等地震搖晃停止後，再行確認瓦斯爐等火源是否關閉！"
-                });
-            } finally {
-                btn.innerHTML = "<span>🎲</span> 重新產生地震情境";
-                btn.disabled = false;
-            }
-        });
+// 🛡️ 地震前準備清單分數計算與同步
+// ==========================================
+async function calculateEarthquakeScore() {
+    const checkboxes = document.querySelectorAll('.eq-check');
+    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const totalCount = checkboxes.length;
+    const scorePercent = Math.round((checkedCount / totalCount) * 100);
+    
+    const badge = document.getElementById('earthquakeScoreBadge');
+    badge.innerText = `安全防禦度：${scorePercent}%`;
+    
+    if (scorePercent === 100) {
+        badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+        document.getElementById('eqSyncStatus').classList.remove('hidden');
+        await saveEarthquakeProgress(checkedCount);
+    } else {
+        badge.className = "bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40";
+        document.getElementById('eqSyncStatus').classList.add('hidden');
+    }
+}
+
+async function saveEarthquakeProgress(count) {
+    if (!testUserId) return;
+    try {
+        await supabaseClient.from('lms_disaster_progress')
+            .update({ earthquake_completed_quizzes: count, updated_at: new Date().toISOString() })
+            .eq('user_id', testUserId);
+    } catch (err) { console.error(err); }
+}
 
         function renderQuiz(quiz) {
             document.getElementById('aiQuizDisplay').classList.remove('hidden');
