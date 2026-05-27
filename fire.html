@@ -80,24 +80,52 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：火災發生前準備與設備盤點</h3>
+        <span id="fireScoreBadge" class="bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40">安全防禦度：0%</span>
+    </div>
+    <div class="p-6">
+        <p class="text-xs text-gray-400 mb-4">請實地檢查家中環境，勾選已完成的防火整備項目。充實的準備是遠離火災的唯一捷徑：</p>
+        
+        <div class="space-y-3">
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">住宅用火災警報器 (住警器)</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">客廳、臥室及廚房皆已依法規安裝，且按壓測試鈕皆功能正常、電力充足。</span>
                 </div>
-                <div class="p-6">
-                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-red-400 border border-slate-700 hover:border-red-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
-                        <span>🎲</span> 啟動 AI 火災情境出題
-                    </button>
-                    <div id="aiQuizDisplay" class="hidden">
-                        <div class="flex items-center gap-3 mb-4 no-select">
-                            <div class="bg-red-500/20 px-3 py-1.5 rounded-lg text-xs text-red-400 font-bold">🤖 Gemini 導師</div>
-                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
-                        </div>
-                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
-                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
-                    </div>
+            </label>
+
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">合格家用滅火器</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">置於客廳或明顯易拿取處，外觀無鏽蝕，壓力指針落於綠色正常範圍。</span>
                 </div>
-            </div>
+            </label>
+
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">家庭逃生計畫與兩條避難路線</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">與家人共同規劃好 2 個不同方向的逃生出口，且動線暢通、未堆放雜物。</span>
+                </div>
+            </label>
+
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateFireScore()" class="fire-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-red-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">電氣與延長線安全管理</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">高耗電電器（烤箱、微波爐等）不共用延長線，延長線未綑綁且定期清理插頭灰塵。</span>
+                </div>
+            </label>
+        </div>
+
+        <div id="fireSyncStatus" class="hidden mt-4 p-3 bg-red-950/20 border border-red-900/30 rounded-xl text-center text-xs text-red-400">
+            🚀 [資料庫同步] 居家防火整備進度已寫入雲端！
+        </div>
+    </div>
+</div>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
                 <h3 class="text-md font-bold text-red-400 mb-2 flex items-center gap-2">💬 訓練二：防火文本 AI 智能詢問區</h3>
