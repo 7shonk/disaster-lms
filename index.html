@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 側邊欄收放過渡動畫 */
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
@@ -74,11 +73,11 @@
         </div>
     </aside>
 
-    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-        <div class="max-w-6xl mx-auto">
+    <main class="flex-1 p-5 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-6xl mx-auto w-full">
             
-            <header class="mb-6 border-b border-slate-800 pb-4 no-select">
-                <h1 class="text-3xl font-black mb-1">智慧防災學習大廳 <span class="text-xs font-bold text-sky-400 bg-sky-950/50 px-3 py-1 rounded-full ml-2 border border-sky-900/30">消防署官方連動版</span></h1>
+            <header class="mb-6 border-b border-slate-800 pb-4 no-select px-4 md:px-0">
+                <h1 class="text-2xl md:text-3xl font-black mb-1">智慧防災學習大廳 <span class="text-xs font-bold text-sky-400 bg-sky-950/50 px-3 py-1 rounded-full block sm:inline mt-2 sm:mt-0 sm:ml-2 border border-sky-900/30 w-max">消防署官方連動版</span></h1>
                 <p class="text-gray-400 text-xs">六大主題互動式數位教室樞紐・跨系統用戶生態帳號即時連動</p>
             </header>
 
@@ -117,7 +116,7 @@
                     </div>
                     <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
                         <span>模組：EQ-01</span>
-                        <span>Gemini 智慧情境題庫</span>
+                        <span>重型家具固定盤點</span>
                     </div>
                 </a>
 
@@ -127,12 +126,12 @@
                             <span class="text-2xl bg-teal-950/60 p-2.5 rounded-xl border border-teal-900/30">🌀</span>
                             <span class="text-[10px] font-bold text-teal-400 bg-teal-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-teal-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
-                        <h3 class="text-md font-bold mb-1.5 group-hover:text-teal-400 transition-colors">颱洪災害整備教室</h3>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-teal-400 transition-colors">颱洪整備教室</h3>
                         <p class="text-gray-400 text-xs leading-relaxed">對齊《颱洪災害防救指引》。模擬強風豪雨門窗防護、強制撤離法規與土石流應變。</p>
                     </div>
                     <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
                         <span>模組：TY-02</span>
-                        <span>Gemini 智慧情境題庫</span>
+                        <span>防颱前夕整備清單</span>
                     </div>
                 </a>
 
@@ -140,14 +139,14 @@
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <span class="text-2xl bg-red-950/60 p-2.5 rounded-xl border border-red-900/30">🔥</span>
-                            <span class="text-[10px] font-bold text-red-400 bg-red-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">進入教室 ➔</span>
+                            <span class="text-[10px] font-bold text-red-400 bg-blue-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
                         <h3 class="text-md font-bold mb-1.5 group-hover:text-red-400 transition-colors">火災安全逃生教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">對齊《火災預防與應變手冊》。學習「滅火插瞄壓掃」、濃煙評判與精準關門避難抉擇。</p>
+                        <p class="text-gray-400 text-xs leading-relaxed">對齊《火災預防與應變手冊》。學習住宅住警器安裝、用電安全管理與火災前預防盤點。</p>
                     </div>
                     <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
                         <span>模組：FR-03</span>
-                        <span>Gemini 智慧情境題庫</span>
+                        <span>住宅防火自主檢查</span>
                     </div>
                 </a>
 
@@ -162,7 +161,7 @@
                     </div>
                     <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
                         <span>模組：HS-04</span>
-                        <span>一氧化碳與瓦斯專攻</span>
+                        <span>瓦斯熱水器與防毒盤點</span>
                     </div>
                 </a>
 
@@ -202,9 +201,6 @@
     </main>
 
     <script>
-        // ==========================================
-        // Supabase 設定與大廳分數即時更新 (與此前完全相同)
-        // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -215,13 +211,17 @@
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) { window.location.href = 'register.html'; return; }
+                
+                // 🛠️ 核心修正：動態取得當前登入使用者的精確 UID
                 testUserId = session.user.id;
 
                 const emailPrefix = session.user.email.split('@')[0];
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
 
+                // 立即獲取一次最新數據
                 fetchUserProgress();
+                // 啟動專屬 UID 的實時輪詢更新
                 initRealtimeScore();
             } catch (err) { console.error(err); }
         }
@@ -233,19 +233,29 @@
             window.location.href = 'register.html';
         }
 
+        // 🛠️ 核心修正：輪詢時確保帶入當前精確的 testUserId 去撈取，不鎖死髒數據
         function initRealtimeScore() {
             setInterval(async () => {
                 if (!testUserId) return;
                 try {
-                    const { data } = await supabaseClient.from('lms_disaster_progress').select('disaster_kit_score').eq('user_id', testUserId).single();
-                    if (data) { updateScoreUI(data); }
-                } catch(e) { console.error(e); }
-            }, 3000);
+                    const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                        .select('disaster_kit_score')
+                        .eq('user_id', testUserId)
+                        .single();
+                    if (data && !error) { 
+                        updateScoreUI(data); 
+                    }
+                } catch(e) { console.error("實時即時重新整理失敗:", e); }
+            }, 2500); // 縮短至 2.5 秒輪詢，Demo 體感更即時
         }
 
         async function fetchUserProgress() {
+            if (!testUserId) return;
             try {
-                const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
+                const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                    .select('*')
+                    .eq('user_id', testUserId)
+                    .single();
                 if (error) throw error;
                 updateScoreUI(data);
             } catch (err) { console.error(err); }
@@ -256,11 +266,13 @@
             const statusMessage = document.getElementById('statusMessage');
             if (!scoreDisplay || !statusMessage) return;
 
-            scoreDisplay.innerText = data.disaster_kit_score;
-            if (data.disaster_kit_score < 60) {
+            const score = data.disaster_kit_score || 0;
+            scoreDisplay.innerText = score;
+            
+            if (score < 60) {
                 statusMessage.innerText = "🔴 警告：實體物資嚴重不足";
                 statusMessage.className = "mt-1 text-[11px] text-red-400 font-bold";
-                scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight";
+                scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight animate-pulse";
             } else {
                 statusMessage.innerText = "🟢 實體包物資盤點完善";
                 statusMessage.className = "mt-1 text-[11px] text-green-400 font-bold";
