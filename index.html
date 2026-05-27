@@ -221,6 +221,101 @@
         }
         
         function updateScoreUI(data) {
+            const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let testUserId = null; 
+        let currentStudentName = ''; // 🔍 新增：暫存學生名稱
+
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                
+                testUserId = session.user.id;
+
+                // 🔍 自動取得 Email 前半段作為學生名稱 (例如 123456)
+                currentStudentName = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${currentStudentName}`;
+
+                // 🛠️ 核心防呆修正：檢查並建立初始資料列，並把學生名稱寫進去
+                await ensureUserProgressRow();
+
+                fetchUserProgress();
+                initRealtimeScore();
+            } catch (err) { console.error(err); }
+        }
+
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
+
+        // 🛠️ 核心防呆與姓名同步函數
+        async function ensureUserProgressRow() {
+            if (!testUserId) return;
+            try {
+                const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                    .select('user_id, student_name')
+                    .eq('user_id', testUserId);
+                
+                // 情況 A：如果是全新帳號，直接 insert 並帶入名字
+                if (!data || data.length === 0) {
+                    await supabaseClient.from('lms_disaster_progress').insert([
+                        { 
+                            user_id: testUserId, 
+                            student_name: currentStudentName, // 👈 寫入名稱
+                            disaster_kit_score: 0,
+                            ai_feedback: '',
+                            earthquake_completed_quizzes: 0,
+                            typhoon_completed_quizzes: 0,
+                            fire_completed_quizzes: 0,
+                            updated_at: new Date().toISOString()
+                        }
+                    ]);
+                    console.log("🚀 全新帳號：已成功初始化並寫入學生姓名！");
+                } 
+                // 情況 B：如果是舊帳號，但資料庫裡 student_name 還是空的，幫他自動補上去
+                else if (!data[0].student_name || data[0].student_name === '') {
+                    await supabaseClient.from('lms_disaster_progress')
+                        .update({ student_name: currentStudentName })
+                        .eq('user_id', testUserId);
+                    console.log("🔄 舊帳號防呆：已自動補齊學生姓名欄位！");
+                }
+            } catch (e) { console.error("初始化進度表失敗:", e); }
+        }
+
+        function initRealtimeScore() {
+            setInterval(async () => {
+                if (!testUserId) return;
+                try {
+                    const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                        .select('disaster_kit_score, ai_feedback')
+                        .eq('user_id', testUserId)
+                        .single();
+                    if (data && !error) { 
+                        updateScoreUI(data); 
+                    }
+                } catch(e) { console.error(e); }
+            }, 2500); 
+        }
+
+        async function fetchUserProgress() {
+            if (!testUserId) return;
+            try {
+                const { data, error } = await supabaseClient.from('lms_disaster_progress')
+                    .select('*')
+                    .eq('user_id', testUserId)
+                    .single();
+                if (!error && data) updateScoreUI(data);
+            } catch (err) { console.error(err); }
+        }
+        
+        function updateScoreUI(data) {
             const scoreDisplay = document.getElementById('scoreDisplay');
             const statusMessage = document.getElementById('statusMessage');
             const feedbackText = document.getElementById('aiFeedbackText');
@@ -229,7 +324,6 @@
             const score = data.disaster_kit_score || 0;
             scoreDisplay.innerText = score;
             
-            // 動態更新帶有換行的 AI 建議文本
             if (data.ai_feedback && data.ai_feedback.trim() !== '') {
                 feedbackText.innerText = data.ai_feedback;
                 feedbackText.className = "text-xs text-gray-300 leading-relaxed";
