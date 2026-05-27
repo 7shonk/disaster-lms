@@ -15,139 +15,184 @@
 <body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
 
     <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-    <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
-        <span class="text-xl">🌪️</span>
-        <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
-    </div>
-    
-    <nav class="space-y-2 flex-1">
-        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">大廳導航</div>
+        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🛡️</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+        </div>
         
-        <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-            <span class="text-lg">🏠</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">回到大廳</span>
-        </a>
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="#" class="flex items-center gap-4 text-blue-400 bg-blue-950/40 p-2.5 rounded-xl border border-blue-900/30 whitespace-nowrap pl-2">
+                    <span class="text-lg">🏠</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">學習中控大廳</span>
+                </a>
+            </div>
 
-        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-6 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">防災教室</div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg">🧮</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span>
+                </a>
+            </div>
+            
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
+                    </a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
+                    </a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span>
+                    </a>
+                </div>
+            </div>
 
-        <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-            <span class="text-lg">🫨</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震預防</span>
-        </a>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
+                    </a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
 
-        <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-            <span class="text-lg">🌀</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱風預防</span>
-        </a>
-
-        <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-            <span class="text-lg">🔥</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災預防</span>
-        </a>
-
-        <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-            <span class="text-lg">🧮</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">物資準備教室</span>
-        </a>
-    </nav>
-    
-    <div class="border-t border-slate-800 pt-4 mt-auto">
-        <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2">
-            <span class="text-lg">🚪</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出</span>
-        </button>
-    </div>
-</aside>
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
+    </aside>
 
     <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-6xl mx-auto">
             
-            <header class="mb-8 border-b border-slate-800 pb-4 no-select">
-                <h1 class="text-3xl font-bold mb-2">智慧防災學習大廳 <span class="text-sm font-normal text-emerald-400 bg-emerald-900/30 px-3 py-1 rounded-full ml-2">主控樞紐</span></h1>
-                <p class="text-gray-400 text-sm">請選擇欲前往的互動式災害模擬教室或盤點實體包物資</p>
+            <header class="mb-6 border-b border-slate-800 pb-4 no-select">
+                <h1 class="text-3xl font-black mb-1">智慧防災學習大廳 <span class="text-xs font-bold text-sky-400 bg-sky-950/50 px-3 py-1 rounded-full ml-2 border border-sky-900/30">消防署官方連動版</span></h1>
+                <p class="text-gray-400 text-xs">六大主題互動式數位教室樞紐・跨系統用戶生態帳號即時連動</p>
             </header>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-lg mb-8 relative overflow-hidden">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-lg mb-8 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div class="no-select">
-                        <h2 class="text-lg font-bold text-blue-400 mb-1">📋 步驟一：實體物資智慧盤點</h2>
-                        <p class="text-sm text-gray-400">點擊右側卡片可直接跳轉進行家庭防災物資備料精算</p>
+                        <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：家庭實體物資智慧盤點</h2>
+                        <p class="text-xs text-gray-400">點擊右側卡片可直接跳轉進行家庭防災物資備料精算與打勾準備</p>
                     </div>
 
-                    <a href="calculator.html" class="w-full md:w-72 block bg-slate-950/80 hover:bg-slate-800/60 p-5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center group cursor-pointer shadow-inner">
-                        <h2 class="text-xs text-gray-400 mb-1 no-select">✅ 實體包雲端盤點結果</h2>
+                    <a href="calculator.html" class="w-full md:w-80 block bg-slate-950/80 hover:bg-slate-800/60 p-4 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center group cursor-pointer shadow-inner">
+                        <h2 class="text-xs text-gray-500 mb-1 no-select font-medium">✅ 實體包雲端盤點結果</h2>
                         <div class="flex items-baseline justify-center gap-1">
                             <div id="scoreDisplay" class="text-5xl font-black text-sky-400 tracking-tight transition-colors">--</div>
                             <div class="text-xs text-gray-500 font-medium">/ 100</div>
                         </div>
-                        <p id="statusMessage" class="mt-2 text-xs text-yellow-400 font-semibold transition-all">同步中...</p>
-                        <div class="mt-3 text-[11px] text-sky-400 font-bold opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                        <p id="statusMessage" class="mt-1 text-[11px] text-yellow-400 font-semibold transition-all">同步中...</p>
+                        <div class="mt-2 text-[10px] text-sky-400 font-bold opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
                             <span>🧮</span> 進入個人化物資清單 ➔
                         </div>
                     </a>
                 </div>
             </div>
 
-            <h2 class="text-xl font-bold text-gray-300 mb-4 no-select">🚪 防災情境模擬教室</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2 class="text-md font-bold text-gray-400 mb-4 no-select uppercase tracking-wider">🚪 智慧防災互動教室選擇</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 
-                <a href="earthquake.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="earthquake.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-blue-950/60 p-3 rounded-xl border border-blue-900/30">🫨</span>
-                            <span class="text-xs font-semibold text-blue-400 bg-blue-900/20 px-2.5 py-1 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-blue-950/60 p-2.5 rounded-xl border border-blue-900/30">🫨</span>
+                            <span class="text-[10px] font-bold text-blue-400 bg-blue-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-blue-400 transition-colors">地震預防與應變教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">模擬強震突發時的斷點決策、黃金避難掩護動作，以及避難包的緊急運用時機。</p>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-blue-400 transition-colors">地震預防與應變教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">內政部《防震手冊》對齊。專攻瞬間避難、居家重型家具防震固定安檢與黃金決策。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組代號：EQ-01</span>
-                        <span>搭載 Gemini 智慧出題引擎</span>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：EQ-01</span>
+                        <span>Gemini 智慧情境題庫</span>
                     </div>
                 </a>
 
-                <a href="typhoon.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-teal-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="typhoon.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-teal-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-teal-950/60 p-3 rounded-xl border border-teal-900/30">🌀</span>
-                            <span class="text-xs font-semibold text-teal-400 bg-teal-900/20 px-2.5 py-1 rounded-full group-hover:bg-teal-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-teal-950/60 p-2.5 rounded-xl border border-teal-900/30">🌀</span>
+                            <span class="text-[10px] font-bold text-teal-400 bg-teal-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-teal-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-teal-400 transition-colors">颱風防颱整備教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">模擬強颱登陸、土石流警戒、長期停水停電時的物資合理分配與居家防護措施。</p>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-teal-400 transition-colors">颱洪災害整備教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">對齊《颱洪災害防救指引》。模擬強風豪雨門窗防護、強制撤離法規與土石流應變。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組代號：TY-02</span>
-                        <span>搭載 Gemini 智慧出題引擎</span>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：TY-02</span>
+                        <span>Gemini 智慧情境題庫</span>
                     </div>
                 </a>
 
-                <a href="fire.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-red-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="fire.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-red-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-red-950/60 p-3 rounded-xl border border-red-900/30">🔥</span>
-                            <span class="text-xs font-semibold text-red-400 bg-red-900/20 px-2.5 py-1 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-red-950/60 p-2.5 rounded-xl border border-red-900/30">🔥</span>
+                            <span class="text-[10px] font-bold text-red-400 bg-red-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-red-400 transition-colors">火災安全逃生教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">模擬濃煙密布時的逃生路線判斷、關門避難抉擇，與急救滅火物資的使用時機。</p>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-red-400 transition-colors">火災安全逃生教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">對齊《火災預防與應變手冊》。學習「滅火插瞄壓掃」、濃煙評判與精準關門避難抉擇。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組代號：FR-03</span>
-                        <span>搭載 Gemini 智慧出題引擎</span>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：FR-03</span>
+                        <span>Gemini 智慧情境題庫</span>
                     </div>
                 </a>
 
-                <a href="calculator.html" class="group bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-purple-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="home-safety.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-yellow-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-purple-950/60 p-3 rounded-xl border border-purple-900/30">🧮</span>
-                            <span class="text-xs font-semibold text-purple-400 bg-purple-900/20 px-2.5 py-1 rounded-full group-hover:bg-purple-600 group-hover:text-white transition-colors">點擊進入教室</span>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-yellow-950/60 p-2.5 rounded-xl border border-yellow-900/30">🚪</span>
+                            <span class="text-[10px] font-bold text-yellow-400 bg-yellow-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-yellow-600 group-hover:text-white transition-colors">進入教室 ➔</span>
                         </div>
-                        <h3 class="text-lg font-bold mb-2 group-hover:text-purple-400 transition-colors">緊急避難包精算教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">根據您的同住家庭人數、年齡層與特殊需求，量身打造最科學化的避難包配置清單。</p>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-yellow-400 transition-colors">居家綜合安全教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">對齊《家庭防災手冊》。防範致命一氧化碳中毒、熱水器安裝安全與瓦斯漏氣緊急處置。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-6 pt-3 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組代號：KT-04</span>
-                        <span>搭載個人化動態配置清單</span>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：HS-04</span>
+                        <span>一氧化碳與瓦斯專攻</span>
+                    </div>
+                </a>
+
+                <a href="first-aid.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-emerald-950/60 p-2.5 rounded-xl border border-emerald-900/30">🚑</span>
+                            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-colors">進入教室 ➔</span>
+                        </div>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-emerald-400 transition-colors">民眾急救自救教室</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">對齊《民眾自救》與《救護車使用指南》。演練緊急 CPR+AED、異物哽塞哈姆立克法。</p>
+                    </div>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：FA-05</span>
+                        <span>心肺復甦與自救技術</span>
+                    </div>
+                </a>
+
+                <a href="calculator.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-purple-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl bg-purple-950/60 p-2.5 rounded-xl border border-purple-900/30">🧮</span>
+                            <span class="text-[10px] font-bold text-purple-400 bg-purple-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-purple-600 group-hover:text-white transition-colors">進入教室 ➔</span>
+                        </div>
+                        <h3 class="text-md font-bold mb-1.5 group-hover:text-purple-400 transition-colors">防災物資儲備計算機</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">依消防署雙系統指南，動態精算全家人與寵物所需的 1~3 天避難背包與 7 天日常儲備。</p>
+                    </div>
+                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
+                        <span>模組：KT-06</span>
+                        <span>雙情境個人化配置引擎</span>
                     </div>
                 </a>
 
@@ -158,7 +203,7 @@
 
     <script>
         // ==========================================
-        // Supabase 設定與大廳分數即時更新
+        // Supabase 設定與大廳分數即時更新 (與此前完全相同)
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
@@ -169,25 +214,16 @@
         async function checkAuthAndInit() {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                
-                if (!session) {
-                    window.location.href = 'register.html';
-                    return;
-                }
-
+                if (!session) { window.location.href = 'register.html'; return; }
                 testUserId = session.user.id;
 
-                // 側邊欄更新姓名
                 const emailPrefix = session.user.email.split('@')[0];
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
 
-                // 首次拉取分數並啟動 3 秒輪詢
                 fetchUserProgress();
                 initRealtimeScore();
-            } catch (err) {
-                console.error("Supabase 初始化錯誤:", err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         window.addEventListener('DOMContentLoaded', checkAuthAndInit);
@@ -201,14 +237,8 @@
             setInterval(async () => {
                 if (!testUserId) return;
                 try {
-                    const { data } = await supabaseClient
-                        .from('lms_disaster_progress')
-                        .select('disaster_kit_score')
-                        .eq('user_id', testUserId)
-                        .single();
-                    if (data) {
-                        updateScoreUI(data);
-                    }
+                    const { data } = await supabaseClient.from('lms_disaster_progress').select('disaster_kit_score').eq('user_id', testUserId).single();
+                    if (data) { updateScoreUI(data); }
                 } catch(e) { console.error(e); }
             }, 3000);
         }
@@ -218,9 +248,7 @@
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
                 if (error) throw error;
                 updateScoreUI(data);
-            } catch (err) {
-                console.error("同步數據失敗:", err);
-            }
+            } catch (err) { console.error(err); }
         }
         
         function updateScoreUI(data) {
@@ -231,11 +259,11 @@
             scoreDisplay.innerText = data.disaster_kit_score;
             if (data.disaster_kit_score < 60) {
                 statusMessage.innerText = "🔴 警告：實體物資嚴重不足";
-                statusMessage.className = "mt-2 text-xs text-red-400 font-bold";
+                statusMessage.className = "mt-1 text-[11px] text-red-400 font-bold";
                 scoreDisplay.className = "text-5xl font-black text-red-500 tracking-tight";
             } else {
                 statusMessage.innerText = "🟢 實體包物資盤點完善";
-                statusMessage.className = "mt-2 text-xs text-green-400 font-bold";
+                statusMessage.className = "mt-1 text-[11px] text-green-400 font-bold";
                 scoreDisplay.className = "text-5xl font-black text-emerald-400 tracking-tight";
             }
         }
