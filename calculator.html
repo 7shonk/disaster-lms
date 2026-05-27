@@ -3,209 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人化防災物資儲備計算機</title>
+    <title>跨系統授權登入 - 防災學習</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .gradient-text { background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text {
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans min-h-screen p-8">
+<body class="bg-slate-900 flex items-center justify-center min-h-screen font-sans text-white overflow-hidden">
 
-    <div class="max-w-3xl mx-auto">
-        <nav class="text-sm text-gray-500 mb-6 flex justify-between items-center">
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+
+    <div class="bg-slate-800/80 backdrop-blur-xl p-10 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md relative z-10">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold mb-2 gradient-text">Disaster LMS </h1>
+            <p class="text-gray-400 text-sm">請登入或註冊以連動您的天氣行事曆帳號</p>
+        </div>
+
+        <div id="authContent" class="space-y-5">
             <div>
-                <a href="index.html" class="text-blue-400 hover:underline">📊 返回中控台</a>
-                <span class="mx-2">/</span>
-                <span class="text-gray-400">物資計算機</span>
+                <label class="block text-sm font-medium text-gray-400 mb-1">帳號 (Email)</label>
+                <input type="email" id="emailInput" placeholder="例如: student@nutn.edu.tw" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
             </div>
-            <span class="bg-blue-900/30 text-blue-400 text-xs px-2 py-1 rounded">消防署標準連動</span>
-        </nav>
-
-        <header class="mb-8 border-b border-slate-800 pb-6 text-center md:text-left">
-            <h1 class="text-3xl font-extrabold mb-2 gradient-text">🎒 防災物資儲備個人化計算機</h1>
-            <p class="text-gray-400 text-sm">依據家庭成員與儲備天數，智能掌握日常居家及避難所需物資清單。</p>
-        </header>
-
-        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-xl mb-8">
-            <h2 class="text-md font-bold text-blue-400 mb-4 flex items-center gap-2">⚙️ 調整家庭配置環境</h2>
+            <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">密碼 (最少 6 碼)</label>
+                <input type="password" id="passwordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">同住總人數 (包含您用戶自身)</label>
-                    <div class="grid grid-cols-5 gap-2" id="peopleSelector">
-                        </div>
-                </div>
+            <div id="errorMsg" class="hidden text-red-400 text-sm font-bold text-center"></div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">預計所需庫存天數</label>
-                    <div class="flex gap-4">
-                        <button onclick="setDays(3)" id="dayBtn-3" class="flex-1 py-3 font-bold rounded-lg bg-blue-600 text-white border border-blue-500 transition">3 天量 (緊急避難)</button>
-                        <button onclick="setDays(7)" id="dayBtn-7" class="flex-1 py-3 font-bold rounded-lg bg-slate-800 text-gray-400 border border-slate-700 hover:bg-slate-700 transition">7 天量 (長期儲備)</button>
-                    </div>
-                </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="handleAuth('login')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition shadow-lg">
+                    登入
+                </button>
+                <button onclick="handleAuth('register')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition border border-slate-600">
+                    註冊新帳號
+                </button>
             </div>
         </div>
 
-        <div id="resultSection" class="bg-slate-900 p-6 rounded-xl border border-blue-900/30 shadow-2xl space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                <h2 class="text-lg font-bold text-green-400">📊 智能推薦清單結果</h2>
-                <span id="summaryBadge" class="text-xs font-semibold bg-green-900/30 text-green-400 px-3 py-1 rounded-full">1人 / 3天配置</span>
-            </div>
-
-            <div>
-                <h3 class="text-sm font-bold text-yellow-400 mb-3 flex items-center gap-2">🥤 1. 核心食品與生命飲水標準</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">💧 必要飲用水總量 (每人每日3L)</span>
-                        <span class="font-bold text-white" id="val-water">9 公升</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🔥 建議攝取總熱量需求</span>
-                        <span class="font-bold text-white" id="val-calories">5400 kcal</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🍞 全穀雜糧主食份數</span>
-                        <span class="font-bold text-white" id="val-grains">15 份</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🥩 豆魚蛋肉類蛋白質</span>
-                        <span class="font-bold text-white" id="val-protein">15 份</span>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-sm font-bold text-teal-400 mb-3 flex items-center gap-2">🩹 2. 醫療防護與衛生儲備</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">😷 防護口罩 (每人每日1片備份)</span>
-                        <span class="font-bold text-white" id="val-mask">3 片</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🧻 消毒濕紙巾 / 衛生紙</span>
-                        <span class="font-bold text-white" id="val-wipes">30 張 / 1卷</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🚑 標準急救箱 / 個人常備藥</span>
-                        <span class="font-bold text-white text-green-400">1 盒 / 依常備量準備</span>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-sm font-bold text-indigo-400 mb-3 flex items-center gap-2">🛠️ 3. 生活防災應變工具組</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🔦 強光手電筒 / LED提燈</span>
-                        <span class="font-bold text-white" id="val-light">1 盞 / 1 盞</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🔋 充飽的行動電源 (20000mAh)</span>
-                        <span class="font-bold text-white" id="val-power">1 台</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🔥 卡式爐 / 卡式瓦斯罐</span>
-                        <span class="font-bold text-white" id="val-stove">1 組 / 依天數配置</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-lg flex justify-between">
-                        <span class="text-gray-400">🧤 防切割高防護工作手套</span>
-                        <span class="font-bold text-white" id="val-gloves">1 雙</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-[11px] text-gray-500 text-center pt-4 border-t border-slate-800">
-                ⚠️ 本計算結果完全參照內政部消防署「全民防災 e 點通」最新避難儲備指南標準算法。
-            </div>
+        <div id="loadingState" class="hidden flex-col items-center justify-center py-6">
+            <svg class="animate-spin h-10 w-10 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p id="loadingText" class="text-sm text-blue-400 font-bold">正在驗證身分...</p>
         </div>
     </div>
 
     <script>
-        // 核心計算引擎邏輯
-        let currentPeople = 1;
-        let currentDays = 3;
+        // ==========================================
+        // Supabase 設定 (與 index.html 相同)
+        // ==========================================
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 初始化人數選擇 UI (動態產生成熟度按鈕)
-        function initUI() {
-            const container = document.getElementById('peopleSelector');
-            container.innerHTML = '';
-            for(let i=1; i<=5; i++) {
-                const btn = document.createElement('button');
-                btn.id = `peopleBtn-${i}`;
-                btn.innerText = `${i} 人`;
-                btn.className = i === 1 
-                    ? "py-3 font-bold rounded-lg text-center bg-blue-600 text-white border border-blue-500 transition cursor-pointer"
-                    : "py-3 font-bold rounded-lg text-center bg-slate-800 text-gray-400 border border-slate-700 hover:bg-slate-700 transition cursor-pointer";
-                btn.onclick = () => setPeople(i);
-                container.appendChild(btn);
+        async function handleAuth(action) {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!email || password.length < 6) {
+                errorMsg.innerText = "請輸入有效的信箱，且密碼至少需 6 碼！";
+                errorMsg.classList.remove('hidden');
+                return;
             }
-            calculateLogics();
-        }
 
-        function setPeople(num) {
-            currentPeople = num;
-            for(let i=1; i<=5; i++) {
-                const btn = document.getElementById(`peopleBtn-${i}`);
-                if(btn) {
-                    btn.className = i === num 
-                        ? "py-3 font-bold rounded-lg text-center bg-blue-600 text-white border border-blue-500 transition cursor-pointer"
-                        : "py-3 font-bold rounded-lg text-center bg-slate-800 text-gray-400 border border-slate-700 hover:bg-slate-700 transition cursor-pointer";
+            // UI 切換為 Loading
+            document.getElementById('authContent').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('loadingState').style.display = 'flex';
+            document.getElementById('loadingText').innerText = action === 'login' ? "登入驗證中，請稍候..." : "正在為您建立生態系帳號...";
+
+            try {
+                let result;
+                if (action === 'register') {
+                    // 1. 執行註冊
+                    result = await supabaseClient.auth.signUp({ email, password });
+                } else {
+                    // 2. 執行登入
+                    result = await supabaseClient.auth.signInWithPassword({ email, password });
                 }
+
+                if (result.error) throw result.error;
+
+                // 成功後，跳轉到中控台
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                // 失敗的話，退回輸入畫面並顯示錯誤
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('authContent').classList.remove('hidden');
+                errorMsg.innerText = `錯誤：${error.message}`;
+                errorMsg.classList.remove('hidden');
             }
-            calculateLogics();
         }
-
-        function setDays(day) {
-            currentDays = day;
-            const btn3 = document.getElementById('dayBtn-3');
-            const btn7 = document.getElementById('dayBtn-7');
-            
-            if(day === 3) {
-                btn3.className = "flex-1 py-3 font-bold rounded-lg bg-blue-600 text-white border border-blue-500 transition cursor-pointer";
-                btn7.className = "flex-1 py-3 font-bold rounded-lg bg-slate-800 text-gray-400 border border-slate-700 hover:bg-slate-700 transition cursor-pointer";
-            } else {
-                btn3.className = "flex-1 py-3 font-bold rounded-lg bg-slate-800 text-gray-400 border border-slate-700 hover:bg-slate-700 transition cursor-pointer";
-                btn7.className = "flex-1 py-3 font-bold rounded-lg bg-blue-600 text-white border border-blue-500 transition cursor-pointer";
-            }
-            calculateLogics();
-        }
-
-        // 🌟 消防署演算法對齊核心
-        function calculateLogics() {
-            document.getElementById('summaryBadge').innerText = `${currentPeople}人 / ${currentDays}天配置`;
-
-            // 1. 水量與熱量標準算法
-            const totalWater = currentPeople * 3 * currentDays; // 每人每日 3 公升 [cite: 8]
-            const totalCalories = currentPeople * 1800 * currentDays; // 成人一日基本 1800大卡 [cite: 347]
-            const grainsFraction = currentPeople * 5 * currentDays; // 動態雜糧主食比例份數 [cite: 348, 353]
-            const proteinFraction = currentPeople * 5 * currentDays; // 蛋白質需求份數 [cite: 352, 353]
-
-            // 2. 衛生耗材
-            const totalMasks = currentPeople * 1 * currentDays;
-            const totalWipes = currentPeople * 10 * currentDays;
-            const toiletPaper = Math.ceil((currentPeople * currentDays) / 7);
-
-            // 3. 防災工具組動態配置
-            const mainLights = Math.ceil(currentPeople / 2);
-            const powerBanks = Math.ceil(currentPeople / 2);
-            const gasCanisters = currentDays === 3 ? "1-2 罐" : "3-4 罐";
-
-            // 渲染至 UI 畫面
-            document.getElementById('val-water').innerText = `${totalWater} 公升`;
-            document.getElementById('val-calories').innerText = `${totalCalories} kcal`;
-            document.getElementById('val-grains').innerText = `${grainsFraction} 份`;
-            document.getElementById('val-protein').innerText = `${proteinFraction} 份`;
-            
-            document.getElementById('val-mask').innerText = `${totalMasks} 片 (每人每日備量)`;
-            document.getElementById('val-wipes').innerText = `${totalWipes} 張 / ${toiletPaper} 捲`;
-            
-            document.getElementById('val-light').innerText = `${mainLights} 盞手電筒 / ${mainLights} 盞提燈`;
-            document.getElementById('val-power').innerText = `${powerBanks} 台 (維持通訊蓄電)`;
-            document.getElementById('val-stove').innerText = `1 台卡式爐 / ${gasCanisters}`;
-            document.getElementById('val-gloves').innerText = `${currentPeople} 雙 (人手必備)`;
-        }
-
-        initUI();
     </script>
 </body>
 </html>
