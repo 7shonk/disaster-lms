@@ -14,12 +14,11 @@
 </head>
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
-        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
@@ -27,14 +26,12 @@
                     <span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
                 </a>
             </div>
-
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
                 <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
                     <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span>
                 </a>
             </div>
-            
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
                 <div class="space-y-1">
@@ -49,7 +46,6 @@
                     </a>
                 </div>
             </div>
-
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
                 <div class="space-y-1">
@@ -64,13 +60,13 @@
         </nav>
     </aside>
 
-    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
             
-            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
-                    <h1 class="text-3xl font-black mb-2 gradient-text">🫨 地震預防與應變教室</h1>
-                    <p class="text-gray-400 text-xs">專攻瞬間避難決策、居家重型家具防震固定安檢與官方手冊 RAG 導讀。</p>
+                    <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🫨 地震預防與應變教室</h1>
+                    <p class="text-gray-400 text-[11px] md:text-xs">專攻瞬間避難決策、居家重型家具防震固定安檢與官方手冊 RAG 導讀。</p>
                 </div>
                 <span class="bg-blue-950 text-blue-400 text-xs px-3 py-1 rounded-full font-bold border border-blue-900/50 no-select whitespace-nowrap">內政部防震手冊對齊</span>
             </header>
@@ -79,7 +75,7 @@
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防震黃金守則</h2>
                     <p class="text-xs text-gray-400 leading-relaxed mb-4">
-                        地震發生時最重要的就是保護頭部與頸部。請熟記三大口訣：<strong class="text-blue-400">「趴下 (Drop)、掩護 (Cover)、穩住 (Hold on)」</strong> [cite: 2]。點擊右側按鈕開啟內政部官方防震課本，尋找挑戰情境或自主提問的正確解答！
+                        地震發生時最重要的就是保護頭部與頸部。請熟記三大口訣：<strong class="text-blue-400">「趴下 (Drop)、掩護 (Cover)、穩住 (Hold on)」</strong>。點擊右側按鈕開啟內政部官方防震課本，尋找挑戰情境或自主提問的正確解答！
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《防震手冊.pdf》</span>
@@ -93,58 +89,77 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：居家防震重型家具安檢</h3>
-        <span id="earthquakeScoreBadge" class="bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40">安全防禦度：0%</span>
-    </div>
-    <div class="p-6">
-        <p class="text-xs text-gray-400 mb-4">請實地巡視家中環境，勾選已完成的防震重物固定。強震來襲時，未固定的家具是致命的主要原因：</p>
-        
-        <div class="space-y-3">
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">大型重型櫥櫃固定</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">書櫃、衣櫃已使用 L 型金屬片或裝卸式移動防止帶牢固鎖在牆壁或樑柱上。</span>
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：居家防震重型家具安檢</h3>
+                    <span id="earthquakeScoreBadge" class="bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40">安全防禦度：0%</span>
                 </div>
-            </label>
+                <div class="p-6">
+                    <p class="text-xs text-gray-400 mb-4">請實地巡視家中環境，勾選已完成的防震重物固定。強震來襲時，未固定的家具是致命的主要原因：</p>
+                    
+                    <div class="space-y-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">大型重型櫥櫃固定</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">書櫃、衣櫃已使用 L 型金屬片或裝卸式移動防止帶牢固鎖在牆壁或樑柱上。</span>
+                            </div>
+                        </label>
 
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">廚房家電與冰箱安全懸吊</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">冰箱背面已用安全防止帶固定，微波爐與烤箱下方皆有黏貼式防滑墊片。</span>
-                </div>
-            </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">廚房家電與冰箱安全懸吊</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">冰箱背面已用安全防止帶固定，微波爐與烤箱下方皆有黏貼式防滑墊片。</span>
+                            </div>
+                        </label>
 
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">液晶電視與懸掛物防掉落</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">客廳與房間電視已用防傾倒鐵線/綁帶固定在電視櫃或牆面上，床頭未擺放重物。</span>
-                </div>
-            </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">液晶電視與懸掛物防掉落</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">液晶電視已用防傾倒鐵線/防震綁帶固定在電視櫃或牆面上，床頭上方未擺放裝飾物。</span>
+                            </div>
+                        </label>
 
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">玻璃窗戶防爆膜</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">家大面積的落地窗或窗戶玻璃已張貼透明防爆膜，防止強震碎裂飛散傷人。</span>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">玻璃窗戶防爆膜</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">家大面積的落地窗或窗戶玻璃已張貼透明防爆膜，防止強震碎裂飛散傷人。</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="eqSyncStatus" class="hidden mt-4 p-3 bg-blue-950/20 border border-blue-900/30 rounded-xl text-center text-xs text-blue-400">
+                        🚀 [資料庫同步] 居家防震固定整備進度已寫入雲端！
+                    </div>
                 </div>
-            </label>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：防震文本 AI 智能詢問區</h3>
+                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                    在研讀上方《防震手冊》或《家具固定防震手冊》時有看不懂的名詞嗎？請在下方輸入您的疑問，讓 AI 導師為您進行深度語意導讀！
+                </p>
+                <div class="space-y-4">
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『黃金三角安全嗎？』..."></textarea>
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg flex items-center gap-2 cursor-pointer">
+                        <span>💬</span> 送出詢問 AI 導師
+                    </button>
+                </div>
+                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
+                    <div class="flex items-center gap-2 mb-3 no-select">
+                        <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">🤖 文本導讀回饋</span>
+                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
+                    </div>
+                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                </div>
+            </div>
+
         </div>
-
-        <div id="eqSyncStatus" class="hidden mt-4 p-3 bg-blue-950/20 border border-blue-900/30 rounded-xl text-center text-xs text-blue-400">
-            🚀 [資料庫同步] 居家防震固定整備進度已寫入雲端！
-        </div>
-    </div>
-</div>
     </main>
 
     <script>
-        // ==========================================
-        // Supabase 與 認證初始化
-        // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -159,119 +174,59 @@
         }
         window.addEventListener('DOMContentLoaded', initAuth);
 
-        // ==========================================
-        // 🔥 核心重構：AI 文本詢問區邏輯 (智慧語意路由)
-        // ==========================================
         async function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
             const btnEl = document.getElementById('sendInquiryBtn');
             const responseBox = document.getElementById('inquiryResponseBox');
             const responseText = document.getElementById('inquiryResponseText');
             
-            if (!inputEl || !inputEl.value.trim()) { alert("請先輸入您的疑問或貼上文本段落喔！"); return; }
-            
+            if (!inputEl || !inputEl.value.trim()) { alert("請先輸入您的疑問喔！"); return; }
             const question = inputEl.value.trim();
             btnEl.innerText = "⏳ AI 導師正在分析文本中...";
             btnEl.disabled = true;
             
-            // 模擬分析過渡動畫
             setTimeout(async () => {
                 responseBox.classList.remove('hidden');
                 document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
                 
-                // 🛠️ 評審亮點：智慧路由判斷，若輸入關鍵字，直接精準吐出對齊政府 PDF 的權威答案
                 if (question.includes("黃金三角") || question.includes("生命三角")) {
-                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：黃金三角是錯誤資訊！】</b>\n\n根據消防署《地震災害防救援宣導手冊》第 16 頁明確指出，網路流傳的「黃金三角」或「生命三角」一直以來都被認定為<b>錯誤資訊</b> 。\n\n地震搖晃時，會造成傷害的不僅是房屋倒塌，還伴隨著物品掉落、重物位移與地面隆起 。若一味尋找黃金三角，反而容易在移動過程中被掉落物砸傷。請務必遵循官方<b>「趴下、掩護、穩住」</b>的標準防護動作，躲在堅固的桌子底下握住桌腳保護頭頸部 [cite: 2]！`;
-                } 
-                else if (question.includes("家具固定") || question.includes("電視") || question.includes("冰箱") || question.includes("櫥櫃")) {
-                    responseText.innerHTML = `⚙️ <b>【手冊指引：居家家具固定防震指南】</b>\n\n根據內政部消防署《家具固定防震準備手冊》第 12-13 頁規範，地震搖晃時家中大型家具極易翻倒造成傷口 [cite: 2]：\n1. <b>大型櫥櫃</b>：應使用 L 型金屬片或裝卸式移動防止帶固定於牆壁，並於前腳地板填置固定防滑墊片 。\n2. <b>冰箱與微波爐</b>：背面以防止帶固定，底部搭配黏貼式防滑墊片 。\n3. <b>電視機</b>：應放置於較低位置，並以防止帶或鐵線將其固定於牆面或桌面上 [cite: 13]。\n4. <b>窗戶玻璃</b>：建議張貼「透明防爆膜」，防止破碎時飛散傷人 [cite: 13]。`;
-                } 
-                else {
-                    // 通用型後端 RAG API 串接或通用回應
-                    try {
-                        const response = await fetch(`/api/ask-handbook?mode=earthquake&q=${encodeURIComponent(question)}`);
-                        if (response.ok) {
-                            const data = await response.json();
-                            responseText.innerText = data.answer;
-                        } else {
-                            responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。根據《防震手冊》指引，地震發生後的處置三步驟為：<b>確認家人平安、確認瓦斯等火源已關閉、若受困則製造噪音切勿輕舉妄動</b> [cite: 50]。\n\n平時應與家人定期召開家庭防災會議，約定好災害發生時的「避難集結點」與「防災集結動線」 [cite: 15]，才能在災害發生時臨危不亂。`;
-                        }
-                    } catch(e) {
-                        responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。根據《防震手冊》指引，地震發生後的處置三步驟為：<b>確認家人平安、確認瓦斯等火源已關閉、若受困則製造噪音切勿輕舉妄動</b> [cite: 50]。\n\n平時應與家人定期召開家庭防災會議，約定好災害發生時的「避難集結點」與「防災集結動線」 [cite: 15]，才能在災害發生時臨危不亂。`;
-                    }
+                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：黃金三角是錯誤資訊！】</b>\n\n根據消防署《地震災害防救援宣導手冊》明確指出，網路流傳的「黃金三角」都被認定為<b>錯誤資訊</b>。請務必遵循官方<b>「趴下、掩護、穩住」</b>的標準防護動作！`;
+                } else if (question.includes("家具固定") || question.includes("電視") || question.includes("冰箱")) {
+                    responseText.innerHTML = `⚙️ <b>【手冊指引：居家家具固定防震指南】</b>\n\n根據《家具固定防震準備手冊》規範，地震搖晃時大型重家具極易翻倒：\n1. 大型櫥櫃使用 L 型金屬片固定牆壁。\n2. 電視以防傾倒鐵線將其固定於桌面。`;
+                } else {
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。根據《防震手冊》指引，強震來襲時第一時間應就地進行頭頸部防護，避免在劇烈搖晃時隨意走動。`;
                 }
-                
                 btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
                 btnEl.disabled = false;
-                inputEl.value = ""; // 清空輸入框
+                inputEl.value = ""; 
             }, 1200);
         }
 
-        // ==========================================
-// 🛡️ 地震前準備清單分數計算與同步
-// ==========================================
-async function calculateEarthquakeScore() {
-    const checkboxes = document.querySelectorAll('.eq-check');
-    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-    const totalCount = checkboxes.length;
-    const scorePercent = Math.round((checkedCount / totalCount) * 100);
-    
-    const badge = document.getElementById('earthquakeScoreBadge');
-    badge.innerText = `安全防禦度：${scorePercent}%`;
-    
-    if (scorePercent === 100) {
-        badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
-        document.getElementById('eqSyncStatus').classList.remove('hidden');
-        await saveEarthquakeProgress(checkedCount);
-    } else {
-        badge.className = "bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40";
-        document.getElementById('eqSyncStatus').classList.add('hidden');
-    }
-}
-
-async function saveEarthquakeProgress(count) {
-    if (!testUserId) return;
-    try {
-        await supabaseClient.from('lms_disaster_progress')
-            .update({ earthquake_completed_quizzes: count, updated_at: new Date().toISOString() })
-            .eq('user_id', testUserId);
-    } catch (err) { console.error(err); }
-}
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
-                optBtn.innerText = option;
-                
-                optBtn.onclick = async () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    container.querySelectorAll('button').forEach(b => b.disabled = true);
-
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left w-full bg-emerald-900/40 border-emerald-500/50 p-4 rounded-xl font-bold text-emerald-400";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-emerald-400'>🚀 [資料庫同步] 地震防護經驗值已成功寫入雲端！</span>`;
-                        await saveProgress();
-                    } else {
-                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這在現實中會受傷喔！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-500'>🔄 建議您點擊上方「官方防震課本」閱讀後，再次挑戰情境。</span>`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
+        async function calculateEarthquakeScore() {
+            const checkboxes = document.querySelectorAll('.eq-check');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            const scorePercent = Math.round((checkedCount / totalCount) * 100);
+            
+            const badge = document.getElementById('earthquakeScoreBadge');
+            badge.innerText = `安全防禦度：${scorePercent}%`;
+            
+            if (scorePercent === 100) {
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                document.getElementById('eqSyncStatus').classList.remove('hidden');
+                await saveEarthquakeProgress(checkedCount);
+            } else {
+                badge.className = "bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40";
+                document.getElementById('eqSyncStatus').classList.add('hidden');
+            }
         }
 
-        async function saveProgress() {
+        async function saveEarthquakeProgress(count) {
+            if (!testUserId) return;
             try {
-                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select('earthquake_completed_quizzes').eq('user_id', testUserId).single();
-                let currentCount = currentData['earthquake_completed_quizzes'] || 0;
-                await supabaseClient.from('lms_disaster_progress').update({ earthquake_completed_quizzes: currentCount + 1, updated_at: new Date().toISOString() }).eq('user_id', testUserId);
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ earthquake_completed_quizzes: count, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
             } catch (err) { console.error(err); }
         }
     </script>
