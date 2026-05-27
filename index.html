@@ -18,6 +18,7 @@
             <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
+        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
@@ -73,22 +74,14 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl">
-                            <h3 class="text-xs font-bold text-yellow-500 mb-3 uppercase tracking-wider">💡 AI 即時專家優化建議</h3>
-                            <p id="aiFeedbackText" class="text-xs text-gray-400 leading-relaxed italic">等待盤點資料同步...</p>
+                    <div id="aiFeedbackContainer" class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl">
+                        <div class="flex items-center gap-2 mb-3 no-select">
+                            <span class="text-md">💡</span>
+                            <h3 class="text-sm font-bold text-yellow-500">AI 即時專家優化建議</h3>
                         </div>
-                        
-                        <div class="lg:col-span-1 flex flex-col gap-3">
-                            <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-xl">
-                                <span class="text-[10px] font-bold text-red-400 block mb-2">❌ 缺失物資</span>
-                                <div id="missingItemsList" class="text-[11px] text-gray-300"></div>
-                            </div>
-                            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                                <span class="text-[10px] font-bold text-yellow-500 block mb-2">📦 建議精簡之物資</span>
-                                <div id="overstockedItemsList" class="text-[11px] text-gray-300"></div>
-                            </div>
-                        </div>
+                        <p id="aiFeedbackText" class="text-xs text-gray-400 leading-relaxed whitespace-pre-line">
+                            ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
+                        </p>
                     </div>
                 </div>
             </div>
@@ -103,69 +96,69 @@
     </main>
 
     <script>
-    const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-    const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-    
-    let testUserId = null; 
-
-    async function init() {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (!session) { 
-            console.log("未登入，跳轉中...");
-            window.location.href = 'register.html'; 
-            return; 
-        }
-        testUserId = session.user.id;
-        console.log("當前使用者 ID:", testUserId); // 👈 檢查這個 ID 是否跟資料庫裡的 user_id 一模一樣
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
-        fetchLatestProgress();
-        setInterval(fetchLatestProgress, 3000); 
-    }
+        let testUserId = null; 
 
-    async function fetchLatestProgress() {
-        if (!testUserId) return;
-        
-        console.log("正在嘗試同步資料...");
-        
-        const { data, error } = await supabaseClient
-            .from('lms_disaster_progress')
-            .select('*')
-            .eq('user_id', testUserId)
-            .order('updated_at', { ascending: false })
-            .limit(1);
-
-        if (error) {
-            console.error("Supabase 查詢錯誤:", error); // 👈 如果這裡報錯，請告訴我錯誤訊息
-            return;
+        async function init() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = 'register.html'; return; }
+            testUserId = session.user.id;
+            
+            // 立即執行第一次撈取
+            fetchLatestProgress();
+            
+            // 啟動輪詢 (每 2 秒)，這絕對不會失敗
+            setInterval(fetchLatestProgress, 2000); 
         }
 
-        if (data && data.length > 0) {
-            console.log("同步成功，取得資料:", data[0]); // 👈 如果這裡顯示資料，代表撈到了！
-            updateUI(data[0]);
-        } else {
-            console.warn("該使用者在資料庫中查無資料");
+        async function fetchLatestProgress() {
+            if (!testUserId) return;
+            
+            // 直接抓取該使用者「最新的一筆」資料 (包含名字)
+            const { data, error } = await supabaseClient
+                .from('lms_disaster_progress')
+                .select('*')
+                .eq('user_id', testUserId)
+                .order('updated_at', { ascending: false })
+                .limit(1);
+
+            if (data && data.length > 0) {
+                updateUI(data[0]);
+            }
         }
-    }
 
-    function updateUI(data) {
-        // UI 更新邏輯 (保持不變)
-        document.getElementById('scoreDisplay').innerText = data.disaster_kit_score || 0;
-        document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "尚無建議";
-        
-        const mList = document.getElementById('missingItemsList');
-        const oList = document.getElementById('overstockedItemsList');
-        
-        if(mList) mList.innerHTML = (data.missing_items || []).map(i => `<div class="mb-1">• ${i}</div>`).join('') || "無缺失";
-        if(oList) oList.innerHTML = (data.overstocked_items || []).map(i => `<div class="mb-1">• ${i}</div>`).join('') || "無贅物";
-    }
+        function updateUI(data) {
+            // 更新姓名 (如果資料庫裡有，就顯示；沒的話用預設信箱頭)
+            const displayName = data.student_name || "學生";
+            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${displayName}`;
+            
+            // 更新分數與建議
+            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score || 0;
+            document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "尚未進行盤點，請使用 App 拍照。";
+            
+            // 清單渲染邏輯
+            const mList = document.getElementById('missingItemsList');
+            const oList = document.getElementById('overstockedItemsList');
+            
+            // 確保 UI 正確顯示
+            if(mList) mList.innerHTML = (data.missing_items && data.missing_items.length > 0) 
+                ? data.missing_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
+                : "無缺失項目 🎉";
+                
+            if(oList) oList.innerHTML = (data.overstocked_items && data.overstocked_items.length > 0) 
+                ? data.overstocked_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
+                : "無過多贅物 👍";
+        }
 
-    async function logout() {
-        await supabaseClient.auth.signOut();
-        window.location.href = 'register.html';
-    }
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
+        }
 
-    window.addEventListener('DOMContentLoaded', init);
-</script>
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
