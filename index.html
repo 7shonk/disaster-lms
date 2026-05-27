@@ -16,7 +16,7 @@
         .radar-pulse {
             animation: radar 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
         }
-        /* 僅針對不需要選取的文字做保護，避免影響互動元件 */
+        /* 僅針對不需要選取的文字做保護，避免影響按鈕與勾選框 */
         .no-select {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -39,22 +39,14 @@
             </div>
             
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📚 防災知識庫</div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📚 內政部防災知識庫</div>
                 <div class="space-y-1">
-                    <span class="text-[11px] text-gray-500 font-semibold block px-2 mt-2">🎒 實體物資準備</span>
+                    <span class="text-[11px] text-blue-500 font-semibold block px-2 mt-2">🎒 官方備災指引</span>
                     <a href="files/緊急避難包.pdf" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-white p-2 hover:bg-slate-800 rounded transition pl-4">
                         <span>📄</span> 緊急避難包清單
                     </a>
                     <a href="files/日常儲備清單.pdf" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-white p-2 hover:bg-slate-800 rounded transition pl-4">
                         <span>📄</span> 日常居家儲備
-                    </a>
-
-                    <span class="text-[11px] text-gray-500 font-semibold block px-2 mt-3">🔥 災害應變指南 (預留)</span>
-                    <a href="#" class="flex items-center gap-2 text-sm text-gray-500 p-2 hover:bg-slate-800/30 rounded transition pl-4 cursor-not-allowed">
-                        <span>🔒</span> 地震應變指南.pdf
-                    </a>
-                    <a href="#" class="flex items-center gap-2 text-sm text-gray-500 p-2 hover:bg-slate-800/30 rounded transition pl-4 cursor-not-allowed">
-                        <span>🔒</span> 火災逃生要領.pdf
                     </a>
                 </div>
             </div>
@@ -72,7 +64,7 @@
         <div class="max-w-5xl mx-auto">
             
             <header class="mb-8 border-b border-slate-800 pb-4 no-select">
-                <h1 class="text-3xl font-bold mb-2">智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full ml-2">雲端完全版</span></h1>
+                <h1 class="text-3xl font-bold mb-2">智慧防災學習中控台 <span class="text-sm font-normal text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full ml-2">消防署對齊版</span></h1>
                 <p class="text-gray-400 text-sm">引導式情境教學模組・跨系統用戶生態帳號連動</p>
             </header>
 
@@ -80,29 +72,29 @@
                 <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg lg:col-span-1 flex flex-col justify-start relative overflow-hidden">
                     
                     <div id="preparationGuideSection">
-                        <h2 class="text-md font-bold text-blue-400 mb-1 no-select">📋 步驟一：實體包自主準備</h2>
-                        <p class="text-xs text-gray-400 mb-4 no-select">請先在桌上備齊以下核心物資：</p>
+                        <h2 class="text-md font-bold text-blue-400 mb-1 no-select">📋 步驟一：消防署標準自主準備</h2>
+                        <p class="text-xs text-gray-400 mb-4 no-select">請依照政府指南在桌上備齊物資：</p>
                         
                         <div class="space-y-3 text-sm">
                             <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
+                                <input type="checkbox" onclick="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
                                 <div>
-                                    <span class="font-bold block text-gray-200">1. 維持生命物資</span>
-                                    <span class="text-xs text-gray-400">礦泉水與乾糧（三天份）</span>
+                                    <span class="font-bold block text-gray-200">1. 緊急糧食與飲用水</span>
+                                    <span class="text-xs text-gray-400">礦泉水 (2瓶)、高熱量即食乾糧</span>
                                 </div>
                             </label>
                             <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
+                                <input type="checkbox" onclick="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
                                 <div>
-                                    <span class="font-bold block text-gray-200">2. 急救與防寒</span>
-                                    <span class="text-xs text-gray-400">常用急救藥品、保暖毯</span>
+                                    <span class="font-bold block text-gray-200">2. 醫療、衛生與保暖品</span>
+                                    <span class="text-xs text-gray-400">急救箱(常備藥)、小毛毯與口罩</span>
                                 </div>
                             </label>
                             <label class="flex items-start gap-3 bg-slate-800 p-3 rounded-lg border border-slate-700/60 cursor-pointer hover:border-slate-500 transition">
-                                <input type="checkbox" onchange="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
+                                <input type="checkbox" onclick="checkPrepStatus()" class="prep-check mt-1 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-0 cursor-pointer">
                                 <div>
-                                    <span class="font-bold block text-gray-200">3. 求救與照明</span>
-                                    <span class="text-xs text-gray-400">強光手電筒、高分貝哨子</span>
+                                    <span class="font-bold block text-gray-200">3. 生活求助防災工具</span>
+                                    <span class="text-xs text-gray-400">照明手電筒、高分貝求救哨子</span>
                                 </div>
                             </label>
                         </div>
@@ -192,7 +184,7 @@
 
     <script>
         // ==========================================
-        // 1. Supabase 設定與初始化
+        // 1. Supabase 初始化
         // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
@@ -202,41 +194,47 @@
         let currentMode = 'earthquake'; 
         let pollingInterval = null;
 
-        // 🚀 核心升級：統一由單一事件監聽器驅動，避免環境衝突
+        // 🌟 徹底移除 window.onload 競爭，改用最穩定的監聽器
         async function checkAuthAndInit() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                window.location.href = 'register.html';
-                return;
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                
+                if (!session) {
+                    window.location.href = 'register.html';
+                    return;
+                }
+
+                testUserId = session.user.id;
+
+                // 更新帳號
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) {
+                    emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+                }
+
+                const { data: existingRow } = await supabaseClient
+                    .from('lms_disaster_progress')
+                    .select('user_id')
+                    .eq('user_id', testUserId)
+                    .maybeSingle();
+
+                if (!existingRow) {
+                    await supabaseClient.from('lms_disaster_progress').insert([{ 
+                        user_id: testUserId, 
+                        disaster_kit_score: 0, 
+                        earthquake_completed_quizzes: 0, 
+                        typhoon_completed_quizzes: 0, 
+                        fire_completed_quizzes: 0 
+                    }]);
+                }
+
+                fetchUserProgress();
+            } catch (err) {
+                console.error("初始化失敗，可能是在本地開啟檔案所致:", err);
             }
-
-            testUserId = session.user.id;
-
-            // 動態更新側邊欄帳號名稱
-            const emailPrefix = session.user.email.split('@')[0];
-            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${emailPrefix}`;
-
-            const { data: existingRow } = await supabaseClient
-                .from('lms_disaster_progress')
-                .select('user_id')
-                .eq('user_id', testUserId)
-                .maybeSingle();
-
-            if (!existingRow) {
-                await supabaseClient.from('lms_disaster_progress').insert([{ 
-                    user_id: testUserId, 
-                    disaster_kit_score: 0, 
-                    earthquake_completed_quizzes: 0, 
-                    typhoon_completed_quizzes: 0, 
-                    fire_completed_quizzes: 0 
-                }]);
-            }
-
-            fetchUserProgress();
         }
 
-        // 綁定單一初始化事件
         window.addEventListener('DOMContentLoaded', checkAuthAndInit);
 
         async function logout() {
@@ -245,11 +243,13 @@
         }
 
         // ==========================================
-        // 2. 引導式準備與 O2O 鏡頭拉起邏輯
+        // 2. 勾選解鎖核心邏輯 (修復動態綁定失效問題)
         // ==========================================
         function checkPrepStatus() {
             const checkboxes = document.querySelectorAll('.prep-check');
             const btn = document.getElementById('startScanBtn');
+            if (!btn) return;
+
             const allChecked = Array.from(checkboxes).every(c => c.checked);
 
             if (allChecked) {
@@ -306,7 +306,7 @@
         function resetToPrep() {
             if (pollingInterval) clearInterval(pollingInterval);
             const checkboxes = document.querySelectorAll('.prep-check');
-            checkboxes.forEach(cb => cb.checked = false); // 重設勾選狀態
+            checkboxes.forEach(cb => cb.checked = false); 
             checkPrepStatus();
             document.getElementById('scanResultSection').classList.add('hidden');
             document.getElementById('scanningWaitSection').classList.add('hidden');
@@ -314,7 +314,7 @@
         }
 
         // ==========================================
-        // 3. 核心災害模式切換
+        // 3. 災害模式與資料庫進度
         // ==========================================
         function setDisasterMode(mode) {
             currentMode = mode;
@@ -335,9 +335,6 @@
             document.getElementById('startQuizBtn').innerText = "🎲 啟動 AI 情境出題";
         }
 
-        // ==========================================
-        // 4. 資料庫同步機制
-        // ==========================================
         async function fetchUserProgress() {
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress').select('*').eq('user_id', testUserId).single();
@@ -371,7 +368,7 @@
         }
 
         // ==========================================
-        // 5. Vercel Serverless AI 出題模組
+        // 4. Gemini API 模組
         // ==========================================
         document.getElementById('startQuizBtn').addEventListener('click', async () => {
             const btn = document.getElementById('startQuizBtn');
@@ -384,7 +381,7 @@
                 const quizData = await response.json(); 
                 renderQuiz(quizData); 
             } catch (error) {
-                alert("🤖 Gemini 導師提示：雲端神經網路連線逾時，請再試一次！");
+                alert("🤖 Gemini 導師提示：雲端功能未開光，請檢查 Vercel 環境變數！");
                 console.error(error);
             } finally {
                 btn.innerText = "🎲 重新產生情境";
