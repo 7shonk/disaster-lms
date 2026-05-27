@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>民眾急救自救教室 - LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .gradient-text { background: linear-gradient(to right, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
+
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+        </div>
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span></a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span></a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span></a>
+                    <a href="#" class="flex items-center gap-4 text-emerald-400 bg-emerald-950/40 p-2 rounded-xl border border-emerald-900/30 whitespace-nowrap pl-2"><span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">民眾急救自救</span></a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto">
+            
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-black mb-2 gradient-text">🚑 民眾急救自救教室</h1>
+                    <p class="text-gray-400 text-xs">專攻 CPR 心肺復甦術、AED 設備操作與異物哽塞哈姆立克法。</p>
+                </div>
+                <span class="bg-emerald-950 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold border border-emerald-900/50 no-select whitespace-nowrap">內政部急救手冊對齊</span>
+            </header>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：搶救生命黃金 4 分鐘</h2>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        當身邊的人突然倒下失去呼吸心跳，腦部缺氧超過 4 分鐘就會開始受損。請熟記 CPR 口訣：<strong class="text-emerald-400">「叫、叫、壓、電」</strong>。點擊右側按鈕開啟《民眾自救手冊》，學習正確的急救步驟！
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《防災宣導教學手冊-民眾自救.pdf》</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full md:w-auto">
+                    <a href="files/防災宣導教學手冊-民眾自救.pdf" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex justify-center items-center gap-2 group cursor-pointer border border-emerald-400 text-sm whitespace-nowrap">
+                        <span class="text-lg group-hover:scale-110 transition-transform">📘</span> 開啟民眾自救課本
+                    </a>
+                    <a href="files/消防救護車使用指南（107.01內政部消防署發行）.pdf" target="_blank" class="w-full bg-slate-800 hover:bg-slate-700 text-gray-300 font-bold py-2 px-5 rounded-xl transition-all flex justify-center items-center gap-2 group cursor-pointer border border-slate-600 text-xs whitespace-nowrap">
+                        <span class="text-md">🚑</span> 救護車使用指南
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+                </div>
+                <div class="p-6">
+                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 hover:border-emerald-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
+                        <span>🎲</span> 啟動 AI 急救情境出題
+                    </button>
+
+                    <div id="aiQuizDisplay" class="hidden">
+                        <div class="flex items-center gap-3 mb-4 no-select">
+                            <div class="bg-emerald-500/20 px-3 py-1.5 rounded-lg text-xs text-emerald-400 font-bold">🤖 Gemini 導師</div>
+                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
+                        </div>
+                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
+                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
+                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：急救文本 AI 智能詢問區</h3>
+                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                    在研讀《民眾自救手冊》時，對於「CPR 步驟」或「哈姆立克法」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
+                </p>
+                <div class="space-y-4">
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『身邊的人突然倒下沒有心跳怎麼辦？』、『吃飯噎到怎麼辦？』..."></textarea>
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-emerald-600/10 flex items-center gap-2 cursor-pointer">
+                        <span>💬</span> 送出詢問 AI 導師
+                    </button>
+                </div>
+                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
+                    <div class="flex items-center gap-2 mb-3 no-select">
+                        <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">🤖 文本導讀回饋</span>
+                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
+                    </div>
+                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        let testUserId = null; 
+
+        async function initAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = 'register.html'; return; }
+            testUserId = session.user.id;
+        }
+        window.addEventListener('DOMContentLoaded', initAuth);
+
+        async function submitInquiry() {
+            const inputEl = document.getElementById('userInquiryInput');
+            const btnEl = document.getElementById('sendInquiryBtn');
+            const responseBox = document.getElementById('inquiryResponseBox');
+            const responseText = document.getElementById('inquiryResponseText');
+            
+            if (!inputEl.value.trim()) return;
+            const question = inputEl.value.trim();
+            btnEl.innerText = "⏳ AI 導師分析中...";
+            btnEl.disabled = true;
+            
+            setTimeout(async () => {
+                responseBox.classList.remove('hidden');
+                document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
+                
+                if (question.includes("CPR") || question.includes("心跳") || question.includes("倒下")) {
+                    responseText.innerHTML = `⚠️ <b>【急救口訣：叫、叫、壓、電】</b>\n\n根據《民眾自救手冊》指引，若發現患者倒下無反應：\n1. <b>叫</b>：拍打患者雙肩確認意識與呼吸。\n2. <b>叫</b>：大聲呼救，請旁人打 119 並拿取附近 AED。\n3. <b>壓</b>：胸外按壓（用力壓、快快壓、胸回彈、莫中斷），深度至少 5 公分，速率每分鐘 100-120 次。\n4. <b>電</b>：依照 AED 語音指示操作，直到救護人員接手。`;
+                } 
+                else if (question.includes("噎到") || question.includes("哽塞") || question.includes("哈姆立克")) {
+                    responseText.innerHTML = `🚨 <b>【異物哽塞處置：哈姆立克法】</b>\n\n若患者雙手掐脖、無法發聲咳嗽：\n施救者站在患者後方，一手握拳，虎口向內放在患者肚臍與劍突（胸骨下緣）之間，另一手抱住拳頭，快速<b>向內、向上</b>擠壓，直到異物吐出。\n\n※註：若患者失去意識，則應讓其平躺，直接開始進行 CPR 胸外按壓。`;
+                }
+                else {
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。急救的核心在於「盡早啟動求救系統(119)」。在救護車抵達前，您的及時處置（CPR與AED）將是挽救生命的關鍵。`;
+                }
+                
+                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
+                btnEl.disabled = false;
+                inputEl.value = ""; 
+            }, 1200);
+        }
+
+        document.getElementById('startQuizBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startQuizBtn');
+            btn.innerHTML = "<span>⏳</span> 連結中...";
+            btn.disabled = true;
+            try {
+                // 本地 Demo 題庫注入
+                renderQuiz({
+                    question: "在餐廳吃飯時，隔壁桌客人突然雙手掐住自己的脖子，臉色發青且完全無法發出聲音。你應該立刻採取什麼行動？",
+                    options: [
+                        "A. 立刻幫他進行 CPR (心肺復甦術) 胸外按壓", 
+                        "B. 趕快端一杯水給他喝，試圖把異物沖下去", 
+                        "C. 判斷為異物哽塞，立刻繞到他身後實施「哈姆立克法」向內向上擠壓"
+                    ],
+                    correctAnswer: "C. 判斷為異物哽塞，立刻繞到他身後實施「哈姆立克法」向內向上擠壓",
+                    explanation: "雙手掐脖且無法發聲是典型的「嚴重氣管異物哽塞」徵兆。此時喝水可能導致異物更深入氣管，而 CPR 是針對「無呼吸心跳失去意識」的患者。正確處置應立即使用哈姆立克法排除異物。"
+                });
+            } finally {
+                btn.innerHTML = "<span>🎲</span> 重新產生情境";
+                btn.disabled = false;
+            }
+        });
+
+        function renderQuiz(quiz) {
+            document.getElementById('aiQuizDisplay').classList.remove('hidden');
+            document.getElementById('explanationBox').classList.add('hidden');
+            document.getElementById('questionText').innerText = quiz.question;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = ""; 
+
+            quiz.options.forEach(option => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
+                optBtn.innerText = option;
+                optBtn.onclick = async () => {
+                    document.getElementById('explanationBox').classList.remove('hidden');
+                    container.querySelectorAll('button').forEach(b => b.disabled = true);
+
+                    if (option === quiz.correctAnswer) {
+                        optBtn.className = "text-left w-full bg-emerald-900/40 border-emerald-500/50 p-4 rounded-xl font-bold text-emerald-400";
+                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
+                    } else {
+                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
+                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這會延誤救援時機！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
+                    }
+                };
+                container.appendChild(optBtn);
+            });
+        }
+    </script>
+</body>
+</html>

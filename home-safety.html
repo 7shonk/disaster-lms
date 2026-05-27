@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>居家綜合安全教室 - LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .gradient-text { background: linear-gradient(to right, #facc15, #eab308); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
+
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+        </div>
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span></a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span></a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center gap-4 text-yellow-400 bg-yellow-950/40 p-2 rounded-xl border border-yellow-900/30 whitespace-nowrap pl-2"><span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">居家綜合安全</span></a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span></a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto">
+            
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-black mb-2 gradient-text">🚪 居家綜合安全教室</h1>
+                    <p class="text-gray-400 text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
+                </div>
+                <span class="bg-yellow-950 text-yellow-400 text-xs px-3 py-1 rounded-full font-bold border border-yellow-900/50 no-select whitespace-nowrap">內政部家庭防災手冊對齊</span>
+            </header>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防範居家隱形殺手</h2>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        居家安全最大的隱形殺手是<strong class="text-yellow-400">「一氧化碳中毒」</strong>與<strong class="text-yellow-400">「瓦斯氣爆」</strong>。請記住，聞到瓦斯味時絕對不可開啟任何電器開關！點擊右側按鈕開啟《家庭防災手冊》，學習正確的保命防護步驟。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《家庭防災手冊.pdf》</span>
+                    </div>
+                </div>
+                <a href="files/家庭防災手冊.pdf" target="_blank" class="w-full md:w-auto bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-yellow-400 text-sm whitespace-nowrap">
+                    <span class="text-xl group-hover:scale-110 transition-transform">📘</span>
+                    <span>開啟家庭防災課本</span>
+                </a>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+                </div>
+                <div class="p-6">
+                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-700 hover:border-yellow-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
+                        <span>🎲</span> 啟動 AI 居家安全情境出題
+                    </button>
+
+                    <div id="aiQuizDisplay" class="hidden">
+                        <div class="flex items-center gap-3 mb-4 no-select">
+                            <div class="bg-yellow-500/20 px-3 py-1.5 rounded-lg text-xs text-yellow-400 font-bold">🤖 Gemini 導師</div>
+                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
+                        </div>
+                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
+                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
+                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-md font-bold text-yellow-400 mb-2 flex items-center gap-2">💬 訓練二：居家文本 AI 智能詢問區</h3>
+                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                    在研讀《家庭防災手冊》時，對於「熱水器安裝」或「瓦斯外洩處理」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
+                </p>
+                <div class="space-y-4">
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『聞到瓦斯味可以開抽風機嗎？』、『熱水器裝在陽台安全嗎？』..."></textarea>
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-yellow-600/10 flex items-center gap-2 cursor-pointer">
+                        <span>💬</span> 送出詢問 AI 導師
+                    </button>
+                </div>
+                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
+                    <div class="flex items-center gap-2 mb-3 no-select">
+                        <span class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">🤖 文本導讀回饋</span>
+                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
+                    </div>
+                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        let testUserId = null; 
+        const currentMode = 'home-safety';
+
+        async function initAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = 'register.html'; return; }
+            testUserId = session.user.id;
+        }
+        window.addEventListener('DOMContentLoaded', initAuth);
+
+        async function submitInquiry() {
+            const inputEl = document.getElementById('userInquiryInput');
+            const btnEl = document.getElementById('sendInquiryBtn');
+            const responseBox = document.getElementById('inquiryResponseBox');
+            const responseText = document.getElementById('inquiryResponseText');
+            
+            if (!inputEl.value.trim()) return;
+            const question = inputEl.value.trim();
+            btnEl.innerText = "⏳ AI 導師分析中...";
+            btnEl.disabled = true;
+            
+            setTimeout(async () => {
+                responseBox.classList.remove('hidden');
+                document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
+                
+                if (question.includes("瓦斯") || question.includes("漏氣") || question.includes("抽風機")) {
+                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：瓦斯漏氣絕對禁用電器】</b>\n\n《家庭防災手冊》明確指出，聞到瓦斯味時，<b>千萬不可以打開抽風機或電風扇</b>，因為電器開關產生的微小火花會瞬間引發氣爆！\n\n<b>正確四步驟：</b>\n1. 禁動任何電器開關。\n2. 關閉瓦斯總開關。\n3. 輕輕推開窗戶讓其自然通風。\n4. 離開現場撥打 119。`;
+                } 
+                else if (question.includes("一氧化碳") || question.includes("熱水器") || question.includes("陽台")) {
+                    responseText.innerHTML = `🚨 <b>【隱形殺手：一氧化碳中毒防範】</b>\n\n若將熱水器安裝在「加裝窗戶的陽台」或室內，非常容易因燃燒不完全產生一氧化碳中毒。手冊規定：\n1. 必須委託合格技術士安裝「強制排氣型」熱水器。\n2. 或將熱水器移至屋外完全通風處。\n3. 洗澡時若感到頭暈、噁心，應立即停止洗澡並開窗通風。`;
+                }
+                else {
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查瓦斯管線是否老化，並確保熱水器安裝環境絕對通風。`;
+                }
+                
+                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
+                btnEl.disabled = false;
+                inputEl.value = ""; 
+            }, 1200);
+        }
+
+        document.getElementById('startQuizBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startQuizBtn');
+            btn.innerHTML = "<span>⏳</span> 連結中...";
+            btn.disabled = true;
+            try {
+                // 為了 Demo 穩定，這裡直接注入本地題庫
+                renderQuiz({
+                    question: "冬天洗澡時，突然聞到屋內有濃濃的瓦斯味，你第一時間應該怎麼做？",
+                    options: [
+                        "A. 趕快打開抽風機跟電風扇，把瓦斯味吹散", 
+                        "B. 輕輕推開窗戶讓空氣流通，關閉瓦斯開關，並迅速離開現場", 
+                        "C. 拿打火機點火測試看看是哪裡漏氣"
+                    ],
+                    correctAnswer: "B. 輕輕推開窗戶讓空氣流通，關閉瓦斯開關，並迅速離開現場",
+                    explanation: "瓦斯外洩時，環境中充滿易燃氣體，此時開啟抽風機或任何電器開關產生的微小電氣火花，都會瞬間引發致命氣爆！輕開窗戶自然通風才是唯一解法。"
+                });
+            } finally {
+                btn.innerHTML = "<span>🎲</span> 重新產生情境";
+                btn.disabled = false;
+            }
+        });
+
+        function renderQuiz(quiz) {
+            document.getElementById('aiQuizDisplay').classList.remove('hidden');
+            document.getElementById('explanationBox').classList.add('hidden');
+            document.getElementById('questionText').innerText = quiz.question;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = ""; 
+
+            quiz.options.forEach(option => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
+                optBtn.innerText = option;
+                optBtn.onclick = async () => {
+                    document.getElementById('explanationBox').classList.remove('hidden');
+                    container.querySelectorAll('button').forEach(b => b.disabled = true);
+
+                    if (option === quiz.correctAnswer) {
+                        optBtn.className = "text-left w-full bg-yellow-900/40 border-yellow-500/50 p-4 rounded-xl font-bold text-yellow-400";
+                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
+                    } else {
+                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
+                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這會引發氣爆！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
+                    }
+                };
+                container.appendChild(optBtn);
+            });
+        }
+    </script>
+</body>
+</html>

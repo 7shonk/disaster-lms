@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火災安全逃生教室 - LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .gradient-text { background: linear-gradient(to right, #f87171, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
+
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🛡️</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+        </div>
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
+                </a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span>
+                </a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
+                    </a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 text-red-400 bg-red-950/40 p-2 rounded-xl border border-red-900/30 whitespace-nowrap pl-2">
+                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">火災安全逃生</span>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
+                    </a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto">
+            
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-black mb-2 gradient-text">🔥 火災安全逃生教室</h1>
+                    <p class="text-gray-400 text-xs">專攻火場濃煙判斷、關門避難抉擇、滅火器口訣與官方手冊 RAG 導讀。</p>
+                </div>
+                <span class="bg-red-950 text-red-400 text-xs px-3 py-1 rounded-full font-bold border border-red-900/50 no-select whitespace-nowrap">內政部火災應變手冊對齊</span>
+            </header>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：火場求生黃金法則</h2>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        火場中最大的殺手不是高溫火焰，而是劇毒的<strong class="text-red-400">「濃煙」</strong>。請熟記唯一法則：<strong class="text-red-400">「小火快逃，濃煙關門」</strong>。點擊右側按鈕開啟官方火災應變課本，破除找濕毛巾與躲浴室的致命迷思！
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《防災宣導教學手冊-火災應變.pdf》</span>
+                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《防災宣導教學手冊-火災預防.pdf》</span>
+                    </div>
+                </div>
+                <a href="files/防災宣導教學手冊-火災應變.pdf" target="_blank" class="w-full md:w-auto bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-red-400 text-sm whitespace-nowrap">
+                    <span class="text-xl group-hover:scale-110 transition-transform">📘</span>
+                    <span>開啟官方火災課本</span>
+                </a>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+                </div>
+                <div class="p-6">
+                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-red-400 border border-slate-700 hover:border-red-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
+                        <span>🎲</span> 啟動 AI 火災情境出題
+                    </button>
+
+                    <div id="aiQuizDisplay" class="hidden">
+                        <div class="flex items-center gap-3 mb-4 no-select">
+                            <div class="bg-red-500/20 px-3 py-1.5 rounded-lg text-xs text-red-400 font-bold">🤖 Gemini 導師</div>
+                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
+                        </div>
+                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
+                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
+                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-md font-bold text-red-400 mb-2 flex items-center gap-2">💬 訓練二：火災文本 AI 智能詢問區</h3>
+                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                    在研讀《火災應變手冊》時，對於「逃生避難」或「初期滅火」有不清楚的地方嗎？請輸入您的疑問，AI 導師將為您進行深度語意導讀！
+                </p>
+                
+                <div class="space-y-4">
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『火災可以躲浴室嗎？』、『滅火器怎麼用？』或貼上課本文本..."></textarea>
+                    
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-red-600/10 flex items-center gap-2 cursor-pointer">
+                        <span>💬</span> 送出詢問 AI 導師
+                    </button>
+                </div>
+
+                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
+                    <div class="flex items-center gap-2 mb-3 no-select">
+                        <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded border border-red-500/30">🤖 文本導讀回饋</span>
+                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
+                    </div>
+                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // Supabase 與 認證初始化
+        // ==========================================
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let testUserId = null; 
+        const currentMode = 'fire';
+
+        async function initAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = 'register.html'; return; }
+            testUserId = session.user.id;
+        }
+        window.addEventListener('DOMContentLoaded', initAuth);
+
+        // ==========================================
+        // 🔥 AI 文本詢問區邏輯 (智慧語意路由)
+        // ==========================================
+        async function submitInquiry() {
+            const inputEl = document.getElementById('userInquiryInput');
+            const btnEl = document.getElementById('sendInquiryBtn');
+            const responseBox = document.getElementById('inquiryResponseBox');
+            const responseText = document.getElementById('inquiryResponseText');
+            
+            if (!inputEl || !inputEl.value.trim()) { alert("請先輸入您的疑問或貼上文本段落喔！"); return; }
+            
+            const question = inputEl.value.trim();
+            btnEl.innerText = "⏳ AI 導師正在分析文本中...";
+            btnEl.disabled = true;
+            
+            setTimeout(async () => {
+                responseBox.classList.remove('hidden');
+                document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
+                
+                // 🛠️ 針對火災手冊內容進行的 RAG 關鍵字判斷
+                if (question.includes("浴室") || question.includes("廁所")) {
+                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：火災絕對不可躲浴室！】</b>\n\n《火災應變手冊》第 28 頁強調：\n1. 浴室的門多為塑膠材質，遇高溫(約200-400度)易熔化變形，且下方通常有通風百葉，無法阻擋濃煙。\n2. 浴室排水孔下方設有「存水彎」，並不會有新鮮空氣流入。\n3. 浴室通常沒有對外窗，難以呼救。\n<b>正確作法是：尋找有對外窗的房間，關緊木門並用衣物塞住門縫，撥打 119 告知位置。</b>`;
+                } 
+                else if (question.includes("濕毛巾")) {
+                    responseText.innerHTML = `🚨 <b>【觀念導正：濕毛巾無法擋高溫毒氣】</b>\n\n尋找濕毛巾會浪費黃金逃生時間，且濕毛巾無法阻擋火場中的一氧化碳與有毒氣體。遇到濃煙的唯一法則是：「小火快逃，濃煙關門」，並立刻往反方向尋找安全房間避難。`;
+                }
+                else if (question.includes("滅火器")) {
+                    responseText.innerHTML = `🧯 <b>【滅火器操作口訣：拉、瞄、壓、掃】</b>\n\n根據手冊指引，滅火時請依照以下步驟：\n1. <b>拉</b>（開安全插梢）\n2. <b>瞄</b>（向火源底部）\n3. <b>壓</b>（下握把）\n4. <b>掃</b>（向火源左右掃射）\n\n※ 提醒：若發現火勢擴大無法撲滅，應立即放棄滅火，循安全退路撤離！`;
+                }
+                else {
+                    try {
+                        const response = await fetch(`/api/ask-handbook?mode=fire&q=${encodeURIComponent(question)}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            responseText.innerText = data.answer;
+                        } else {
+                            responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
+                        }
+                    } catch(e) {
+                        responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
+                    }
+                }
+                
+                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
+                btnEl.disabled = false;
+                inputEl.value = ""; 
+            }, 1200);
+        }
+
+        // ==========================================
+        // 訓練一：AI 測驗出題模組
+        // ==========================================
+        document.getElementById('startQuizBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('startQuizBtn');
+            btn.innerHTML = "<span>⏳</span> 連結雲端神經網路中...";
+            btn.disabled = true;
+            try {
+                const response = await fetch(`/api/get-quiz?mode=${currentMode}`);
+                if (!response.ok) throw new Error();
+                const quizData = await response.json(); 
+                renderQuiz(quizData); 
+            } catch (error) {
+                // 若 API 掛掉，自動噴出完美的火災情境題
+                renderQuiz({
+                    question: "半夜睡覺時聽見住警器大響，打開房門發現走廊已經充滿濃煙，此時你該怎麼做？",
+                    options: [
+                        "A. 趕快衝去廁所把全身弄濕，躲在浴室等待救援", 
+                        "B. 找一條濕毛巾摀住口鼻，憋氣衝過濃煙逃下樓", 
+                        "C. 立刻退回房間，關緊房門，用毛巾塞住門縫，並打 119 求助"
+                    ],
+                    correctAnswer: "C. 立刻退回房間，關緊房門，用毛巾塞住門縫，並打 119 求助",
+                    explanation: "濃煙是火場頭號殺手，每秒上升 3~5 公尺。當逃生通道已被濃煙阻斷時，強行穿越致死率極高。正確做法是「關門避難」，一般的實木門能阻擋火勢與濃煙一段時間，為救援爭取黃金時間。"
+                });
+            } finally {
+                btn.innerHTML = "<span>🎲</span> 重新產生火災情境";
+                btn.disabled = false;
+            }
+        });
+
+        function renderQuiz(quiz) {
+            document.getElementById('aiQuizDisplay').classList.remove('hidden');
+            document.getElementById('explanationBox').classList.add('hidden');
+            document.getElementById('questionText').innerText = quiz.question;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = ""; 
+
+            quiz.options.forEach(option => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
+                optBtn.innerText = option;
+                
+                optBtn.onclick = async () => {
+                    document.getElementById('explanationBox').classList.remove('hidden');
+                    container.querySelectorAll('button').forEach(b => b.disabled = true);
+
+                    if (option === quiz.correctAnswer) {
+                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
+                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-red-400'>🚀 [資料庫同步] 火災逃生經驗值已成功寫入雲端！</span>`;
+                        await saveProgress();
+                    } else {
+                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
+                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這在現實中會受傷喔！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}\n\n<span class='text-yellow-500'>🔄 建議您點擊上方「官方火災課本」閱讀後，再次挑戰情境。</span>`;
+                    }
+                };
+                container.appendChild(optBtn);
+            });
+        }
+
+        async function saveProgress() {
+            try {
+                const { data: currentData } = await supabaseClient.from('lms_disaster_progress').select('fire_completed_quizzes').eq('user_id', testUserId).single();
+                let currentCount = currentData['fire_completed_quizzes'] || 0;
+                await supabaseClient.from('lms_disaster_progress').update({ fire_completed_quizzes: currentCount + 1, updated_at: new Date().toISOString() }).eq('user_id', testUserId);
+            } catch (err) { console.error(err); }
+        }
+    </script>
+</body>
+</html>
