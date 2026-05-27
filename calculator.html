@@ -10,46 +10,58 @@
         .no-select { -webkit-user-select: none; user-select: none; }
         .tab-active { background-color: #0284c7; color: white; border-color: #38bdf8; }
         .tab-inactive { background-color: #1e293b; color: #94a3b8; border-color: #334155; }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans min-h-screen p-6 antialiased">
+<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select transition-all duration-300 group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🌪️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
+        
         <nav class="space-y-2 flex-1">
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">大廳導航</div>
+            
             <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
                 <span class="text-lg">🏠</span>
                 <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">回到大廳</span>
             </a>
+
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-6 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">防災教室</div>
+
             <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震預防</span>
+                <span class="text-lg">🫨</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震預防</span>
             </a>
+
             <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱風預防</span>
+                <span class="text-lg">🌀</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱風預防</span>
             </a>
+
             <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災預防</span>
+                <span class="text-lg">🔥</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災預防</span>
             </a>
+
             <a href="calculator.html" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 border border-purple-900/30 p-2.5 rounded-xl transition whitespace-nowrap pl-2">
-                <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">物資準備教室</span>
+                <span class="text-lg">🧮</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">物資準備教室</span>
             </a>
         </nav>
     </aside>
 
-    <main class="flex-1 ml-16 p-2 md:p-8 overflow-y-auto">
+    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
             
-            <header class="mb-8 flex justify-between items-start">
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 class="text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
                     <p class="text-gray-400 text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
                 </div>
-                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select">消防署標準對齊</span>
+                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
             </header>
 
             <div class="flex gap-4 mb-6 no-select">
@@ -58,7 +70,7 @@
                     <span>緊急避難包 (1~3天)</span>
                     <span class="text-[10px] font-normal opacity-80">抓了就跑，支援 AI 盤點</span>
                 </button>
-                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1">
+                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800">
                     <span class="text-xl">🏡</span>
                     <span>日常居家儲備 (7天)</span>
                     <span class="text-[10px] font-normal opacity-80">災後宅家，採買參考清單</span>
@@ -102,11 +114,10 @@
     </main>
 
     <script>
-        let currentTab = 'evac'; // 'evac' 或 'home'
+        let currentTab = 'evac'; 
         let currentPeople = 1;
         let hasPet = false;
 
-        // 初始化
         function init() {
             renderPeopleSelector();
             updateUI();
@@ -148,7 +159,6 @@
             updateUI();
         }
 
-        // 檢查打勾狀態 (僅用於避難包模式)
         function checkEvacStatus() {
             const checkboxes = document.querySelectorAll('.evac-check');
             const btn = document.getElementById('iosDeepLinkBtn');
@@ -168,7 +178,6 @@
             }
         }
 
-        // 核心渲染邏輯：根據政府 PDF 產生對應內容
         function updateUI() {
             const contentDiv = document.getElementById('dynamicListContent');
             const scanArea = document.getElementById('scanActionArea');
@@ -176,9 +185,6 @@
             const badge = document.getElementById('summaryBadge');
 
             if (currentTab === 'evac') {
-                // ==========================================
-                // 🎒 模式一：緊急避難包 (需打勾 + 鏡頭掃描)
-                // ==========================================
                 title.innerHTML = "🎒 緊急避難包清單 (準備 1~3 天份)";
                 badge.innerText = `${currentPeople}人 / 避難包配置${hasPet ? ' (含寵物)' : ''}`;
                 scanArea.style.display = 'block';
@@ -197,15 +203,12 @@
                     <div class="text-[10px] text-gray-500 mt-4 text-center">💡 避難包原則：重量需能背著奔跑，請擺在桌上後打勾準備掃描。</div>
                 `;
                 contentDiv.innerHTML = html;
-                checkEvacStatus(); // 重置按鈕狀態
+                checkEvacStatus(); 
 
             } else {
-                // ==========================================
-                // 🏡 模式二：日常居家儲備 (純清單參考，無掃描)
-                // ==========================================
                 title.innerHTML = "🏡 日常居家儲備清單 (準備 7 天份)";
                 badge.innerText = `${currentPeople}人 / 7天份居家配置${hasPet ? ' (含寵物)' : ''}`;
-                scanArea.style.display = 'none'; // 隱藏掃描按鈕
+                scanArea.style.display = 'none'; 
 
                 let html = `
                     <div class="space-y-4">
@@ -226,7 +229,6 @@
                                 </li>
                             </ul>
                         </div>
-
                         <div class="bg-slate-950 p-5 rounded-xl border border-slate-800">
                             <h3 class="text-teal-400 font-bold text-sm mb-3">🔹 生活耗材與衛生防護</h3>
                             <ul class="space-y-3 text-sm text-gray-300">
@@ -269,7 +271,6 @@
             }
         }
 
-        // 產生打勾卡片的輔助函數
         function createEvacCard(title, desc, qty) {
             return `
                 <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-600 transition flex items-center gap-3 cursor-pointer select-none">
@@ -283,7 +284,6 @@
             `;
         }
 
-        // 啟動
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
