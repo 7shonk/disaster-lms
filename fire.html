@@ -14,7 +14,7 @@
 </head>
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
@@ -35,33 +35,36 @@
                     <a href="#" class="flex items-center gap-4 text-red-400 bg-red-950/40 p-2 rounded-xl border border-red-900/30 whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">火災安全逃生</span></a>
                 </div>
             </div>
-
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
                 <div class="space-y-1">
-                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
-                    </a>
-                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
-                    </a>
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span></a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span></a>
                 </div>
             </div>
         </nav>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 p-5 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-4xl mx-auto w-full">
             
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🔥 火災安全逃生教室</h1>
                     <p class="text-gray-400 text-[11px] md:text-xs">專攻火場濃煙判斷、關門避難抉擇、滅火器口訣與官方手冊 RAG 導讀。</p>
                 </div>
-                <span class="bg-red-950 text-red-400 text-[10px] px-3 py-1 rounded-full font-bold border border-red-900/50 no-select whitespace-nowrap">內政部火災預防教學對齊</span>
+                <span class="bg-red-950 text-red-400 text-[10px] md:text-xs px-3 py-1 rounded-full font-bold border border-red-900/50 no-select whitespace-nowrap">內政部火災預防教學對齊</span>
             </header>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+            <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：居家防火黃金守則</h2>
                     <p class="text-xs text-gray-400 leading-relaxed mb-4">
@@ -149,21 +152,31 @@
     </main>
 
     <script>
-        // 初始化虛擬測試帳號，對齊中控台機制
-        const testUserId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d";
-        const currentMode = "fire";
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
-        // 此處預留 Supabase 連線初始化，實際運作時會讀取全域連線
-        const supabaseUrl = 'https://your-supabase-url.supabase.co'; 
-        const supabaseKey = 'your-anon-key';
-        let supabaseClient = null;
-        if (typeof supabase !== 'undefined') {
-            supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        let testUserId = null; 
+        const currentMode = "fire";
+
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                testUserId = session.user.id;
+
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+            } catch (err) { console.error(err); }
+        }
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
         }
 
-        // ==========================================
-        // 💬 訓練二：AI 智能詢問導讀串接
-        // ==========================================
         function submitInquiry() {
             const inputEl = document.getElementById('userInquiryInput');
             const question = inputEl.value.trim();
@@ -183,17 +196,7 @@
                 if (question.includes("電氣") || question.includes("延長線")) {
                     responseText.innerHTML = `關於您詢問的<b>「${question}」</b>，依據官方手冊規範：\n\n1. <b>不超載使用</b>：高耗電家電不可共用延長線組。\n2. <b>不綑綁使用</b>：延長線若綑綁發熱，容易導致絕緣外皮熔解引起短路。\n3. <b>定期保養</b>：插頭灰塵易造成「焦耳熱」引發積污導電，應定期清除。`;
                 } else {
-                    try {
-                        const response = await fetch(`/api/ask-rag?question=${encodeURIComponent(question)}&mode=${currentMode}`);
-                        if (response.ok) {
-                            const data = await response.json();
-                            responseText.innerText = data.answer;
-                        } else {
-                            responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n已收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
-                        }
-                    } catch(e) {
-                        responseText.innerHTML = `🤖 <b>AI 導師對話導讀：</b>\n\n已收到您關於「${question}」的詢問。火場逃生的核心在於避開濃煙。請謹記向下逃生，若發現門外或樓梯已經充滿濃煙，則應立刻退回室內「關門避難」，並撥打 119 求救。`;
-                    }
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n已收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查用電安全、廚房不離火，並確認家中住警器是否正常發揮功能。`;
                 }
                 
                 btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
@@ -202,27 +205,18 @@
             }, 1200);
         }
 
-        // ==========================================
-        // 🛡️ 訓練一：火災前準備清單分數計算與同步
-        // ==========================================
         async function calculateFireScore() {
             const checkboxes = document.querySelectorAll('.fire-check');
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             const totalCount = checkboxes.length;
-            
-            // 計算百分比
             const scorePercent = Math.round((checkedCount / totalCount) * 100);
             
-            // 更新介面顯示
             const badge = document.getElementById('fireScoreBadge');
             badge.innerText = `安全防禦度：${scorePercent}%`;
             
-            // 根據分數變更標籤顏色
             if (scorePercent === 100) {
                 badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
                 document.getElementById('fireSyncStatus').classList.remove('hidden');
-                
-                // 分數全滿時，自動更新進度至雲端 Supabase
                 await saveFireProgress(checkedCount);
             } else {
                 badge.className = "bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40";
@@ -231,18 +225,12 @@
         }
 
         async function saveFireProgress(count) {
-            if (!testUserId || !supabaseClient) return;
+            if (!testUserId) return;
             try {
-                // 將勾選完成的數量同步回資料庫的欄位（整合原有資料庫架構）
                 await supabaseClient.from('lms_disaster_progress')
-                    .update({ 
-                        fire_completed_quizzes: count, 
-                        updated_at: new Date().toISOString() 
-                    })
+                    .update({ fire_completed_quizzes: count, updated_at: new Date().toISOString() })
                     .eq('user_id', testUserId);
-            } catch (err) { 
-                console.error("雲端同步失敗:", err); 
-            }
+            } catch (err) { console.error(err); }
         }
     </script>
 </body>
