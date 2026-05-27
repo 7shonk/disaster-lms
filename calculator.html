@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防災物資儲備計算機</title>
+    <title>智慧物資準備教室 - LMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .gradient-text { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .no-select { -webkit-user-select: none; user-select: none; }
@@ -13,44 +14,75 @@
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
+<body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50 fixed h-full top-0 left-0">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
         <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
             <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
+        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
                 <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                    <span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
+                    <span class="text-lg">🏠</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
                 </a>
             </div>
+
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
                 <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">
-                    <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
+                    <span class="text-lg">🧮</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
                 </a>
             </div>
+            
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
+                    </a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
+                    </a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
+                    </a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
+                    </a>
                 </div>
             </div>
         </nav>
+
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
+                <span class="text-lg">🚪</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
+        <div class="max-w-4xl mx-auto w-full">
             
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 class="text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
-                    <p class="text-gray-400 text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
+                    <h1 class="text-2xl md:text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
+                    <p class="text-gray-400 text-[11px] md:text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
                 </div>
                 <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
             </header>
@@ -67,20 +99,17 @@
                     <span>開啟避難包指南</span>
                 </a>
             </div>
-            
-                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
-            </header>
 
             <div class="flex gap-4 mb-6 no-select">
-                <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1">
+                <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm">
                     <span class="text-xl">🎒</span>
                     <span>緊急避難包 (1~3天)</span>
-                    <span class="text-[10px] font-normal opacity-80">抓了就跑，支援 AI 盤點</span>
+                    <span class="text-[10px] font-normal opacity-80 hidden md:inline">抓了就跑，支援 AI 盤點</span>
                 </button>
-                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800">
+                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm">
                     <span class="text-xl">🏡</span>
                     <span>日常居家儲備 (7天)</span>
-                    <span class="text-[10px] font-normal opacity-80">災後宅家，採買參考清單</span>
+                    <span class="text-[10px] font-normal opacity-80 hidden md:inline">災後宅家，採買參考清單</span>
                 </button>
             </div>
 
@@ -88,8 +117,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
-                        <div class="grid grid-cols-5 gap-2" id="peopleSelector">
-                            </div>
+                        <div class="grid grid-cols-5 gap-2" id="peopleSelector"></div>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">🐾 是否有毛小孩 (貓/狗)</label>
@@ -101,17 +129,16 @@
                 </div>
             </div>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-800 shadow-2xl">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-6 no-select">
-                    <h2 class="text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
-                    <span id="summaryBadge" class="text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
+                    <h2 class="text-xs md:text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
+                    <span id="summaryBadge" class="text-[10px] md:text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
                 </div>
 
-                <div id="dynamicListContent" class="space-y-6">
-                    </div>
+                <div id="dynamicListContent" class="space-y-6"></div>
 
                 <div id="scanActionArea" class="pt-6 mt-6 border-t border-slate-800">
-                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed no-select">
+                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-sm md:text-md transition pointer-events-none cursor-not-allowed no-select">
                         🔒 請先在上方打勾確認備齊桌上實物
                     </a>
                 </div>
@@ -121,13 +148,35 @@
     </main>
 
     <script>
+        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let testUserId = null;
         let currentTab = 'evac'; 
         let currentPeople = 1;
         let hasPet = false;
 
-        function init() {
-            renderPeopleSelector();
-            updateUI();
+        async function checkAuthAndInit() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) { window.location.href = 'register.html'; return; }
+                testUserId = session.user.id;
+
+                const emailPrefix = session.user.email.split('@')[0];
+                const emailDisplay = document.getElementById('userEmailDisplay');
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+
+                renderPeopleSelector();
+                updateUI();
+            } catch (err) { console.error(err); }
+        }
+
+        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'register.html';
         }
 
         function renderPeopleSelector() {
@@ -158,11 +207,11 @@
         function switchTab(tab) {
             currentTab = tab;
             document.getElementById('tab-evac').className = tab === 'evac' 
-                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1"
-                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800";
+                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm"
+                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm";
             document.getElementById('tab-home').className = tab === 'home' 
-                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1"
-                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800";
+                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm"
+                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm";
             updateUI();
         }
 
@@ -178,11 +227,23 @@
                 btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_20px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer');
                 btn.innerHTML = "🚀 備料完成！喚醒 iOS 智慧辨識鏡頭";
                 btn.href = "disasterlms://opencamera";
+                
+                // 老大！這裡幫你綁定勾選完成時同步寫入雲端資料庫分數的動作，打通生態鏈
+                saveProgress();
             } else {
                 btn.removeAttribute('href');
-                btn.className = "block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed no-select";
+                btn.className = "block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-sm md:text-md transition pointer-events-none cursor-not-allowed no-select";
                 btn.innerHTML = "🔒 請先在上方打勾確認備齊桌上實物";
             }
+        }
+
+        async function saveProgress() {
+            if (!testUserId) return;
+            try {
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ disaster_kit_score: 100, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
+            } catch (err) { console.error(err); }
         }
 
         function updateUI() {
@@ -286,12 +347,10 @@
                         <span class="text-gray-300 text-sm font-bold block truncate">${title}</span>
                         <span class="text-xs text-gray-500 block mt-0.5 truncate">${desc}</span>
                     </div>
-                    <div class="text-lg font-black text-sky-400 whitespace-nowrap pl-2">${qty}</div>
+                    <div class="text-md font-black text-sky-400 whitespace-nowrap pl-2">${qty}</div>
                 </label>
             `;
         }
-
-        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
