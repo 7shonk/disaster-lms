@@ -21,17 +21,32 @@
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
         <nav class="space-y-4 flex-1">
-            <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 whitespace-nowrap pl-2">🏠<span class="opacity-0 group-hover:opacity-100 transition-opacity text-sm">學習中控大廳</span></a>
-            <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">🧮<span class="opacity-0 group-hover:opacity-100 transition-opacity text-sm">智慧物資準備</span></a>
+            <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 whitespace-nowrap pl-2">🏠<span class="opacity-0 group-hover:opacity-100 transition-opacity text-sm">學習中控大廳</span>
+                </a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">
+                    <span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
+                </a>
+            </div>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                </div>
+            </div>
         </nav>
     </aside>
 
-    <main class="flex-1 ml-16 md:ml-20 p-4 md:p-8 overflow-y-auto w-full">
-        <div class="max-w-4xl mx-auto w-full">
+    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto">
             
             <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
+                    <h1 class="text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
                     <p class="text-gray-400 text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
                 </div>
                 <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
@@ -40,14 +55,66 @@
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：緊急避難包指南</h2>
-                    <p class="text-xs text-gray-400 leading-relaxed">準備緊急避難包是防災的第一步。請參考消防署官方指南。</p>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        準備緊急避難包是防災的第一步。請參考消防署官方指南，確認避難包內需準備的個人物品、證件與乾糧。
+                    </p>
                 </div>
-                <a href="files/緊急避難包.pdf" target="_blank" class="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2 group cursor-pointer border border-purple-400 text-sm">
-                    <span>🎒</span> <span>開啟避難包指南</span>
+                <a href="files/緊急避難包.pdf" target="_blank" class="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-purple-400 text-sm whitespace-nowrap">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🎒</span>
+                    <span>開啟避難包指南</span>
                 </a>
             </div>
+            
+                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
+            </header>
 
+            <div class="flex gap-4 mb-6 no-select">
+                <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1">
+                    <span class="text-xl">🎒</span>
+                    <span>緊急避難包 (1~3天)</span>
+                    <span class="text-[10px] font-normal opacity-80">抓了就跑，支援 AI 盤點</span>
+                </button>
+                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800">
+                    <span class="text-xl">🏡</span>
+                    <span>日常居家儲備 (7天)</span>
+                    <span class="text-[10px] font-normal opacity-80">災後宅家，採買參考清單</span>
+                </button>
             </div>
+
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
+                        <div class="grid grid-cols-5 gap-2" id="peopleSelector">
+                            </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">🐾 是否有毛小孩 (貓/狗)</label>
+                        <div class="flex gap-3">
+                            <button onclick="setPet(true)" id="petBtn-true" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 transition cursor-pointer text-sm">有寵物 🐶</button>
+                            <button onclick="setPet(false)" id="petBtn-false" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 transition cursor-pointer text-sm">無寵物 🚫</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-6 no-select">
+                    <h2 class="text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
+                    <span id="summaryBadge" class="text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
+                </div>
+
+                <div id="dynamicListContent" class="space-y-6">
+                    </div>
+
+                <div id="scanActionArea" class="pt-6 mt-6 border-t border-slate-800">
+                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed no-select">
+                        🔒 請先在上方打勾確認備齊桌上實物
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <script>
