@@ -16,41 +16,59 @@
 <body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
     <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-        <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
-            <span class="text-xl">🌪️</span>
+        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🛡️</span>
             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
         </div>
         
-        <nav class="space-y-2 flex-1">
-            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">大廳導航</div>
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl transition whitespace-nowrap pl-2 hover:bg-slate-800">
+                    <span class="text-lg">🏠</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
+                </a>
+            </div>
+
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">
+                    <span class="text-lg">🧮</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
+                </a>
+            </div>
             
-            <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🏠</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">回到大廳</span>
-            </a>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="space-y-1">
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
+                    </a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
+                    </a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span>
+                    </a>
+                </div>
+            </div>
 
-            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mt-6 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">防災教室</div>
-
-            <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🫨</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震預防</span>
-            </a>
-
-            <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🌀</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱風預防</span>
-            </a>
-
-            <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                <span class="text-lg">🔥</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災預防</span>
-            </a>
-
-            <a href="calculator.html" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 border border-purple-900/30 p-2.5 rounded-xl transition whitespace-nowrap pl-2">
-                <span class="text-lg">🧮</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">物資準備教室</span>
-            </a>
+            <div>
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
+                    </a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
+                    </a>
+                </div>
+            </div>
         </nav>
+
+        <div class="mt-auto opacity-0 group-hover:opacity-50 text-[10px] text-gray-500 text-center transition-opacity duration-300 pb-2">
+            收放式導覽選單
+        </div>
     </aside>
 
     <main class="flex-1 p-6 md:p-8 overflow-y-auto">
