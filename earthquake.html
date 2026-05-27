@@ -139,31 +139,6 @@
         </div>
     </div>
 </div>
-
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：防震文本 AI 智能詢問區</h3>
-                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
-                    在研讀上方《防震手冊》或《家具固定防震手冊》時有看不懂的名詞，或是想擷取文本某個章節內容來閱讀嗎？請在下方輸入您的疑問，或直接複製貼上課本內文，讓 AI 導師為您進行深度語意導讀！
-                </p>
-                
-                <div class="space-y-4">
-                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『黃金三角安全嗎？』或貼上手冊內文進行提問..."></textarea>
-                    
-                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-emerald-600/10 flex items-center gap-2 cursor-pointer">
-                        <span>💬</span> 送出詢問 AI 導師
-                    </button>
-                </div>
-
-                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
-                    <div class="flex items-center gap-2 mb-3 no-select">
-                        <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30">🤖 文本導讀回饋</span>
-                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
-                    </div>
-                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
-                </div>
-            </div>
-
-        </div>
     </main>
 
     <script>
