@@ -27,7 +27,6 @@
                     <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">學習中控大廳</span>
                 </a>
             </div>
-
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
                 <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
@@ -35,7 +34,6 @@
                     <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span>
                 </a>
             </div>
-            
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
                 <div class="space-y-1">
@@ -50,7 +48,6 @@
                     </a>
                 </div>
             </div>
-
             <div>
                 <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
                 <div class="space-y-1">
@@ -82,30 +79,38 @@
             </header>
 
             <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-lg mb-8 relative overflow-hidden">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="no-select">
-                        <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：家庭實體物資智慧盤點</h2>
-                        <p class="text-xs text-gray-400">點擊右側卡片可直接跳轉進行家庭防災物資備料精算與打勾準備</p>
+                <div class="flex flex-col gap-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
+                        <div class="no-select">
+                            <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：家庭實體物資智慧盤點</h2>
+                            <p class="text-xs text-gray-400">開啟 iOS App 掃描桌上實物後，AI 回饋意見將會即時同步於下方</p>
+                        </div>
+
+                        <a href="calculator.html" class="w-full md:w-80 block bg-slate-950/80 hover:bg-slate-800/60 p-4 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center group cursor-pointer shadow-inner">
+                            <h2 class="text-xs text-gray-500 mb-1 no-select font-medium">✅ 實體包 App 掃描完成率</h2>
+                            <div class="flex items-baseline justify-center gap-1">
+                                <div id="scoreDisplay" class="text-5xl font-black text-sky-400 tracking-tight transition-colors">--</div>
+                                <div class="text-xs text-gray-500 font-medium">%</div>
+                            </div>
+                            <p id="statusMessage" class="mt-1 text-[11px] text-yellow-400 font-semibold transition-all">同步中...</p>
+                        </a>
                     </div>
 
-                    <a href="calculator.html" class="w-full md:w-80 block bg-slate-950/80 hover:bg-slate-800/60 p-4 rounded-xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 text-center group cursor-pointer shadow-inner">
-                        <h2 class="text-xs text-gray-500 mb-1 no-select font-medium">✅ 實體包雲端盤點結果</h2>
-                        <div class="flex items-baseline justify-center gap-1">
-                            <div id="scoreDisplay" class="text-5xl font-black text-sky-400 tracking-tight transition-colors">--</div>
-                            <div class="text-xs text-gray-500 font-medium">/ 100</div>
+                    <div id="aiFeedbackContainer" class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl">
+                        <div class="flex items-center gap-2 mb-3 no-select">
+                            <span class="text-md">💡</span>
+                            <h3 class="text-sm font-bold text-yellow-500">AI 即時專家優化建議</h3>
                         </div>
-                        <p id="statusMessage" class="mt-1 text-[11px] text-yellow-400 font-semibold transition-all">同步中...</p>
-                        <div class="mt-2 text-[10px] text-sky-400 font-bold opacity-60 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
-                            <span>🧮</span> 進入個人化物資清單 ➔
-                        </div>
-                    </a>
+                        <p id="aiFeedbackText" class="text-xs text-gray-400 leading-relaxed whitespace-pre-line">
+                            ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <h2 class="text-md font-bold text-gray-400 mb-4 no-select uppercase tracking-wider">🚪 智慧防災互動教室選擇</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                
-                <a href="earthquake.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="earthquake.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/40 shadow-lg transition-all flex flex-col justify-between hover:-translate-y-1">
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <span class="text-2xl bg-blue-950/60 p-2.5 rounded-xl border border-blue-900/30">🫨</span>
@@ -114,13 +119,8 @@
                         <h3 class="text-md font-bold mb-1.5 group-hover:text-blue-400 transition-colors">地震預防與應變教室</h3>
                         <p class="text-gray-400 text-xs leading-relaxed">內政部《防震手冊》對齊。專攻瞬間避難、居家重型家具防震固定安檢與黃金決策。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：EQ-01</span>
-                        <span>重型家具固定盤點</span>
-                    </div>
                 </a>
-
-                <a href="typhoon.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-teal-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="typhoon.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-teal-500/40 shadow-lg transition-all flex flex-col justify-between hover:-translate-y-1">
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <span class="text-2xl bg-teal-950/60 p-2.5 rounded-xl border border-teal-900/30">🌀</span>
@@ -129,13 +129,8 @@
                         <h3 class="text-md font-bold mb-1.5 group-hover:text-teal-400 transition-colors">颱洪整備教室</h3>
                         <p class="text-gray-400 text-xs leading-relaxed">對齊《颱洪災害防救指引》。模擬強風豪雨門窗防護、強制撤離法規與土石流應變。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：TY-02</span>
-                        <span>防颱前夕整備清單</span>
-                    </div>
                 </a>
-
-                <a href="fire.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-red-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                <a href="fire.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-red-500/40 shadow-lg transition-all flex flex-col justify-between hover:-translate-y-1">
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <span class="text-2xl bg-red-950/60 p-2.5 rounded-xl border border-red-900/30">🔥</span>
@@ -144,57 +139,7 @@
                         <h3 class="text-md font-bold mb-1.5 group-hover:text-red-400 transition-colors">火災安全逃生教室</h3>
                         <p class="text-gray-400 text-xs leading-relaxed">對齊《火災預防與應變手冊》。學習住宅住警器安裝、用電安全管理與火災前預防盤點。</p>
                     </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：FR-03</span>
-                        <span>住宅防火自主檢查</span>
-                    </div>
                 </a>
-
-                <a href="home-safety.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-yellow-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-2xl bg-yellow-950/60 p-2.5 rounded-xl border border-yellow-900/30">🚪</span>
-                            <span class="text-[10px] font-bold text-yellow-400 bg-yellow-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-yellow-600 group-hover:text-white transition-colors">進入教室 ➔</span>
-                        </div>
-                        <h3 class="text-md font-bold mb-1.5 group-hover:text-yellow-400 transition-colors">居家綜合安全教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">對齊《家庭防災手冊》。防範致命一氧化碳中毒、熱水器安裝安全與瓦斯漏氣緊急處置。</p>
-                    </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：HS-04</span>
-                        <span>瓦斯熱水器與防毒盤點</span>
-                    </div>
-                </a>
-
-                <a href="first-aid.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-2xl bg-emerald-950/60 p-2.5 rounded-xl border border-emerald-900/30">🚑</span>
-                            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-colors">進入教室 ➔</span>
-                        </div>
-                        <h3 class="text-md font-bold mb-1.5 group-hover:text-emerald-400 transition-colors">民眾急救自救教室</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">對齊《民眾自救》與《救護車使用指南》。演練緊急 CPR+AED、異物哽塞哈姆立克法。</p>
-                    </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：FA-05</span>
-                        <span>心肺復甦與自救技術</span>
-                    </div>
-                </a>
-
-                <a href="calculator.html" class="group bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-purple-500/40 shadow-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-2xl bg-purple-950/60 p-2.5 rounded-xl border border-purple-900/30">🧮</span>
-                            <span class="text-[10px] font-bold text-purple-400 bg-purple-900/20 px-2.5 py-0.5 rounded-full group-hover:bg-purple-600 group-hover:text-white transition-colors">進入教室 ➔</span>
-                        </div>
-                        <h3 class="text-md font-bold mb-1.5 group-hover:text-purple-400 transition-colors">防災物資儲備計算機</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">依消防署雙系統指南，動態精算全家人與寵物所需的 1~3 天避難背包與 7 天日常儲備。</p>
-                    </div>
-                    <div class="border-t border-slate-800/60 mt-4 pt-2 text-[10px] text-gray-500 flex justify-between">
-                        <span>模組：KT-06</span>
-                        <span>雙情境個人化配置引擎</span>
-                    </div>
-                </a>
-
             </div>
             
         </div>
@@ -218,9 +163,7 @@
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
 
-                // 🛠️ 核心防呆修正：檢查此新註冊帳號在進度表中有沒有資料列，若無，自動建立一筆(分數預設為0)
                 await ensureUserProgressRow();
-
                 fetchUserProgress();
                 initRealtimeScore();
             } catch (err) { console.error(err); }
@@ -233,31 +176,22 @@
             window.location.href = 'register.html';
         }
 
-        // 🛠️ 核心防呆建置函數
         async function ensureUserProgressRow() {
             if (!testUserId) return;
             try {
                 const { data, error } = await supabaseClient.from('lms_disaster_progress')
-                    .select('user_id')
-                    .eq('user_id', testUserId);
-                
-                // 如果回傳的資料長度為 0，說明是全新帳號，幫他 insert 初始列
+                    .select('user_id').eq('user_id', testUserId);
                 if (!data || data.length === 0) {
                     await supabaseClient.from('lms_disaster_progress').insert([
                         { 
                             user_id: testUserId, 
                             disaster_kit_score: 0,
-                            earthquake_completed_quizzes: 0,
-                            typhoon_completed_quizzes: 0,
-                            fire_completed_quizzes: 0,
-                            total_correct_answers: 0,
-                            total_answered_questions: 0,
+                            ai_feedback: '',
                             updated_at: new Date().toISOString()
                         }
                     ]);
-                    console.log("🚀 已為新註冊使用者成功初始化資料列！");
                 }
-            } catch (e) { console.error("初始化進度表失敗:", e); }
+            } catch (e) { console.error(e); }
         }
 
         function initRealtimeScore() {
@@ -265,13 +199,13 @@
                 if (!testUserId) return;
                 try {
                     const { data, error } = await supabaseClient.from('lms_disaster_progress')
-                        .select('disaster_kit_score')
+                        .select('disaster_kit_score, ai_feedback')
                         .eq('user_id', testUserId)
                         .single();
                     if (data && !error) { 
                         updateScoreUI(data); 
                     }
-                } catch(e) { console.error("實時更新錯誤:", e); }
+                } catch(e) { console.error(e); }
             }, 2500); 
         }
 
@@ -289,10 +223,20 @@
         function updateScoreUI(data) {
             const scoreDisplay = document.getElementById('scoreDisplay');
             const statusMessage = document.getElementById('statusMessage');
-            if (!scoreDisplay || !statusMessage) return;
+            const feedbackText = document.getElementById('aiFeedbackText');
+            if (!scoreDisplay || !statusMessage || !feedbackText) return;
 
             const score = data.disaster_kit_score || 0;
             scoreDisplay.innerText = score;
+            
+            // 動態更新帶有換行的 AI 建議文本
+            if (data.ai_feedback && data.ai_feedback.trim() !== '') {
+                feedbackText.innerText = data.ai_feedback;
+                feedbackText.className = "text-xs text-gray-300 leading-relaxed";
+            } else {
+                feedbackText.innerText = "⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。";
+                feedbackText.className = "text-xs text-gray-500 italic";
+            }
             
             if (score < 60) {
                 statusMessage.innerText = "🔴 警告：實體物資嚴重不足";
