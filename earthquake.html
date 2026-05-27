@@ -93,25 +93,52 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🕹️ 訓練一：AI 斷點情境模擬</h3>
+    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：居家防震重型家具安檢</h3>
+        <span id="earthquakeScoreBadge" class="bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-blue-900/40">安全防禦度：0%</span>
+    </div>
+    <div class="p-6">
+        <p class="text-xs text-gray-400 mb-4">請實地巡視家中環境，勾選已完成的防震重物固定。強震來襲時，未固定的家具是致命的主要原因：</p>
+        
+        <div class="space-y-3">
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">大型重型櫥櫃固定</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">書櫃、衣櫃已使用 L 型金屬片或裝卸式移動防止帶牢固鎖在牆壁或樑柱上。</span>
                 </div>
-                <div class="p-6">
-                    <button id="startQuizBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 hover:border-blue-500 font-bold py-3.5 px-6 rounded-xl transition shadow-lg mb-6 text-sm flex justify-center items-center gap-2">
-                        <span>🎲</span> 啟動 AI 地震情境出題
-                    </button>
+            </label>
 
-                    <div id="aiQuizDisplay" class="hidden">
-                        <div class="flex items-center gap-3 mb-4 no-select">
-                            <div class="bg-blue-500/20 px-3 py-1.5 rounded-lg text-xs text-blue-400 font-bold">🤖 Gemini 導師</div>
-                            <p class="text-xs text-gray-400">已為您生成專屬情境題</p>
-                        </div>
-                        <p id="questionText" class="text-md font-bold mb-6 leading-relaxed text-gray-200"></p>
-                        <div id="optionsContainer" class="flex flex-col gap-3"></div>
-                        <div id="explanationBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-gray-300 leading-relaxed whitespace-pre-line"></div>
-                    </div>
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">廚房家電與冰箱安全懸吊</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">冰箱背面已用安全防止帶固定，微波爐與烤箱下方皆有黏貼式防滑墊片。</span>
                 </div>
-            </div>
+            </label>
+
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">液晶電視與懸掛物防掉落</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">客廳與房間電視已用防傾倒鐵線/綁帶固定在電視櫃或牆面上，床頭未擺放重物。</span>
+                </div>
+            </label>
+
+            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" onchange="calculateEarthquakeScore()" class="eq-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0 cursor-pointer">
+                <div class="flex-1 min-w-0">
+                    <span class="text-gray-300 text-sm font-bold block">玻璃窗戶防爆膜</span>
+                    <span class="text-xs text-gray-500 block mt-0.5">家大面積的落地窗或窗戶玻璃已張貼透明防爆膜，防止強震碎裂飛散傷人。</span>
+                </div>
+            </label>
+        </div>
+
+        <div id="eqSyncStatus" class="hidden mt-4 p-3 bg-blue-950/20 border border-blue-900/30 rounded-xl text-center text-xs text-blue-400">
+            🚀 [資料庫同步] 居家防震固定整備進度已寫入雲端！
+        </div>
+    </div>
+</div>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
                 <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：防震文本 AI 智能詢問區</h3>
