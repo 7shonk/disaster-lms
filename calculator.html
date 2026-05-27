@@ -3,108 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跨系統授權登入 - 防災學習</title>
+    <title>防災物資儲備計算機</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .gradient-text {
-            background: linear-gradient(to right, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .gradient-text { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .no-select { -webkit-user-select: none; user-select: none; }
+        /* 側邊欄過渡動畫 */
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-900 flex items-center justify-center min-h-screen font-sans text-white overflow-hidden">
+<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
 
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
-
-    <div class="bg-slate-800/80 backdrop-blur-xl p-10 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md relative z-10">
+    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
+        <div class="flex items-center gap-3 font-bold text-lg mb-10 overflow-hidden whitespace-nowrap pl-1">
+            <span class="text-xl">🌪️</span>
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+        </div>
         
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold mb-2 gradient-text">Disaster LMS </h1>
-            <p class="text-gray-400 text-sm">請登入或註冊以連動您的天氣行事曆帳號</p>
-        </div>
+        <nav class="space-y-4 flex-1">
+            <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 hover:bg-slate-800 rounded-xl transition whitespace-nowrap pl-2">
+                <span class="text-lg">📊</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">返回學習中控台</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 text-sky-400 bg-sky-950/40 p-2.5 rounded-xl border border-sky-900/30 whitespace-nowrap pl-2">
+                <span class="text-lg">🧮</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">儲備物資計算機</span>
+            </a>
+        </nav>
 
-        <div id="authContent" class="space-y-5">
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">帳號 (Email)</label>
-                <input type="email" id="emailInput" placeholder="例如: student@nutn.edu.tw" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">密碼 (最少 6 碼)</label>
-                <input type="password" id="passwordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
-            </div>
+        <div class="mt-auto opacity-0 group-hover:opacity-50 text-[10px] text-gray-500 text-center transition-opacity duration-300 pb-2">
+            收放式導覽選單
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto">
             
-            <div id="errorMsg" class="hidden text-red-400 text-sm font-bold text-center"></div>
+            <header class="mb-6 flex justify-between items-start">
+                <div>
+                    <h1 class="text-3xl font-black mb-2 gradient-text">🧮 防災物資儲備計算機</h1>
+                    <p class="text-gray-400 text-xs">智能精算實體備料清單，請在桌上備齊物資並勾選以解鎖 AI 鏡頭盤點。</p>
+                </div>
+                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select">消防署標準對齊</span>
+            </header>
 
-            <div class="flex gap-3 mt-6">
-                <button onclick="handleAuth('login')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition shadow-lg">
-                    登入
-                </button>
-                <button onclick="handleAuth('register')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition border border-slate-600">
-                    註冊新帳號
-                </button>
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
+                        <div class="grid grid-cols-5 gap-2" id="peopleSelector">
+                            </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">⏱️ 預計儲備天數</label>
+                        <div class="flex gap-3">
+                            <button onclick="setDays(3)" id="dayBtn-3" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition cursor-pointer text-sm">3 天份 (避難包)</button>
+                            <button onclick="setDays(7)" id="dayBtn-7" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 transition cursor-pointer text-sm">7 天份 (居家儲備)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-2xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3 no-select">
+                    <h2 class="text-sm font-bold text-gray-400 flex items-center gap-2">🛒 您專屬的實體配備清單</h2>
+                    <span id="summaryBadge" class="text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50">1人 / 3天配置</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-sky-400 uppercase tracking-wider no-select">1. 食品與生命飲水</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-400 text-xs font-semibold block truncate">💧 大瓶飲用水 (1500ml) [cite: 360]</span>
+                                <span class="text-xl font-black text-white block mt-0.5" id="box-water">6 大瓶</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-400 text-xs font-semibold block truncate">🍜 泡麵 / 乾糧餅乾 [cite: 348]</span>
+                                <span class="text-xl font-black text-white block mt-0.5" id="box-grains">15 包</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-400 text-xs font-semibold block truncate">🥩 魚肉營養罐頭食品 [cite: 352]</span>
+                                <span class="text-xl font-black text-white block mt-0.5" id="box-protein">15 罐</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-1">
+                    <h3 class="text-xs font-bold text-teal-400 uppercase tracking-wider no-select">2. 衛生與醫療防護</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">😷 醫療防護口罩 [cite: 361]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-mask">3 片</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🧻 衛生紙 / 濕紙巾 [cite: 361, 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-wipes">30 張</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🧴 乾洗手酒精 / 漱口水 [cite: 361]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-alcohol">1 瓶</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none sm:col-span-2 md:col-span-3">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🚑 應變急救藥箱 (內含傷口外藥膏、急救紗布與個人常備藥物) [cite: 361]</span>
+                                <span class="text-sm font-bold text-emerald-400 mt-1 block">確認備齊 1 標準盒</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-1">
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider no-select">3. 日常防災應變工具</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🔦 強光手電筒 (含電池) [cite: 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-light">1 盞</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🔋 充飽的行動電源組 [cite: 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-power">1 台</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🔥 卡式瓦斯罐消耗量 [cite: 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-gas">2.3 瓶</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">🧤 防切割棉紗手套 [cite: 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-gloves">1 雙</span>
+                            </div>
+                        </label>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none sm:col-span-2">
+                            <input type="checkbox" onchange="calculateLockStatus()" class="item-check w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-gray-400 text-xs font-semibold block">📦 封箱膠帶 / 韌性大塑膠袋 [cite: 362]</span>
+                                <span class="text-lg font-bold text-white block mt-0.5" id="box-wrap">1 卷 / 1盒</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-800">
+                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed">
+                        🔒 請先在上方打勾確認備齊桌上實物
+                    </a>
+                </div>
             </div>
         </div>
-
-        <div id="loadingState" class="hidden flex-col items-center justify-center py-6">
-            <svg class="animate-spin h-10 w-10 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p id="loadingText" class="text-sm text-blue-400 font-bold">正在驗證身分...</p>
-        </div>
-    </div>
+    </main>
 
     <script>
-        // ==========================================
-        // Supabase 設定 (與 index.html 相同)
-        // ==========================================
-        const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        let currentPeople = 1;
+        let currentDays = 3;
 
-        async function handleAuth(action) {
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (!email || password.length < 6) {
-                errorMsg.innerText = "請輸入有效的信箱，且密碼至少需 6 碼！";
-                errorMsg.classList.remove('hidden');
-                return;
+        // 初始化人數選擇 UI 
+        function initUI() {
+            const container = document.getElementById('peopleSelector');
+            if(!container) return;
+            container.innerHTML = '';
+            for(let i=1; i<=5; i++) {
+                const btn = document.createElement('button');
+                btn.id = `peopleBtn-${i}`;
+                btn.innerText = `${i} 人`;
+                btn.className = i === 1 
+                    ? "py-2.5 font-bold rounded-xl text-center bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition cursor-pointer text-xs"
+                    : "py-2.5 font-bold rounded-xl text-center bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition cursor-pointer text-xs";
+                btn.onclick = () => setPeople(i);
+                container.appendChild(btn);
             }
+            calculateLogics();
+        }
 
-            // UI 切換為 Loading
-            document.getElementById('authContent').classList.add('hidden');
-            document.getElementById('loadingState').classList.remove('hidden');
-            document.getElementById('loadingState').style.display = 'flex';
-            document.getElementById('loadingText').innerText = action === 'login' ? "登入驗證中，請稍候..." : "正在為您建立生態系帳號...";
-
-            try {
-                let result;
-                if (action === 'register') {
-                    // 1. 執行註冊
-                    result = await supabaseClient.auth.signUp({ email, password });
-                } else {
-                    // 2. 執行登入
-                    result = await supabaseClient.auth.signInWithPassword({ email, password });
+        function setPeople(num) {
+            currentPeople = num;
+            for(let i=1; i<=5; i++) {
+                const btn = document.getElementById(`peopleBtn-${i}`);
+                if(btn) {
+                    btn.className = i === num 
+                        ? "py-2.5 font-bold rounded-xl text-center bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition cursor-pointer text-xs"
+                        : "py-2.5 font-bold rounded-xl text-center bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition cursor-pointer text-xs";
                 }
+            }
+            resetAllCheckboxes();
+            calculateLogics();
+        }
 
-                if (result.error) throw result.error;
+        function setDays(day) {
+            currentDays = day;
+            const btn3 = document.getElementById('dayBtn-3');
+            const btn7 = document.getElementById('dayBtn-7');
+            
+            if(day === 3) {
+                btn3.className = "flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition cursor-pointer text-xs";
+                btn7.className = "flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition cursor-pointer text-xs";
+            } else {
+                btn3.className = "flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition cursor-pointer text-xs";
+                btn7.className = "flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition cursor-pointer text-xs";
+            }
+            resetAllCheckboxes();
+            calculateLogics();
+        }
 
-                // 成功後，跳轉到中控台
-                window.location.href = 'index.html';
+        // 當調整人數或天數時，強制重置所有的打勾狀態
+        function resetAllCheckboxes() {
+            const checkboxes = document.querySelectorAll('.item-check');
+            checkboxes.forEach(cb => cb.checked = false);
+            calculateLockStatus();
+        }
 
-            } catch (error) {
-                // 失敗的話，退回輸入畫面並顯示錯誤
-                document.getElementById('loadingState').classList.add('hidden');
-                document.getElementById('authContent').classList.remove('hidden');
-                errorMsg.innerText = `錯誤：${error.message}`;
-                errorMsg.classList.remove('hidden');
+        // 動態檢查打勾進度並解鎖老黃的 App 深層連結
+        function calculateLockStatus() {
+            const checkboxes = document.querySelectorAll('.item-check');
+            const btn = document.getElementById('iosDeepLinkBtn');
+            if(!btn) return;
+
+            const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(c => c.checked);
+
+            if (allChecked) {
+                btn.classList.remove('pointer-events-none', 'bg-slate-800', 'text-gray-500', 'cursor-not-allowed');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_20px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer');
+                btn.innerHTML = "🚀 備料完成！喚醒 iOS 智慧辨識鏡頭盤點";
+                btn.href = "disasterlms://opencamera"; // 預留給老黃的 App 喚醒協定
+            } else {
+                btn.removeAttribute('href');
+                btn.className = "block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-md transition pointer-events-none cursor-not-allowed";
+                btn.innerHTML = "🔒 請先在上方打勾確認備齊桌上實物";
             }
         }
+
+        // 🌟 對齊官方演算法核心
+        function calculateLogics() {
+            const summaryBadge = document.getElementById('summaryBadge');
+            if(summaryBadge) summaryBadge.innerText = `${currentPeople}人 / ${currentDays}天配置`;
+
+            // 1. 食品耗材
+            const totalWaterBottles = currentPeople * 2 * currentDays; // 1500ml 大瓶水基準 [cite: 360]
+            const totalGrains = currentPeople * 5 * currentDays; // 糧食包數 [cite: 348]
+            const totalProtein = currentPeople * 5 * currentDays; // 蛋白質罐頭數 [cite: 352]
+
+            // 2. 醫療衛生
+            const totalMasks = currentPeople * 1 * currentDays; // 口罩 [cite: 361]
+            const totalWipes = currentPeople * 10 * currentDays; // 濕紙巾 [cite: 361]
+            const toiletPaper = Math.ceil((currentPeople * currentDays) / 7);
+            const mouthwashVolume = currentPeople * 90 * currentDays; // 漱口水基準 [cite: 361]
+
+            // 3. 防災應變工具
+            const mainLights = Math.ceil(currentPeople / 2);
+            const powerBanks = Math.ceil(currentPeople / 2);
+            const totalGasCans = (currentDays * 0.75 * currentPeople).toFixed(1); // 每日瓦斯消耗 [cite: 362]
+            const wrapBox = Math.ceil(currentPeople / 3);
+
+            // 資料一秒動態替換
+            document.getElementById('box-water').innerText = `${totalWaterBottles} 大瓶`;
+            document.getElementById('box-grains').innerText = `${totalGrains} 包`;
+            document.getElementById('box-protein').innerText = `${totalProtein} 罐`;
+            document.getElementById('box-mask').innerText = `${totalMasks} 片`;
+            document.getElementById('box-wipes').innerText = `${totalWipes} 張 / ${toiletPaper} 捲`;
+            document.getElementById('box-alcohol').innerText = `1 瓶 / ${mouthwashVolume}ml`;
+            document.getElementById('box-light').innerText = `${mainLights} 盞`;
+            document.getElementById('box-power').innerText = `${powerBanks} 台`;
+            document.getElementById('box-gas').innerText = `${totalGasCans} 瓶`;
+            document.getElementById('box-gloves').innerText = `${currentPeople} 雙`;
+            document.getElementById('box-wrap').innerText = `${wrapBox} 卷 / ${wrapBox} 盒`;
+        }
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', initUI);
     </script>
 </body>
 </html>
