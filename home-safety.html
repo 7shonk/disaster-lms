@@ -45,13 +45,13 @@
         </nav>
     </aside>
 
-    <main class="flex-1 ml-16 p-6 md:p-8 overflow-y-auto">
+    <main class="flex-1 ml-16 p-4 md:p-8 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
             
-            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
-                    <h1 class="text-3xl font-black mb-2 gradient-text">🚪 居家綜合安全教室</h1>
-                    <p class="text-gray-400 text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
+                    <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🚪 居家綜合安全教室</h1>
+                    <p class="text-gray-400 text-[11px] md:text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
                 </div>
                 <span class="bg-yellow-950 text-yellow-400 text-xs px-3 py-1 rounded-full font-bold border border-yellow-900/50 no-select whitespace-nowrap">內政部家庭防災手冊對齊</span>
             </header>
@@ -60,7 +60,7 @@
                 <div class="flex-1">
                     <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防範居家隱形殺手</h2>
                     <p class="text-xs text-gray-400 leading-relaxed mb-4">
-                        居家安全最大的隱形殺手是<strong class="text-yellow-400">「一氧化碳中毒」</strong>與<strong class="text-yellow-400">「瓦斯氣爆」</strong>。請記住，聞到瓦斯味時絕對不可開啟任何電器開關！點擊右側按鈕開啟《家庭防災手冊》，學習正確的保命防護步驟。
+                        居家安全最大的隱形殺手是一氧化碳中毒與瓦斯氣爆。請記住，聞到瓦斯味時絕對不可開啟任何電器開關！點擊右側按鈕開啟《家庭防災手冊》，學習正確的保命防護步驟。
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《家庭防災手冊.pdf》</span>
@@ -73,44 +73,44 @@
             </div>
 
             <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：瓦斯熱水器與防毒盤點</h3>
-        <span id="safetyScoreBadge" class="bg-yellow-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-yellow-900/40">安全防禦度：0%</span>
-    </div>
-    <div class="p-6">
-        <p class="text-xs text-gray-400 mb-4">請實地確認家中廚房與陽台，勾選安全項目以遠離氣爆與一氧化碳無形毒害：</p>
-        
-        <div class="space-y-3">
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">熱水器完全通風與強制排氣</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">燃氣熱水器安裝於屋外通風處。若加裝窗戶之陽台，則已安裝專屬強制排氣管。</span>
+                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：瓦斯熱水器與防毒盤點</h3>
+                    <span id="safetyScoreBadge" class="bg-yellow-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-yellow-900/40">安全防禦度 : 0%</span>
                 </div>
-            </label>
+                <div class="p-6">
+                    <p class="text-xs text-gray-400 mb-4">請實地確認家中廚房與陽台，勾選安全項目以遠離氣爆與一氧化碳無形毒害：</p>
+                    
+                    <div class="space-y-3">
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">熱水器完全通風與強制排氣</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">燃氣熱水器安裝於屋外通風處。若加裝密閉窗戶之陽台，則已安裝專屬強制排氣管及供氣通路。</span>
+                            </div>
+                        </label>
 
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">合格瓦斯管線與定期泡泡檢漏</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">廚房瓦斯橡皮管無老化龜裂，且已使用肥皂水塗抹接縫處測試無漏氣跡象。</span>
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">合格瓦斯管線與定期泡泡檢漏</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">廚房瓦斯橡皮管無老化龜裂或鬆脫，且已使用肥皂泡塗抹於接縫處測試無漏氣。</span>
+                            </div>
+                        </label>
+
+                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-gray-300 text-sm font-bold block">一氧化碳與警報器安全教育</span>
+                                <span class="text-xs text-gray-500 block mt-0.5">室內隨時保持空氣對流，且家中成員皆知曉若聞到疑似外洩瓦斯，絕不開啟任何換氣電器或電風扇。</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="safetySyncStatus" class="hidden mt-4 p-3 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center text-xs text-yellow-400">
+                        🚀 [資料庫同步] 居家安全環境進度已確認！
+                    </div>
                 </div>
-            </label>
-
-            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                <div class="flex-1 min-w-0">
-                    <span class="text-gray-300 text-sm font-bold block">一氧化碳與警報器安全教育</span>
-                    <span class="text-xs text-gray-500 block mt-0.5">室內通風良好，且明確知曉若聞到瓦斯外洩時，絕對不可開關抽風機等電器。</span>
-                </div>
-            </label>
-        </div>
-
-        <div id="safetySyncStatus" class="hidden mt-4 p-3 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center text-xs text-yellow-400">
-            🚀 [資料庫同步] 居家安全環境進度已寫入雲端！
-        </div>
-    </div>
-</div>
+            </div>
 
             <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
                 <h3 class="text-md font-bold text-yellow-400 mb-2 flex items-center gap-2">💬 訓練二：居家文本 AI 智能詢問區</h3>
@@ -118,8 +118,8 @@
                     在研讀《家庭防災手冊》時，對於「熱水器安裝」或「瓦斯外洩處理」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
                 </p>
                 <div class="space-y-4">
-                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『聞到瓦斯味可以開抽風機嗎？』、『熱水器裝在陽台安全嗎？』..."></textarea>
-                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-yellow-600/10 flex items-center gap-2 cursor-pointer">
+                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『聞到瓦斯味可以開抽風機嗎？』..."></textarea>
+                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg flex items-center gap-2 cursor-pointer">
                         <span>💬</span> 送出詢問 AI 導師
                     </button>
                 </div>
@@ -166,12 +166,10 @@
                 
                 if (question.includes("瓦斯") || question.includes("漏氣") || question.includes("抽風機")) {
                     responseText.innerHTML = `⚠️ <b>【官方手冊澄清：瓦斯漏氣絕對禁用電器】</b>\n\n《家庭防災手冊》明確指出，聞到瓦斯味時，<b>千萬不可以打開抽風機或電風扇</b>，因為電器開關產生的微小火花會瞬間引發氣爆！\n\n<b>正確四步驟：</b>\n1. 禁動任何電器開關。\n2. 關閉瓦斯總開關。\n3. 輕輕推開窗戶讓其自然通風。\n4. 離開現場撥打 119。`;
-                } 
-                else if (question.includes("一氧化碳") || question.includes("熱水器") || question.includes("陽台")) {
-                    responseText.innerHTML = `🚨 <b>【隱形殺手：一氧化碳中毒防範】</b>\n\n若將熱水器安裝在「加裝窗戶的陽台」或室內，非常容易因燃燒不完全產生一氧化碳中毒。手冊規定：\n1. 必須委託合格技術士安裝「強制排氣型」熱水器。\n2. 或將熱水器移至屋外完全通風處。\n3. 洗澡時若感到頭暈、噁心，應立即停止洗澡並開窗通風。`;
-                }
-                else {
-                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查瓦斯管線是否老化，並確保熱水器安裝環境絕對通風。`;
+                } else if (question.includes("一氧化碳") || question.includes("熱水器") || question.includes("陽台")) {
+                    responseText.innerHTML = `🚨 <b>【隱形殺手：一氧化碳中毒防範】</b>\n\n若將熱水器安裝在「加裝窗戶的陽台」或室內，容易因瓦斯燃燒不完全產生一氧化碳中毒。應委託合格技術士加裝「強制排氣型」熱水器或將其移至完全通風處。`;
+                } else {
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查瓦斯橡皮軟管是否劣化、接頭是否夾緊。`;
                 }
                 
                 btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
@@ -180,53 +178,22 @@
             }, 1200);
         }
 
-        document.getElementById('startQuizBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('startQuizBtn');
-            btn.innerHTML = "<span>⏳</span> 連結中...";
-            btn.disabled = true;
-            try {
-                // 為了 Demo 穩定，這裡直接注入本地題庫
-                renderQuiz({
-                    question: "冬天洗澡時，突然聞到屋內有濃濃的瓦斯味，你第一時間應該怎麼做？",
-                    options: [
-                        "A. 趕快打開抽風機跟電風扇，把瓦斯味吹散", 
-                        "B. 輕輕推開窗戶讓空氣流通，關閉瓦斯開關，並迅速離開現場", 
-                        "C. 拿打火機點火測試看看是哪裡漏氣"
-                    ],
-                    correctAnswer: "B. 輕輕推開窗戶讓空氣流通，關閉瓦斯開關，並迅速離開現場",
-                    explanation: "瓦斯外洩時，環境中充滿易燃氣體，此時開啟抽風機或任何電器開關產生的微小電氣火花，都會瞬間引發致命氣爆！輕開窗戶自然通風才是唯一解法。"
-                });
-            } finally {
-                btn.innerHTML = "<span>🎲</span> 重新產生情境";
-                btn.disabled = false;
+        function calculateSafetyScore() {
+            const checkboxes = document.querySelectorAll('.safety-check');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            const scorePercent = Math.round((checkedCount / totalCount) * 100);
+            
+            const badge = document.getElementById('safetyScoreBadge');
+            badge.innerText = `安全防禦度：${scorePercent}%`;
+            
+            if (scorePercent === 100) {
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                document.getElementById('safetySyncStatus').classList.remove('hidden');
+            } else {
+                badge.className = "bg-yellow-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-yellow-900/40";
+                document.getElementById('safetySyncStatus').classList.add('hidden');
             }
-        });
-
-        function renderQuiz(quiz) {
-            document.getElementById('aiQuizDisplay').classList.remove('hidden');
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('questionText').innerText = quiz.question;
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = ""; 
-
-            quiz.options.forEach(option => {
-                const optBtn = document.createElement('button');
-                optBtn.className = "text-left w-full bg-slate-800 hover:bg-slate-700 p-4 rounded-xl font-bold border border-slate-700/50 transition text-sm text-gray-300";
-                optBtn.innerText = option;
-                optBtn.onclick = async () => {
-                    document.getElementById('explanationBox').classList.remove('hidden');
-                    container.querySelectorAll('button').forEach(b => b.disabled = true);
-
-                    if (option === quiz.correctAnswer) {
-                        optBtn.className = "text-left w-full bg-yellow-900/40 border-yellow-500/50 p-4 rounded-xl font-bold text-yellow-400";
-                        document.getElementById('explanationBox').innerHTML = `✅ <b>決策正確！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
-                    } else {
-                        optBtn.className = "text-left w-full bg-red-900/40 border-red-500/50 p-4 rounded-xl font-bold text-red-400";
-                        document.getElementById('explanationBox').innerHTML = `❌ <b>危險決策！這會引發氣爆！</b>\n\n<b>📖 課本知識回饋：</b>\n${quiz.explanation}`;
-                    }
-                };
-                container.appendChild(optBtn);
-            });
         }
     </script>
 </body>
