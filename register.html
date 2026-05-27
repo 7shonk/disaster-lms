@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>跨系統授權登入 - 防災學習</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2\"></script>
     <style>
         .gradient-text {
             background: linear-gradient(to right, #60a5fa, #a78bfa);
@@ -19,56 +19,86 @@
     <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
 
-    <div class="bg-slate-800/80 backdrop-blur-xl p-10 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md relative z-10">
+    <div class="bg-slate-800/80 backdrop-blur-xl p-10 rounded-2xl border border-slate-700/50 shadow-2xl w-full max-w-md relative z-10 mx-4">
         
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold mb-2 gradient-text">Disaster LMS </h1>
-            <p class="text-gray-400 text-sm">請登入或註冊以連動您的天氣行事曆帳號</p>
+        <div id="loadingState" class="hidden flex-col items-center justify-center py-10">
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+            <p id="loadingText" class="text-sm text-gray-400 font-medium"></p>
         </div>
 
-        <div id="authContent" class="space-y-5">
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">帳號 (Email)</label>
-                <input type="email" id="emailInput" placeholder="例如: student@nutn.edu.tw" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
+        <div id="authContent">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-black tracking-tight mb-2">LMS <span class="gradient-text">防災生態系</span></h1>
+                <p id="authSubtitle" class="text-xs text-gray-400">請登入以同步您的數位孿生大廳進度</p>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">密碼 (最少 6 碼)</label>
-                <input type="password" id="passwordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition" required>
-            </div>
-            
-            <div id="errorMsg" class="hidden text-red-400 text-sm font-bold text-center"></div>
 
-            <div class="flex gap-3 mt-6">
-                <button onclick="handleAuth('login')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition shadow-lg">
-                    登入
-                </button>
-                <button onclick="handleAuth('register')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition border border-slate-600">
-                    註冊新帳號
+            <div class="space-y-4">
+                <div id="nameField">
+                    <label class="block text-gray-400 text-xs font-bold mb-2">學生姓名 / 學號</label>
+                    <input type="text" id="studentName" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 text-sm text-white outline-none transition" placeholder="例如：123456">
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-xs font-bold mb-2">電子信箱 Email</label>
+                    <input type="email" id="email" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 text-sm text-white outline-none transition" placeholder="student@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-xs font-bold mb-2">安全密碼 Password</label>
+                    <input type="password" id="password" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl p-3 text-sm text-white outline-none transition" placeholder="••••••••">
+                </div>
+
+                <div id="errorMsg" class="hidden bg-red-900/30 border border-red-500/40 text-red-400 text-xs p-3 rounded-xl font-medium"></div>
+
+                <button id="primaryBtn" onclick="submitAuth()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold p-3.5 rounded-xl text-sm shadow-lg shadow-blue-500/20 transition duration-200 mt-2">
+                    立即建立帳號並登入
                 </button>
             </div>
-        </div>
 
-        <div id="loadingState" class="hidden flex-col items-center justify-center py-6">
-            <svg class="animate-spin h-10 w-10 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p id="loadingText" class="text-sm text-blue-400 font-bold">正在驗證身分...</p>
+            <div class="text-center mt-6 pt-4 border-t border-slate-700/30">
+                <p class="text-xs text-gray-400">
+                    <span id="switchText">已經有生態系帳號了？</span>
+                    <a href="javascript:void(0)" id="switchBtn" onclick="toggleMode()" class="text-blue-400 font-bold hover:underline ml-1">切換至登入</a>
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // Supabase 設定 (與 index.html 相同)
-        // ==========================================
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
-        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
+        const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function handleAuth(action) {
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
+        let currentMode = 'register'; // 預設為註冊模式
+
+        function toggleMode() {
             const errorMsg = document.getElementById('errorMsg');
+            errorMsg.classList.add('hidden');
+            
+            if (currentMode === 'register') {
+                currentMode = 'login';
+                document.getElementById('authSubtitle').innerText = "歡迎回來，請輸入您的帳號密碼進行驗證";
+                document.getElementById('nameField').style.display = 'none'; // 登入時隱藏姓名欄位
+                document.getElementById('primaryBtn').innerText = "安全登入中控台";
+                document.getElementById('switchText').innerText = "還沒有生態系帳號？";
+                document.getElementById('switchBtn').innerText = "切換至註冊";
+            } else {
+                currentMode = 'register';
+                document.getElementById('authSubtitle').innerText = "請登入以同步您的數位孿生大廳進度";
+                document.getElementById('nameField').style.display = 'block'; // 註冊時顯示姓名欄位
+                document.getElementById('primaryBtn').innerText = "立即建立帳號並登入";
+                document.getElementById('switchText').innerText = "已經有生態系帳號了？";
+                document.getElementById('switchBtn').innerText = "切換至登入";
+            }
+        }
+
+        async function submitAuth() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const studentName = document.getElementById('studentName').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            errorMsg.classList.add('hidden');
 
             if (!email || password.length < 6) {
                 errorMsg.innerText = "請輸入有效的信箱，且密碼至少需 6 碼！";
@@ -76,32 +106,56 @@
                 return;
             }
 
-            // UI 切換為 Loading
+            if (currentMode === 'register' && !studentName) {
+                errorMsg.innerText = "註冊新帳號時，學生姓名 / 學號 不能為空！";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // 進入 Loading 狀態
             document.getElementById('authContent').classList.add('hidden');
             document.getElementById('loadingState').classList.remove('hidden');
-            document.getElementById('loadingState').style.display = 'flex';
-            document.getElementById('loadingText').innerText = action === 'login' ? "登入驗證中，請稍候..." : "正在為您建立生態系帳號...";
+            document.getElementById('loadingText').innerText = currentMode === 'login' ? "登入驗證中，請稍候..." : "正在為您建立生態系帳號...";
 
             try {
                 let result;
-                if (action === 'register') {
+                if (currentMode === 'register') {
                     // 1. 執行註冊
                     result = await supabaseClient.auth.signUp({ email, password });
+                    if (result.error) throw result.error;
+
+                    if (result.data && result.data.user) {
+                        // 2. 🌟 關鍵核心：註冊成功當下立刻初始化資料表，把學生的自訂姓名鎖死寫入
+                        const { error: dbError } = await supabaseClient.from('lms_disaster_progress').insert([
+                            {
+                                user_id: result.data.user.id,
+                                student_name: studentName,
+                                disaster_kit_score: 0,
+                                ai_feedback: '',
+                                missing_items: [],
+                                overstocked_items: [],
+                                earthquake_completed_quizzes: 0,
+                                typhoon_completed_quizzes: 0,
+                                fire_completed_quizzes: 0,
+                                updated_at: new Date().toISOString()
+                            }
+                        ]);
+                        if (dbError) console.error("初始化資料庫姓名失敗:", dbError);
+                    }
                 } else {
-                    // 2. 執行登入
+                    // 3. 執行登入
                     result = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (result.error) throw result.error;
                 }
 
-                if (result.error) throw result.error;
-
-                // 成功後，跳轉到中控台
+                // 成功後跳轉到中控大廳
                 window.location.href = 'index.html';
 
             } catch (error) {
-                // 失敗的話，退回輸入畫面並顯示錯誤
+                // 失敗退回輸入畫面並回報錯誤
                 document.getElementById('loadingState').classList.add('hidden');
                 document.getElementById('authContent').classList.remove('hidden');
-                errorMsg.innerText = `錯誤：${error.message}`;
+                errorMsg.innerText = `驗證失敗：${error.message}`;
                 errorMsg.classList.remove('hidden');
             }
         }
