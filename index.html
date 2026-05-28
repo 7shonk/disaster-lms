@@ -45,7 +45,7 @@
         </nav>
 
         <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
-            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
                 <span class="text-lg">🚪</span>
                 <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
@@ -63,6 +63,7 @@
 
             <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-lg mb-8 relative overflow-hidden">
                 <div class="flex flex-col gap-6">
+                    
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
                         <div class="no-select">
                             <h2 class="text-md font-bold text-blue-400 mb-1">📋 步驟一：家庭實體物資智慧盤點</h2>
@@ -74,15 +75,33 @@
                         </div>
                     </div>
 
-                    <div id="aiFeedbackContainer" class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="flex items-center gap-2 mb-3 no-select">
-                            <span class="text-md">💡</span>
-                            <h3 class="text-sm font-bold text-yellow-500">AI 即時專家優化建議</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div id="aiFeedbackContainer" class="lg:col-span-2 bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl">
+                            <div class="flex items-center gap-2 mb-3 no-select">
+                                <span class="text-md">💡</span>
+                                <h3 class="text-sm font-bold text-yellow-500">AI 即時專家優化建議</h3>
+                            </div>
+                            <p id="aiFeedbackText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line">
+                                ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
+                            </p>
                         </div>
-                        <p id="aiFeedbackText" class="text-xs text-gray-400 leading-relaxed whitespace-pre-line">
-                            ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
-                        </p>
+                        
+                        <div class="lg:col-span-1 flex flex-col gap-3">
+                            <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-xl">
+                                <span class="text-[11px] font-bold text-red-400 block mb-2">❌ 缺失物資</span>
+                                <div id="missingItemsList" class="text-[12px] text-gray-300 space-y-1">
+                                    <span class="text-gray-500 italic">無盤點紀錄</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl">
+                                <span class="text-[11px] font-bold text-yellow-500 block mb-2">📦 建議精簡之物資</span>
+                                <div id="overstockedItemsList" class="text-[12px] text-gray-300 space-y-1">
+                                    <span class="text-gray-500 italic">無盤點紀錄</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -107,17 +126,33 @@
             if (!session) { window.location.href = 'register.html'; return; }
             testUserId = session.user.id;
             
-            // 立即執行第一次撈取
+            // 1. 頁面載入立即同步最新一次數據
             fetchLatestProgress();
             
-            // 啟動輪詢 (每 2 秒)，這絕對不會失敗
+            // 2. 🌟 雙重保險防線：啟動 2 秒高頻輪詢，App 拍完照一回到網頁 100% 刷新
             setInterval(fetchLatestProgress, 2000); 
+
+            // 3. 🌟 實時通知廣播監聽 (Realtime 訂閱 INSERT)
+            supabaseClient
+                .channel('lms_realtime_dashboard')
+                .on('postgres_changes', { 
+                    event: 'INSERT', 
+                    schema: 'public', 
+                    table: 'lms_disaster_progress' 
+                }, (payload) => {
+                    console.log("【雲端即時廣播】收到全新盤點紀錄！", payload.new);
+                    // 檢查這筆即時進來的資料是不是屬於當前使用者的
+                    if (payload.new.user_id === testUserId) {
+                        updateUI(payload.new);
+                    }
+                })
+                .subscribe();
         }
 
+        // 🌟 核心撈取函式：只抓取最符合當前使用者、且時間最新（updated_at 倒序）的第一筆紀錄
         async function fetchLatestProgress() {
             if (!testUserId) return;
             
-            // 直接抓取該使用者「最新的一筆」資料 (包含名字)
             const { data, error } = await supabaseClient
                 .from('lms_disaster_progress')
                 .select('*')
@@ -125,32 +160,61 @@
                 .order('updated_at', { ascending: false })
                 .limit(1);
 
+            if (error) {
+                console.error("Supabase 資料讀取失敗:", error);
+                return;
+            }
+
             if (data && data.length > 0) {
                 updateUI(data[0]);
             }
         }
 
+        // 🌟 智慧數據渲染機制 (徹底解決陣列解析與 NULL 痛點)
         function updateUI(data) {
-            // 更新姓名 (如果資料庫裡有，就顯示；沒的話用預設信箱頭)
-            const displayName = data.student_name || "學生";
+            console.log("【UI 更新】正在渲染最新物資狀態：", data);
+
+            // 1. 側邊欄真實姓名渲染
+            const displayName = data.student_name || "未知學生";
             document.getElementById('userEmailDisplay').innerText = `🎓 學生：${displayName}`;
             
-            // 更新分數與建議
-            document.getElementById('scoreDisplay').innerText = data.disaster_kit_score || 0;
-            document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "尚未進行盤點，請使用 App 拍照。";
+            // 2. 實體包盤點分數完成率 (防呆補 0)
+            document.getElementById('scoreDisplay').innerText = (data.disaster_kit_score !== null) ? data.disaster_kit_score : 0;
             
-            // 清單渲染邏輯
+            // 3. AI 專家優化建議文字 (防呆處理空值)
+            document.getElementById('aiFeedbackText').innerText = data.ai_feedback || "App 同步完成，AI 正在整理健檢建議...";
+            
+            // 4. 缺失物資清單與建議精簡清單之陣列渲染
             const mList = document.getElementById('missingItemsList');
             const oList = document.getElementById('overstockedItemsList');
             
-            // 確保 UI 正確顯示
-            if(mList) mList.innerHTML = (data.missing_items && data.missing_items.length > 0) 
-                ? data.missing_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
-                : "無缺失項目 🎉";
-                
-            if(oList) oList.innerHTML = (data.overstocked_items && data.overstocked_items.length > 0) 
-                ? data.overstocked_items.map(i => `<div class="mb-1">• ${i}</div>`).join('') 
-                : "無過多贅物 👍";
+            // 處理 missing_items (如果是字串或陣列皆可相容)
+            let missingArray = [];
+            if (Array.isArray(data.missing_items)) {
+                missingArray = data.missing_items;
+            } else if (typeof data.missing_items === 'string' && data.missing_items.trim() !== '') {
+                try { missingArray = JSON.parse(data.missing_items); } catch(e) { missingArray = [data.missing_items]; }
+            }
+
+            if (mList) {
+                mList.innerHTML = (missingArray.length > 0) 
+                    ? missingArray.map(item => `<div class="bg-red-500/10 border border-red-500/20 px-2 py-1 rounded mb-1 text-red-300 font-medium">• ${item}</div>`).join('') 
+                    : `<div class="text-green-400 font-medium italic">🎉 實體物資非常充足！</div>`;
+            }
+
+            // 處理 overstocked_items
+            let overstockedArray = [];
+            if (Array.isArray(data.overstocked_items)) {
+                overstockedArray = data.overstocked_items;
+            } else if (typeof data.overstocked_items === 'string' && data.overstocked_items.trim() !== '') {
+                try { overstockedArray = JSON.parse(data.overstocked_items); } catch(e) { overstockedArray = [data.overstocked_items]; }
+            }
+            
+            if (oList) {
+                oList.innerHTML = (overstockedArray.length > 0) 
+                    ? overstockedArray.map(item => `<div class="bg-slate-950 border border-slate-800 px-2 py-1 rounded mb-1 text-yellow-400/90 font-medium">• ${item}</div>`).join('') 
+                    : `<div class="text-gray-400 italic">👍 避難包很精簡，沒有赘物</div>`;
+            }
         }
 
         async function logout() {
