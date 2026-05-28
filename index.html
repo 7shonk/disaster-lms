@@ -11,25 +11,38 @@
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
 </head>
-<!-- 🌟 修正：利用 flex flex-col 確保整體佈局具備拉伸能力 -->
 <body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <!-- 側邊導覽欄 (整合手勢與點擊雙控機制) -->
-    <aside id="sidebarNav" class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition relative z-50 group">
+    <!-- 🌟 行動端漢堡選單頂部橫條：只在手機版 (md以下) 顯示，平時把空間完全留給主內容 -->
+    <div class="md:hidden w-full bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between no-select">
+        <div class="flex items-center gap-2 font-bold text-sm">
+            <span class="text-lg">🛡️</span>
+            <span class="text-blue-400 font-black">防災學習 LMS</span>
+        </div>
+        <button onclick="setSidebarState(true)" class="p-1.5 rounded-lg bg-slate-800 text-gray-300 hover:text-white">
+            <span class="text-base font-bold block w-6 text-center">☰</span>
+        </button>
+    </div>
+
+    <!-- 🌟 行動端專用背景半透明遮罩 (Overlay)：點擊或左滑直接收起側邊欄 -->
+    <div id="sidebarOverlay" onclick="setSidebarState(false)" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+
+    <!-- 🌟 側邊導覽欄：在手機上使用 fixed 懸浮抽屜模式覆蓋，在電腦上維持並排壓縮模式 -->
+    <aside id="sidebarNav" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition z-50 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
         
-        <!-- 側邊欄最上方：收起/展開按鈕區區塊 -->
+        <!-- 側邊欄最上方：品牌與收起按鈕 -->
         <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
             <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
                 <span class="text-xl">🛡️</span>
                 <span class="text-blue-400 font-black">防災學習 LMS</span>
             </div>
-            <!-- 收起按鈕 (保留供電腦端滑鼠操作) -->
-            <button onclick="toggleSidebar()" class="hidden md:block p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
+            <!-- 收起按鈕 (在手機上與桌機上均可用) -->
+            <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
                 <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
             </button>
         </div>
         
-        <nav class="space-y-4 flex-1 overflow-y-auto pr-1 hidden md:block" id="sidebarMenu">
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1" id="sidebarMenu">
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
                 <a href="#" class="flex items-center gap-4 text-blue-400 bg-blue-950/40 p-2.5 rounded-xl border border-blue-900/30 whitespace-nowrap pl-2">
@@ -54,7 +67,7 @@
             </div>
         </nav>
 
-        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden hidden md:block" id="sidebarFooter">
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden" id="sidebarFooter">
             <div id="userEmailDisplay" class="sidebar-text text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 sidebar-transition">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
                 <span class="text-lg shrink-0">🚪</span>
@@ -63,7 +76,7 @@
         </div>
     </aside>
 
-    <!-- 🌟 右側主內容複合區：使用 flex-1 與 flex flex-col 確保撐滿並留出頁尾空間 -->
+    <!-- 右側主內容複合區 (寬度完美釋放) -->
     <div class="flex-1 flex flex-col min-h-screen">
         
         <!-- 主要內容 -->
@@ -147,7 +160,7 @@
                                 <a href="earthquake.html" class="text-xs font-bold text-blue-400 border border-blue-500/20 bg-blue-500/5 px-2.5 py-1 rounded-md hover:bg-blue-500/20 transition">進入教室 ➡️</a>
                             </div>
                             <h3 class="text-base font-black mb-2 tracking-wide">地震預防與應變教室</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed">對齊內政部《防震手冊》對齊。專攻瞬間避難、居家重型家具防震固定安裝與黃金決策。</p>
+                            <p class="text-xs text-gray-400 leading-relaxed">對齊內政部《防震手冊》。專攻瞬間避難、居家重型家具防震固定安裝與黃金決策。</p>
                         </div>
                     </div>
 
@@ -179,7 +192,7 @@
             </div>
         </main>
 
-        <!-- 🌟 新增：適應型智慧大頁尾 (Footer) -->
+        <!-- 智慧型大頁尾 -->
         <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <div class="flex flex-col items-center md:items-start gap-1">
@@ -204,34 +217,49 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
         let testUserId = null; 
-        let isSidebarExpanded = true; 
+        let isSidebarExpanded = false; // 🌟 手機端預設不展開懸浮抽屜
 
+        // 🌟 核心控制：切換側邊欄「懸浮覆蓋」與「電腦端並排」狀態
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
-            const title = document.getElementById('sidebarTitle');
+            const overlay = document.getElementById('sidebarOverlay');
             const toggleIcon = document.getElementById('toggleBtnIcon');
-            const textElements = document.querySelectorAll('.sidebar-text');
-            const menu = document.getElementById('sidebarMenu');
-            const footer = document.getElementById('sidebarFooter');
 
-            if (!expand) {
-                sidebar.classList.remove('md:w-64');
-                sidebar.classList.add('md:w-16');
-                title.classList.replace('opacity-100', 'opacity-0');
-                if(toggleIcon) toggleIcon.innerText = '☰';
-                textElements.forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
-                if(menu) menu.classList.add('hidden');
-                if(footer) footer.classList.add('hidden');
-                isSidebarExpanded = false;
+            // 判斷目前是行動裝置（寬度小於 md 768px）還是桌機
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                // 📱 手機端邏輯：嚴格執行 fixed 平滑懸浮覆蓋，不擠壓內容
+                if (expand) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    isSidebarExpanded = true;
+                } else {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.remove('opacity-100');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    isSidebarExpanded = false;
+                }
             } else {
-                sidebar.classList.remove('md:w-16');
-                sidebar.classList.add('md:w-64');
-                title.classList.replace('opacity-0', 'opacity-100');
-                if(toggleIcon) toggleIcon.innerText = '✕';
-                textElements.forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
-                if(menu) menu.classList.remove('hidden');
-                if(footer) footer.classList.remove('hidden');
-                isSidebarExpanded = true;
+                // 💻 電腦端邏輯：維持標準大排版
+                if (!expand) {
+                    sidebar.classList.remove('md:w-64');
+                    sidebar.classList.add('md:w-16');
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = false;
+                } else {
+                    sidebar.classList.remove('md:w-16');
+                    sidebar.classList.add('md:w-64');
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = true;
+                }
             }
         }
 
@@ -239,7 +267,7 @@
             setSidebarState(!isSidebarExpanded);
         }
 
-        // 行動裝置手勢滑動觸發機制
+        // 🌟 升級：行動端極致滑動流暢手勢 (Swipe Left / Right)
         let touchStartX = 0;
         let touchStartY = 0;
 
@@ -255,15 +283,31 @@
             const deltaY = touchEndY - touchStartY;
 
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && touchStartX < 50) {
+                if (deltaX > 0 && touchStartX < 60) {
+                    // 從螢幕極左側邊緣向右划 -> 呼叫覆蓋式側邊欄
                     setSidebarState(true);
                 } else if (deltaX < 0 && isSidebarExpanded) {
+                    // 選單開啟時向左划 -> 關閉覆蓋式側邊欄
                     setSidebarState(false);
                 }
             }
         }, { passive: true });
 
+        // 監聽視窗縮放，確保從手機切換到電腦時版面不會死鎖
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+                setSidebarState(true);
+            } else {
+                setSidebarState(false);
+            }
+        });
+
         async function init() {
+            // 如果是電腦版，預設展開側欄；手機版則預設隱藏
+            if (window.innerWidth >= 768) { setSidebarState(true); } else { setSidebarState(false); }
+
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { window.location.href = 'register.html'; return; }
             testUserId = session.user.id;
