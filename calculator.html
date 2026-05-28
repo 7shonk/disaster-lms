@@ -14,138 +14,163 @@
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
+<body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
-            <span class="text-xl">🛡️</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+    <!-- 手機端頂部導覽列：三槓按鈕固定在最左邊 -->
+    <div class="md:hidden w-full bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between no-select">
+        <div class="flex items-center gap-3">
+            <button onclick="setSidebarState(true)" class="p-1.5 rounded-lg bg-slate-800 text-gray-300 hover:text-white cursor-pointer transition">
+                <span class="text-base font-bold block w-6 text-center">☰</span>
+            </button>
+            <div class="flex items-center gap-2 font-bold text-sm">
+                <span class="text-lg">🛡️</span>
+                <span class="text-blue-400 font-black">防災學習 LMS</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 行動端專用背景半透明遮罩 (Overlay) -->
+    <div id="sidebarOverlay" onclick="setSidebarState(false)" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+
+    <!-- 側邊導覽欄：不擠壓主頁面的懸浮抽屜覆蓋模式 -->
+    <aside id="sidebarNav" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition z-50 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
+        
+        <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
+            <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
+                <span class="text-xl">🛡️</span>
+                <span class="text-blue-400 font-black">防災學習 LMS</span>
+            </div>
+            <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
+                <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
+            </button>
         </div>
         
-        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1" id="sidebarMenu">
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
-                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                    <span class="text-lg">🏠</span>
-                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg shrink-0">🏠</span>
+                    <span class="sidebar-text text-sm sidebar-transition">學習中控大廳</span>
                 </a>
             </div>
-
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">實體備料</div>
                 <a href="#" class="flex items-center gap-4 text-purple-400 bg-purple-950/40 p-2.5 rounded-xl border border-purple-900/30 whitespace-nowrap pl-2">
-                    <span class="text-lg">🧮</span>
-                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">智慧物資準備</span>
+                    <span class="text-lg shrink-0">🧮</span>
+                    <span class="sidebar-text text-sm font-semibold sidebar-transition">智慧物資準備</span>
                 </a>
             </div>
-            
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span>
-                    </a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span>
-                    </a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
-                <div class="space-y-1">
-                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">居家綜合安全</span>
-                    </a>
-                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span>
-                    </a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🫨</span><span class="sidebar-text text-sm sidebar-transition">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🌀</span><span class="sidebar-text text-sm sidebar-transition">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm sidebar-transition">火災安全逃生</span></a>
                 </div>
             </div>
         </nav>
 
-        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
-            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden" id="sidebarFooter">
+            <div id="userEmailDisplay" class="sidebar-text text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 sidebar-transition">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
-                <span class="text-lg">🚪</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+                <span class="text-lg shrink-0">🚪</span>
+                <span class="sidebar-text sidebar-transition">登出系統</span>
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
-        <div class="max-w-4xl mx-auto w-full">
-            
-            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
-                    <p class="text-gray-400 text-[11px] md:text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
-                </div>
-                <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
-            </header>
-
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
-                <div class="flex-1">
-                    <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：緊急避難包指南</h2>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        準備緊急避難包是防災的第一步。請參考消防署官方指南，確認避難包內需準備的個人物品、證件與乾糧。
-                    </p>
-                </div>
-                <a href="files/緊急避難包.pdf" target="_blank" class="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-purple-400 text-sm whitespace-nowrap">
-                    <span class="text-xl group-hover:scale-110 transition-transform">🎒</span>
-                    <span>開啟避難包指南</span>
-                </a>
-            </div>
-
-            <div class="flex gap-4 mb-6 no-select">
-                <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm">
-                    <span class="text-xl">🎒</span>
-                    <span>緊急避難包 (1~3天)</span>
-                    <span class="text-[10px] font-normal opacity-80 hidden md:inline">抓了就跑，支援 AI 盤點</span>
-                </button>
-                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm">
-                    <span class="text-xl">🏡</span>
-                    <span>日常居家儲備 (7天)</span>
-                    <span class="text-[10px] font-normal opacity-80 hidden md:inline">災後宅家，採買參考清單</span>
-                </button>
-            </div>
-
-            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- 右側主內容複合區 -->
+    <div class="flex-1 flex flex-col min-h-screen">
+        
+        <main class="flex-1 p-6 md:p-10 w-full">
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
-                        <div class="grid grid-cols-5 gap-2" id="peopleSelector"></div>
+                        <h1 class="text-2xl md:text-3xl font-black mb-2 gradient-text">🧮 智慧物資準備教室</h1>
+                        <p class="text-gray-400 text-[11px] md:text-xs">依照政府指南，分為「抓了就跑的避難包」與「宅在家的日常儲備」。</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">🐾 是否有毛小孩 (貓/狗)</label>
-                        <div class="flex gap-3">
-                            <button onclick="setPet(true)" id="petBtn-true" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 transition cursor-pointer text-sm">有寵物 🐶</button>
-                            <button onclick="setPet(false)" id="petBtn-false" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 transition cursor-pointer text-sm">無寵物 🚫</button>
+                    <span class="bg-sky-950 text-sky-400 text-xs px-3 py-1 rounded-full font-bold border border-sky-900/50 no-select whitespace-nowrap">消防署標準對齊</span>
+                </header>
+
+                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1">
+                        <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：緊急避難包指南</h2>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            準備緊急避難包是防災的第一步。請參考消防署官方指南，確認避難包內需準備的個人物品、證件與乾糧。
+                        </p>
+                    </div>
+                    <a href="files/緊急避難包.pdf" target="_blank" class="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-purple-400 text-sm whitespace-nowrap">
+                        <span class="text-xl group-hover:scale-110 transition-transform">🎒</span>
+                        <span>開啟避難包指南</span>
+                    </a>
+                </div>
+
+                <div class="flex gap-4 mb-6 no-select">
+                    <button onclick="switchTab('evac')" id="tab-evac" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm">
+                        <span class="text-xl">🎒</span>
+                        <span>緊急避難包 (1~3天)</span>
+                        <span class="text-[10px] font-normal opacity-80 hidden md:inline">抓了就跑，支援 AI 盤點</span>
+                    </button>
+                    <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm">
+                        <span class="text-xl">🏡</span>
+                        <span>日常居家儲備 (7天)</span>
+                        <span class="text-[10px] font-normal opacity-80 hidden md:inline">災後宅家，採買參考清單</span>
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">👨‍👩‍👧 家庭同住總人數</label>
+                            <div class="grid grid-cols-5 gap-2" id="peopleSelector"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-2.5 no-select">🐾 是否有毛小孩 (貓/狗)</label>
+                            <div class="flex gap-3">
+                                <button onclick="setPet(true)" id="petBtn-true" class="flex-1 py-2.5 font-bold rounded-xl bg-slate-800 text-gray-400 border border-slate-700/80 transition cursor-pointer text-sm">有寵物 🐶</button>
+                                <button onclick="setPet(false)" id="petBtn-false" class="flex-1 py-2.5 font-bold rounded-xl bg-sky-600 text-white border border-sky-500 transition cursor-pointer text-sm">無寵物 🚫</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-800 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-6 no-select">
-                    <h2 class="text-xs md:text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
-                    <span id="summaryBadge" class="text-[10px] md:text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
+                <div class="bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-800 shadow-2xl">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-6 no-select">
+                        <h2 class="text-xs md:text-sm font-bold text-gray-300 flex items-center gap-2" id="listTitle">🎒 緊急避難包清單 (備齊打勾)</h2>
+                        <span id="summaryBadge" class="text-[10px] md:text-xs font-bold bg-emerald-950 text-emerald-400 px-3 py-0.5 rounded-full border border-emerald-900/50"></span>
+                    </div>
+
+                    <div id="dynamicListContent" class="space-y-6"></div>
+
+                    <div id="scanActionArea" class="pt-6 mt-6 border-t border-slate-800">
+                        <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-sm md:text-md transition pointer-events-none cursor-not-allowed no-select">
+                            🔒 請先在上方打勾確認備齊桌上實物
+                        </a>
+                    </div>
                 </div>
 
-                <div id="dynamicListContent" class="space-y-6"></div>
+            </div>
+        </main>
 
-                <div id="scanActionArea" class="pt-6 mt-6 border-t border-slate-800">
-                    <a id="iosDeepLinkBtn" class="block text-center w-full bg-slate-800 text-gray-500 font-bold py-4 rounded-xl text-sm md:text-md transition pointer-events-none cursor-not-allowed no-select">
-                        🔒 請先在上方打勾確認備齊桌上實物
-                    </a>
+        <!-- 響應式動態黏性頁尾 -->
+        <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <div class="flex flex-col items-center md:items-start gap-1">
+                    <div class="font-bold text-gray-400">🛡️ 智慧防災數位聯動學習系統 (LMS Platform)</div>
+                    <div>© 2026 國立臺南大學數位學習科技學系・專題技術發表</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px]">
+                    <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+                        <span class="text-gray-400">Supabase Realtime: 連線中</span>
+                    </div>
+                    <div class="text-gray-600">系統版本 v2.4.0-Prod</div>
                 </div>
             </div>
+        </footer>
 
-        </div>
-    </main>
+    </div>
 
     <script>
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
@@ -156,16 +181,89 @@
         let currentTab = 'evac'; 
         let currentPeople = 1;
         let hasPet = false;
+        let isSidebarExpanded = false;
+
+        function setSidebarState(expand) {
+            const sidebar = document.getElementById('sidebarNav');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggleIcon = document.getElementById('toggleBtnIcon');
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                if (expand) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    isSidebarExpanded = true;
+                } else {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.remove('opacity-100');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    isSidebarExpanded = false;
+                }
+            } else {
+                if (!expand) {
+                    sidebar.classList.remove('md:w-64');
+                    sidebar.classList.add('md:w-16');
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = false;
+                } else {
+                    sidebar.classList.remove('md:w-16');
+                    sidebar.classList.add('md:w-64');
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = true;
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            setSidebarState(!isSidebarExpanded);
+        }
+
+        // 手勢偵測
+        let touchStartX = 0; let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
+            const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+                if (deltaX > 0 && touchStartX < 60) setSidebarState(true);
+                else if (deltaX < 0 && isSidebarExpanded) setSidebarState(false);
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+                setSidebarState(true);
+            } else {
+                setSidebarState(false);
+            }
+        });
 
         async function checkAuthAndInit() {
             try {
+                if (window.innerWidth >= 768) { setSidebarState(true); } else { setSidebarState(false); }
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) { window.location.href = 'register.html'; return; }
                 testUserId = session.user.id;
 
-                const emailPrefix = session.user.email.split('@')[0];
+                const { data } = await supabaseClient.from('lms_disaster_progress')
+                    .select('student_name').eq('user_id', testUserId).order('updated_at', { ascending: false }).limit(1);
+                const displayName = (data && data.length > 0 && data[0].student_name) ? data[0].student_name : "黃瀚霆";
+                
                 const emailDisplay = document.getElementById('userEmailDisplay');
-                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${displayName}`;
 
                 renderPeopleSelector();
                 updateUI();
@@ -186,8 +284,8 @@
                 const btn = document.createElement('button');
                 btn.innerText = `${i} 人`;
                 btn.className = i === currentPeople 
-                    ? "py-2.5 font-bold rounded-xl text-center bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition text-xs"
-                    : "py-2.5 font-bold rounded-xl text-center bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition text-xs";
+                    ? "py-2.5 font-bold rounded-xl text-center bg-sky-600 text-white border border-sky-500 shadow-lg shadow-sky-600/20 transition text-xs cursor-pointer"
+                    : "py-2.5 font-bold rounded-xl text-center bg-slate-800 text-gray-400 border border-slate-700/80 hover:bg-slate-700 hover:text-white transition text-xs cursor-pointer";
                 btn.onclick = () => { currentPeople = i; renderPeopleSelector(); updateUI(); };
                 container.appendChild(btn);
             }
@@ -207,11 +305,11 @@
         function switchTab(tab) {
             currentTab = tab;
             document.getElementById('tab-evac').className = tab === 'evac' 
-                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm"
-                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm";
+                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm cursor-pointer"
+                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm cursor-pointer";
             document.getElementById('tab-home').className = tab === 'home' 
-                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm"
-                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm";
+                ? "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-active flex flex-col items-center justify-center gap-1 text-xs md:text-sm cursor-pointer"
+                : "flex-1 py-4 rounded-xl font-bold border shadow-lg transition-all tab-inactive flex flex-col items-center justify-center gap-1 hover:bg-slate-800 text-xs md:text-sm cursor-pointer";
             updateUI();
         }
 
@@ -226,9 +324,15 @@
                 btn.classList.remove('pointer-events-none', 'bg-slate-800', 'text-gray-500', 'cursor-not-allowed');
                 btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-[0_0_20px_rgba(79,70,229,0.5)]', 'animate-pulse', 'cursor-pointer');
                 btn.innerHTML = "🚀 備料完成！喚醒 iOS 智慧辨識鏡頭";
-                btn.href = "disasterlms://opencamera";
                 
-                // 老大！這裡幫你綁定勾選完成時同步寫入雲端資料庫分數的動作，打通生態鏈
+                // 動態整合 URL Scheme 跳轉隔離引數
+                let currentStudentName = "黃瀚霆";
+                const nameDisplay = document.getElementById('userEmailDisplay');
+                if (nameDisplay && nameDisplay.innerText.includes("🎓 學生：")) {
+                    const extName = nameDisplay.innerText.replace("🎓 學生：", "").trim();
+                    if (extName && extName !== "讀取中...") currentStudentName = extName;
+                }
+                btn.href = `disasterapp://scan?user_id=${testUserId}&name=${encodeURIComponent(currentStudentName)}`;
                 saveProgress();
             } else {
                 btn.removeAttribute('href');
