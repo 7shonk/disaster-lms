@@ -90,9 +90,13 @@
                     <div class="flex flex-col gap-8">
                         
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-800/80 pb-6">
-                            <div class="no-select">
-                                <h2 class="text-lg md:text-xl font-extrabold text-blue-400 mb-2">📋 步驟一：家庭實體物資智慧盤點</h2>
-                                <p class="text-sm text-gray-400">開啟 iOS App 掃描桌上實體物後，AI 回顧意見將會即時同步於下方</p>
+                            <div class="no-select flex-1">
+                                <h2 class="text-lg md:text-xl font-extrabold text-blue-400 mb-1">📋 步驟一：家庭實體物資智慧盤點</h2>
+                                <p class="text-sm text-gray-400 mb-4">開啟 iOS App 掃描桌上實體物後，AI 回顧意見將會即時同步於下方</p>
+                                
+                                <button onclick="startMobileAIScan()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs md:text-sm py-2.5 px-5 rounded-xl transition duration-300 shadow-md flex items-center gap-2 active:scale-95 cursor-pointer">
+                                    <span>📱</span> 啟動手機 AI 掃描 (O2O 數據隔離連動)
+                                </button>
                             </div>
                             <div class="w-full md:w-96 bg-slate-950/90 p-6 rounded-2xl border border-slate-800 text-center shadow-inner flex flex-col items-center justify-center">
                                 <h2 class="text-xs md:text-sm font-bold text-gray-400 mb-2 flex items-center gap-1.5">
@@ -205,6 +209,35 @@
         
         let testUserId = null; 
         let isSidebarExpanded = false; 
+
+        // 🚀 新增：老黃指定的 O2O 個人化跳轉隔離函式（內建自動 URL Encode）
+        function startMobileAIScan() {
+            if (!testUserId) {
+                alert("系統初始化中，請稍候再試！");
+                return;
+            }
+
+            // 預設姓名為黃瀚霆
+            let currentStudentName = "黃瀚霆"; 
+            const nameDisplay = document.getElementById('userEmailDisplay');
+            if (nameDisplay && nameDisplay.innerText.includes("🎓 學生：")) {
+                const extractedName = nameDisplay.innerText.replace("🎓 學生：", "").trim();
+                if (extractedName && extractedName !== "讀取中..." && extractedName !== "未知學生") {
+                    currentStudentName = extractedName;
+                }
+            }
+
+            // 🎯 中文姓名轉碼（URL Encode），防止 App 接收亂碼
+            const encodedName = encodeURIComponent(currentStudentName);
+
+            // 🎯 完美拼接符合老黃 App 格式要求的 URL Scheme
+            const targetSchemeUrl = `disasterapp://scan?user_id=${testUserId}&name=${encodedName}`;
+            
+            console.log("【O2O 發射跳轉】傳遞專屬隔離引數網址:", targetSchemeUrl);
+
+            // 正式跳轉喚醒 App
+            window.location.href = targetSchemeUrl;
+        }
 
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
