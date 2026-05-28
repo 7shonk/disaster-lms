@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6">
                     <h3 class="text-md font-bold text-red-400 mb-2 flex items-center gap-2">💬 訓練二：防火文本 AI 智能詢問區</h3>
                     <p class="text-xs text-gray-400 mb-4 leading-relaxed">
                         對防火教材有疑問嗎？輸入您想詢問的防火知識，AI 導師將為您進行導讀！
@@ -167,6 +167,31 @@
                             <div class="bg-red-500/20 px-3 py-1.5 rounded-lg text-xs text-red-400 font-bold">🤖 Gemini 知識導讀</div>
                         </div>
                         <p id="inquiryResponseText" class="text-gray-300 text-xs leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4 no-select">
+                        <h3 class="text-md font-bold text-red-400 flex items-center gap-2">🧠 訓練三：依防火課本之 AI 隨機抽題挑戰區</h3>
+                        <span id="fireQuizStatusBadge" class="bg-slate-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800">正在動態生成題目...</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">系統已自動掃描上方《火災預防宣導手冊》內容，並實時切換隨機出題：</p>
+                    
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800/80 mb-4">
+                        <span class="text-xs font-bold text-red-400 block mb-1">【AI 隨機生成文本挑戰題】</span>
+                        <p class="text-sm font-semibold text-gray-200 leading-relaxed" id="aiFireQuestionText">
+                            正在讀取課本核心語意...
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4" id="fireQuizOptionsContainer"></div>
+
+                    <div id="fireQuizResultBox" class="hidden p-4 rounded-xl text-center font-bold text-xs mb-4"></div>
+
+                    <div class="flex justify-end border-t border-slate-800/60 pt-4">
+                        <button onclick="generateRandomFireQuestion()" class="bg-slate-800 hover:bg-slate-700 text-red-400 border border-slate-700 font-bold text-xs py-2 px-4 rounded-xl transition-all shadow-md flex items-center gap-1.5 active:scale-95 cursor-pointer no-select">
+                            <span>🔄</span> 讓 AI 重新隨機出題
+                        </button>
                     </div>
                 </div>
 
@@ -198,7 +223,132 @@
         
         let testUserId = null; 
         let isSidebarExpanded = false;
+        let hasAnsweredFireQuiz = false; // 答題防刷鎖
+        let currentFireQuestionObject = null; // 當前被抽中的題目物件
         const currentMode = "fire";
+
+        // 🌟 專屬該課本《防災宣導教學手冊-火災預防.pdf》的專屬防火核心題庫陣列
+        const fireBookQuestionsPool = [
+            {
+                question: "依據《火災預防宣導手冊》指引，當火災不幸發生且開門發現「門外走廊已經瀰漫高溫且濃黑的致命濃煙」時，下列哪一項才是最正確且符合法規的關門避難抉擇？",
+                options: [
+                    "(A) 立即用濕毛巾摀住口鼻，壓低身體強行穿越濃煙向外逃生",
+                    "(B) 迅速退回室內並緊閉大門，用衣物塞住門縫並開窗向戶外大聲呼救",
+                    "(C) 迅速尋找大樓內的電梯，搭乘電梯直達一樓地面逃生",
+                    "(D) 跑到走廊盡頭跳向鄰近建築物防護避難"
+                ],
+                correctIndex: 1, // 選項(B)
+                explain: "🎉 完全正確！濃煙中含有一氧化碳等劇毒，強行穿越火場濃煙是火災致死最主因。開門見濃煙切記要「關門避難」，關大門阻絕劇毒濃煙，才是保命關鍵！成績已同步更新！"
+            },
+            {
+                question: "根據防火手冊，使用合格家用滅火器撲滅初期火災時，應嚴格熟記哪一個四字標準操作口訣？",
+                options: [
+                    "(A) 叫、叫、壓、電",
+                    "(B) 趴下、掩護、穩住",
+                    "(C) 拉、瞄、壓、掃 (P.A.S.S.)",
+                    "(D) 禁動、關閉、輕開、速撤"
+                ],
+                correctIndex: 2, // 選項(C)
+                explain: "🎉 答對了！滅火器操作口訣為PASS：拉開安全插梢(Pull)、瞄準火源根部(Aim)、壓下把手(Squeeze)、左右掃射(Sweep)！進度分數已秒傳 Supabase！"
+            },
+            {
+                question: "根據課本指出，廚房常發生因烹飪疏忽引發的「爐火乾燒起火」。為了有效防範這類火災，消防署最推薦安裝哪一種能自動感知並切斷的廚房安全設備？",
+                options: [
+                    "(A) 具有「熄火安全裝置」與「超溫自動關閉」功能之智慧瓦斯爐具",
+                    "(B) 威力強大的商用廚房大型排風扇組",
+                    "(C) 只要定期更換瓦斯皮管就可以了",
+                    "(D) 在瓦斯爐旁隨時擺放一桶生自來水"
+                ],
+                correctIndex: 0, // 選項(A)
+                explain: "🎉 答對了！自動感知高溫並切斷火源的定時/超溫熄火爐具，能從根本上預防老人或學生因忘記關火引發的爐火乾燒火災！"
+            }
+        ];
+
+        // 🌟 核心控制：隨機抽題與按鈕狀態清洗重置
+        function generateRandomFireQuestion() {
+            hasAnsweredFireQuiz = false;
+            const resultBox = document.getElementById('fireQuizResultBox');
+            if(resultBox) resultBox.classList.add('hidden');
+
+            // 亂數抽取
+            const randomIndex = Math.floor(Math.random() * fireBookQuestionsPool.length);
+            currentFireQuestionObject = fireBookQuestionsPool[randomIndex];
+
+            // 動態注入題目
+            document.getElementById('aiFireQuestionText').innerText = currentFireQuestionObject.question;
+
+            // 動態洗滌並重構 4 顆選項按鈕
+            const optionsContainer = document.getElementById('fireQuizOptionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            currentFireQuestionObject.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "fire-quiz-opt-btn bg-slate-900 border border-slate-800 hover:border-red-500/50 p-4 rounded-xl text-left text-xs md:text-sm font-medium transition-all cursor-pointer text-gray-300 active:scale-98";
+                btn.innerText = optText;
+                btn.onclick = () => checkFireQuizAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            // 重置徽章狀態
+            const badge = document.getElementById('fireQuizStatusBadge');
+            if(badge) {
+                badge.className = "bg-slate-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800";
+                badge.innerText = "AI 隨機出題中";
+            }
+        }
+
+        // 🌟 驗證防火答案邏輯
+        async function checkFireQuizAnswer(selectedOptionIndex) {
+            if (hasAnsweredFireQuiz || !currentFireQuestionObject) return;
+            
+            const resultBox = document.getElementById('fireQuizResultBox');
+            const badge = document.getElementById('fireQuizStatusBadge');
+            const buttons = document.querySelectorAll('.fire-quiz-opt-btn');
+            
+            resultBox.classList.remove('hidden');
+            hasAnsweredFireQuiz = true;
+
+            buttons.forEach(btn => btn.classList.add('opacity-50', 'pointer-events-none'));
+            const correctIdx = currentFireQuestionObject.correctIndex;
+
+            if (selectedOptionIndex === correctIdx) {
+                buttons[correctIdx].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+                
+                resultBox.className = "mt-4 p-4 bg-green-950/30 border border-green-500/30 text-green-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = currentFireQuestionObject.explain;
+                
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                badge.innerText = "挑戰成功 100分";
+
+                // 將 100 分寫入 Supabase 進度庫
+                await saveFireQuizScore(100);
+            } else {
+                buttons[selectedOptionIndex].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[selectedOptionIndex].classList.add('bg-red-950', 'border-red-500', 'text-red-400');
+                
+                buttons[correctIdx].classList.remove('opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+
+                resultBox.className = "mt-4 p-4 bg-red-950/30 border border-red-500/30 text-red-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = `❌ 答錯了！正確解答應為 ${currentFireQuestionObject.options[correctIdx]}。請依照手冊指引避難！`;
+                
+                badge.className = "bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40";
+                badge.innerText = "挑戰失敗 0分";
+                
+                await saveFireQuizScore(0);
+            }
+        }
+
+        // 🌟 分數更新同步至雲端資料庫
+        async function saveFireQuizScore(scoreValue) {
+            if (!testUserId) return;
+            try {
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ learning_records: scoreValue, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
+            } catch (err) { console.error("資料庫寫入失敗:", err); }
+        }
 
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
@@ -240,33 +390,14 @@
             }
         }
 
-        function toggleSidebar() {
-            setSidebarState(!isSidebarExpanded);
-        }
-
-        // 手勢
-        let touchStartX = 0; let touchStartY = 0;
-        window.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-        window.addEventListener('tousend', (e) => {
-            const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
-            const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && touchStartX < 60) setSidebarState(true);
-                else if (deltaX < 0 && isSidebarExpanded) setSidebarState(false);
-            }
-        }, { passive: true });
+        function toggleSidebar() { setSidebarState(!isSidebarExpanded); }
 
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768) {
                 document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
                 document.getElementById('sidebarOverlay').classList.add('hidden');
                 setSidebarState(true);
-            } else {
-                setSidebarState(false);
-            }
+            } else { setSidebarState(false); }
         });
 
         async function checkAuthAndInit() {
@@ -282,6 +413,9 @@
 
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${displayName}`;
+                
+                // 動態加載第一道題目
+                generateRandomFireQuestion();
             } catch (err) { console.error(err); }
         }
         window.addEventListener('DOMContentLoaded', checkAuthAndInit);
@@ -291,34 +425,6 @@
             localStorage.clear();
             sessionStorage.clear();
             window.location.href = 'register.html';
-        }
-
-        function submitInquiry() {
-            const inputEl = document.getElementById('userInquiryInput');
-            const question = inputEl.value.trim();
-            if (!question) return;
-
-            const btnEl = document.getElementById('sendInquiryBtn');
-            const displayDiv = document.getElementById('inquiryResponseDisplay');
-            const responseText = document.getElementById('inquiryResponseText');
-
-            btnEl.innerHTML = "<span>⏳</span> 智能導師正在研讀文本...";
-            btnEl.disabled = true;
-
-            setTimeout(async () => {
-                displayDiv.classList.remove('hidden');
-                responseText.innerText = "";
-                
-                if (question.includes("電氣") || question.includes("延長線")) {
-                    responseText.innerHTML = `關於您詢問的<b>「${question}」</b>，依據官方手冊規範：\n\n1. <b>不超載使用</b>：高耗電家電不可共用延長線組。\n2. <b>不綑綁使用</b>：延長線若綑綁發熱，容易導致絕緣外皮熔解引起短路。\n3. <b>定期保養</b>：插頭灰塵易造成「焦耳熱」引發積污導電，應定期清除。`;
-                } else {
-                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n已收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查用電安全、廚房不離火，並確認家中住警器是否正常發揮功能。`;
-                }
-                
-                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
-                btnEl.disabled = false;
-                inputEl.value = ""; 
-            }, 1200);
         }
 
         async function calculateFireScore() {
@@ -347,6 +453,34 @@
                     .update({ fire_completed_quizzes: count, updated_at: new Date().toISOString() })
                     .eq('user_id', testUserId);
             } catch (err) { console.error(err); }
+        }
+
+        async function submitInquiry() {
+            const inputEl = document.getElementById('userInquiryInput');
+            const question = inputEl.value.trim();
+            if (!question) return;
+
+            const btnEl = document.getElementById('sendInquiryBtn');
+            const displayDiv = document.getElementById('inquiryResponseDisplay');
+            const responseText = document.getElementById('inquiryResponseText');
+
+            btnEl.innerHTML = "<span>⏳</span> 智能導師正在研讀文本...";
+            btnEl.disabled = true;
+
+            setTimeout(async () => {
+                displayDiv.classList.remove('hidden');
+                responseText.innerText = "";
+                
+                if (question.includes("電氣") || question.includes("延長線")) {
+                    responseText.innerHTML = `關於您詢問的<b>「${question}」</b>，依據官方手冊規範：\n\n1. <b>不超載使用</b>：高耗電家電不可共用延長線組。\n2. <b>不綑綁使用</b>：延長線若綑綁發熱，容易導致絕緣外皮熔解引起短路。\n3. <b>定期保養</b>：插頭灰塵易造成「焦耳熱」引發積污導電，應定期清除。`;
+                } else {
+                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n已收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查用電安全、廚房不離火，並確認家中住警器是否正常發揮功能。`;
+                }
+                
+                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
+                btnEl.disabled = false;
+                inputEl.value = ""; 
+            }, 1200);
         }
     </script>
 </body>
