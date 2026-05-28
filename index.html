@@ -11,10 +11,11 @@
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased overflow-x-hidden">
+<!-- 🌟 修正：利用 flex flex-col 確保整體佈局具備拉伸能力 -->
+<body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <!-- 側邊導覽欄 (已完美整合手勢與點擊雙控機制) -->
-    <aside id="sidebarNav" class="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition relative z-50 group">
+    <!-- 側邊導覽欄 (整合手勢與點擊雙控機制) -->
+    <aside id="sidebarNav" class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition relative z-50 group">
         
         <!-- 側邊欄最上方：收起/展開按鈕區區塊 -->
         <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
@@ -23,12 +24,12 @@
                 <span class="text-blue-400 font-black">防災學習 LMS</span>
             </div>
             <!-- 收起按鈕 (保留供電腦端滑鼠操作) -->
-            <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
+            <button onclick="toggleSidebar()" class="hidden md:block p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
                 <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
             </button>
         </div>
         
-        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1 hidden md:block" id="sidebarMenu">
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
                 <a href="#" class="flex items-center gap-4 text-blue-400 bg-blue-950/40 p-2.5 rounded-xl border border-blue-900/30 whitespace-nowrap pl-2">
@@ -53,7 +54,7 @@
             </div>
         </nav>
 
-        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden hidden md:block" id="sidebarFooter">
             <div id="userEmailDisplay" class="sidebar-text text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 sidebar-transition">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
                 <span class="text-lg shrink-0">🚪</span>
@@ -62,118 +63,140 @@
         </div>
     </aside>
 
-    <!-- 主內容區 -->
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto w-full">
-        <div class="max-w-7xl mx-auto w-full">
-            
-            <header class="mb-8 border-b border-slate-800 pb-6 no-select px-4 md:px-0">
-                <div class="flex items-center gap-3 mb-2 flex-wrap">
-                    <h1 class="text-3xl md:text-4xl font-black tracking-tight">智慧防災學習大廳</h1>
-                    <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-md font-bold">消防署官方連動版</span>
-                </div>
-                <p class="text-gray-400 text-sm md:text-base">六大主題互動式數位教室樞紐・跨系統用戶生態帳號即時連動</p>
-            </header>
-
-            <!-- 📋 步驟一：物資智慧盤點儀表盤 (大圖卡版) -->
-            <div class="bg-slate-900/90 p-6 md:p-8 rounded-2xl border border-slate-800 shadow-xl mb-10 relative overflow-hidden">
-                <div class="flex flex-col gap-8">
-                    
-                    <!-- 上半部 -->
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-800/80 pb-6">
-                        <div class="no-select">
-                            <h2 class="text-lg md:text-xl font-extrabold text-blue-400 mb-2">📋 步驟一：家庭實體物資智慧盤點</h2>
-                            <p class="text-sm text-gray-400">開啟 iOS App 掃描桌上實體物後，AI 回顧意見將會即時同步於下方</p>
-                        </div>
-                        <div class="w-full md:w-96 bg-slate-950/90 p-6 rounded-2xl border border-slate-800 text-center shadow-inner flex flex-col items-center justify-center">
-                            <h2 class="text-xs md:text-sm font-bold text-gray-400 mb-2 flex items-center gap-1.5">
-                                <span class="text-green-400">✓</span> 實體包 App 掃描完成率
-                            </h2>
-                            <div class="flex items-baseline justify-center gap-1">
-                                <div class="text-6xl md:text-7xl font-black text-emerald-400 tracking-tighter" id="scoreDisplay">--</div>
-                                <span class="text-2xl font-bold text-emerald-500/80 select-none">%</span>
-                            </div>
-                            <div class="mt-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 實體包物資盤點完善
-                            </div>
-                        </div>
+    <!-- 🌟 右側主內容複合區：使用 flex-1 與 flex flex-col 確保撐滿並留出頁尾空間 -->
+    <div class="flex-1 flex flex-col min-h-screen">
+        
+        <!-- 主要內容 -->
+        <main class="flex-1 p-6 md:p-10 w-full">
+            <div class="max-w-7xl mx-auto w-full">
+                
+                <header class="mb-8 border-b border-slate-800 pb-6 no-select px-4 md:px-0">
+                    <div class="flex items-center gap-3 mb-2 flex-wrap">
+                        <h1 class="text-3xl md:text-4xl font-black tracking-tight">智慧防災學習大廳</h1>
+                        <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-md font-bold">消防署官方連動版</span>
                     </div>
+                    <p class="text-gray-400 text-sm md:text-base">六大主題互動式數位教室樞紐・跨系統用戶生態帳號即時連動</p>
+                </header>
 
-                    <!-- 下半部 -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div id="aiFeedbackContainer" class="lg:col-span-2 bg-slate-950/40 border border-slate-800/80 p-6 rounded-2xl flex flex-col min-h-[220px]">
-                            <div class="flex items-center gap-2.5 mb-4 no-select">
-                                <span class="text-lg">💡</span>
-                                <h3 class="text-base font-extrabold text-yellow-500 tracking-wide">AI 即時專家優化建議</h3>
-                            </div>
-                            <p id="aiFeedbackText" class="text-sm md:text-base text-gray-300 leading-relaxed whitespace-pre-line flex-1 italic">
-                                ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
-                            </p>
-                        </div>
+                <!-- 📋 步驟一：物資智慧盤點儀表盤 -->
+                <div class="bg-slate-900/90 p-6 md:p-8 rounded-2xl border border-slate-800 shadow-xl mb-10 relative overflow-hidden">
+                    <div class="flex flex-col gap-8">
                         
-                        <div class="lg:col-span-1 flex flex-col gap-4">
-                            <div class="bg-red-950/10 border border-red-900/30 p-5 rounded-2xl shadow-md">
-                                <span class="text-xs font-black text-red-400 block mb-3 uppercase tracking-wider">❌ 缺失物資</span>
-                                <div id="missingItemsList" class="text-sm text-gray-300 space-y-2">
-                                    <span class="text-gray-500 italic text-xs">無盤點紀錄</span>
+                        <!-- 上半部 -->
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-800/80 pb-6">
+                            <div class="no-select">
+                                <h2 class="text-lg md:text-xl font-extrabold text-blue-400 mb-2">📋 步驟一：家庭實體物資智慧盤點</h2>
+                                <p class="text-sm text-gray-400">開啟 iOS App 掃描桌上實體物後，AI 回顧意見將會即時同步於下方</p>
+                            </div>
+                            <div class="w-full md:w-96 bg-slate-950/90 p-6 rounded-2xl border border-slate-800 text-center shadow-inner flex flex-col items-center justify-center">
+                                <h2 class="text-xs md:text-sm font-bold text-gray-400 mb-2 flex items-center gap-1.5">
+                                    <span class="text-green-400">✓</span> 實體包 App 掃描完成率
+                                </h2>
+                                <div class="flex items-baseline justify-center gap-1">
+                                    <div class="text-6xl md:text-7xl font-black text-emerald-400 tracking-tighter" id="scoreDisplay">--</div>
+                                    <span class="text-2xl font-bold text-emerald-500/80 select-none">%</span>
+                                </div>
+                                <div class="mt-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 實體包物資盤點完善
                                 </div>
                             </div>
-                            <div class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-2xl shadow-md">
-                                <span class="text-xs font-black text-yellow-500 block mb-3 uppercase tracking-wider">📦 建議精簡之物資</span>
-                                <div id="overstockedItemsList" class="text-sm text-gray-300 space-y-2">
-                                    <span class="text-gray-500 italic text-xs">無盤點紀錄</span>
+                        </div>
+
+                        <!-- 下半部 -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div id="aiFeedbackContainer" class="lg:col-span-2 bg-slate-950/40 border border-slate-800/80 p-6 rounded-2xl flex flex-col min-h-[220px]">
+                                <div class="flex items-center gap-2.5 mb-4 no-select">
+                                    <span class="text-lg">💡</span>
+                                    <h3 class="text-base font-extrabold text-yellow-500 tracking-wide">AI 即時專家優化建議</h3>
+                                </div>
+                                <p id="aiFeedbackText" class="text-sm md:text-base text-gray-300 leading-relaxed whitespace-pre-line flex-1 italic">
+                                    ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現在此處。
+                                </p>
+                            </div>
+                            
+                            <div class="lg:col-span-1 flex flex-col gap-4">
+                                <div class="bg-red-950/10 border border-red-900/30 p-5 rounded-2xl shadow-md">
+                                    <span class="text-xs font-black text-red-400 block mb-3 uppercase tracking-wider">❌ 缺失物資</span>
+                                    <div id="missingItemsList" class="text-sm text-gray-300 space-y-2">
+                                        <span class="text-gray-500 italic text-xs">無盤點紀錄</span>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-2xl shadow-md">
+                                    <span class="text-xs font-black text-yellow-500 block mb-3 uppercase tracking-wider">📦 建議精簡之物資</span>
+                                    <div id="overstockedItemsList" class="text-sm text-gray-300 space-y-2">
+                                        <span class="text-gray-500 italic text-xs">無盤點紀錄</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+
+                <!-- 智慧防災互動教室選擇區 -->
+                <h2 class="text-sm font-bold text-gray-400 mb-5 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-1 h-4 bg-orange-500 rounded-sm"></span> 智慧防災互動教室選擇
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 地震教室 -->
+                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/50 transition duration-300 shadow-md">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🫨</span>
+                                <a href="earthquake.html" class="text-xs font-bold text-blue-400 border border-blue-500/20 bg-blue-500/5 px-2.5 py-1 rounded-md hover:bg-blue-500/20 transition">進入教室 ➡️</a>
+                            </div>
+                            <h3 class="text-base font-black mb-2 tracking-wide">地震預防與應變教室</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">對齊內政部《防震手冊》對齊。專攻瞬間避難、居家重型家具防震固定安裝與黃金決策。</p>
+                        </div>
                     </div>
 
+                    <!-- 颱洪教室 -->
+                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-teal-500/50 transition duration-300 shadow-md">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🌀</span>
+                                <a href="typhoon.html" class="text-xs font-bold text-teal-400 border border-teal-500/20 bg-teal-500/5 px-2.5 py-1 rounded-md hover:bg-teal-500/20 transition">進入教室 ➡️</a>
+                            </div>
+                            <h3 class="text-base font-black mb-2 tracking-wide">颱洪整備教室</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">對齊《颱洪災害防救指引》。模擬強風豪雨門窗防護、強制撤離法規與土石流應變。</p>
+                        </div>
+                    </div>
+
+                    <!-- 火災教室 -->
+                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-red-500/50 transition duration-300 shadow-md">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🔥</span>
+                                <a href="fire.html" class="text-xs font-bold text-red-400 border border-red-500/20 bg-red-500/5 px-2.5 py-1 rounded-md hover:bg-red-500/20 transition">進入教室 ➡️</a>
+                            </div>
+                            <h3 class="text-base font-black mb-2 tracking-wide">火災安全逃生教室</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">對齊《火災預防與應變手冊》。學習住宅住警器安裝、用電安全管理與火災前預防盤點。</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+
+        <!-- 🌟 新增：適應型智慧大頁尾 (Footer) -->
+        <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <div class="flex flex-col items-center md:items-start gap-1">
+                    <div class="font-bold text-gray-400">🛡️ 智慧防災數位聯動學習系統 (LMS Platform)</div>
+                    <div>© 2026 國立臺南大學數位學習科技學系・專題技術發表</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px]">
+                    <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+                        <span class="text-gray-400">Supabase Realtime: 連線中</span>
+                    </div>
+                    <div class="text-gray-600">系統版本 v2.4.0-Prod</div>
                 </div>
             </div>
+        </footer>
 
-            <!-- 智慧防災互動教室選擇區 -->
-            <h2 class="text-sm font-bold text-gray-400 mb-5 uppercase tracking-widest flex items-center gap-2">
-                <span class="w-1 h-4 bg-orange-500 rounded-sm"></span> 智慧防災互動教室選擇
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 地震教室 -->
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/50 transition duration-300 shadow-md">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🫨</span>
-                            <a href="earthquake.html" class="text-xs font-bold text-blue-400 border border-blue-500/20 bg-blue-500/5 px-2.5 py-1 rounded-md hover:bg-blue-500/20 transition">進入教室 ➡️</a>
-                        </div>
-                        <h3 class="text-base font-black mb-2 tracking-wide">地震預防與應變教室</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">對齊內政部《防震手冊》對齊。專攻瞬間避難、居家重型家具防震固定安裝與黃金決策。</p>
-                    </div>
-                </div>
-
-                <!-- 颱洪教室 -->
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-teal-500/50 transition duration-300 shadow-md">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🌀</span>
-                            <a href="typhoon.html" class="text-xs font-bold text-teal-400 border border-teal-500/20 bg-teal-500/5 px-2.5 py-1 rounded-md hover:bg-teal-500/20 transition">進入教室 ➡️</a>
-                        </div>
-                        <h3 class="text-base font-black mb-2 tracking-wide">颱洪整備教室</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">對齊《颱洪災害防救指引》。模擬強風豪雨門窗防護、強制撤離法規與土石流應變。</p>
-                    </div>
-                </div>
-
-                <!-- 火災教室 -->
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-red-500/50 transition duration-300 shadow-md">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-3xl bg-slate-950 p-2.5 rounded-xl border border-slate-800 shadow-inner">🔥</span>
-                            <a href="fire.html" class="text-xs font-bold text-red-400 border border-red-500/20 bg-red-500/5 px-2.5 py-1 rounded-md hover:bg-red-500/20 transition">進入教室 ➡️</a>
-                        </div>
-                        <h3 class="text-base font-black mb-2 tracking-wide">火災安全逃生教室</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">對齊《火災預防與應變手冊》。學習住宅住警器安裝、用電安全管理與火災前預防盤點。</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </main>
+    </div>
 
     <script>
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
@@ -183,26 +206,31 @@
         let testUserId = null; 
         let isSidebarExpanded = true; 
 
-        // 核心控制：切換側邊欄狀態
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
             const title = document.getElementById('sidebarTitle');
             const toggleIcon = document.getElementById('toggleBtnIcon');
             const textElements = document.querySelectorAll('.sidebar-text');
+            const menu = document.getElementById('sidebarMenu');
+            const footer = document.getElementById('sidebarFooter');
 
             if (!expand) {
-                sidebar.classList.remove('w-64');
-                sidebar.classList.add('w-16');
+                sidebar.classList.remove('md:w-64');
+                sidebar.classList.add('md:w-16');
                 title.classList.replace('opacity-100', 'opacity-0');
-                toggleIcon.innerText = '☰';
+                if(toggleIcon) toggleIcon.innerText = '☰';
                 textElements.forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
+                if(menu) menu.classList.add('hidden');
+                if(footer) footer.classList.add('hidden');
                 isSidebarExpanded = false;
             } else {
-                sidebar.classList.remove('w-16');
-                sidebar.classList.add('w-64');
+                sidebar.classList.remove('md:w-16');
+                sidebar.classList.add('md:w-64');
                 title.classList.replace('opacity-0', 'opacity-100');
-                toggleIcon.innerText = '✕';
+                if(toggleIcon) toggleIcon.innerText = '✕';
                 textElements.forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
+                if(menu) menu.classList.remove('hidden');
+                if(footer) footer.classList.remove('hidden');
                 isSidebarExpanded = true;
             }
         }
@@ -211,7 +239,7 @@
             setSidebarState(!isSidebarExpanded);
         }
 
-        // 🌟 新增：行動裝置手勢滑動觸發機制 (Swipe Left / Swipe Right)
+        // 行動裝置手勢滑動觸發機制
         let touchStartX = 0;
         let touchStartY = 0;
 
@@ -223,22 +251,17 @@
         window.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].screenX;
             const touchEndY = e.changedTouches[0].screenY;
-            
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
 
-            // 確保使用者是進行「水平滑動」，而不是垂直滑動滾動網頁
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
                 if (deltaX > 0 && touchStartX < 50) {
-                    // 🌟 1. 從螢幕極左側边缘向右滑動 -> 展開選單
                     setSidebarState(true);
                 } else if (deltaX < 0 && isSidebarExpanded) {
-                    // 🌟 2. 選單展開時向左滑動 -> 收起選單
                     setSidebarState(false);
                 }
             }
         }, { passive: true });
-
 
         async function init() {
             const { data: { session } } = await supabaseClient.auth.getSession();
