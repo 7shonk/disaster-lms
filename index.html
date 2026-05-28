@@ -57,18 +57,11 @@
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg shrink-0">🫨</span><span class="sidebar-text text-sm sidebar-transition">地震應變教室</span>
-                    </a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg shrink-0">🌀</span><span class="sidebar-text text-sm sidebar-transition">颱洪整備教室</span>
-                    </a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                        <span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm sidebar-transition">火災安全逃生</span>
-                    </a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🫨</span><span class="sidebar-text text-sm sidebar-transition">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🌀</span><span class="sidebar-text text-sm sidebar-transition">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm sidebar-transition">火災安全逃生</span></a>
                 </div>
             </div>
-
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">生活安全教室</div>
                 <div class="space-y-1">
@@ -137,7 +130,7 @@
                                     <h3 class="text-base font-extrabold text-yellow-500 tracking-wide">AI 即時專家優化建議</h3>
                                 </div>
                                 <p id="aiFeedbackText" class="text-sm md:text-base text-gray-300 leading-relaxed whitespace-pre-line flex-1 italic">
-                                    ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健健書報告將會實時呈現在此處。
+                                    ⏳ 正在等待您開啟「緊急避難包 App」進行鏡頭拍照盤點。同步完成後，AI 健檢書報告將會實時呈現於此處。
                                 </p>
                             </div>
                             
@@ -228,14 +221,21 @@
         let testUserId = null; 
         let isSidebarExpanded = false; 
 
-        // O2O 動態拼接隔離
+        // 🌟 核心修正一：老黃指定的 O2O 個人化跳轉隔離函式（點擊時強迫向 Supabase 重新重撈當前 Auth，斷絕舊快取變數沾黏）
         async function startMobileAIScan() {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { alert("Session已過期，請重新登入！"); window.location.href = 'register.html'; return; }
+            
+            if (!session) {
+                alert("登入 Session 已過期，請重新登入！");
+                window.location.href = 'register.html';
+                return;
+            }
 
+            // 即時讀取本次 Session 真正的 UUID
             const freshUserId = session.user.id;
             let currentStudentName = "黃瀚霆"; 
 
+            // 即時抓取畫面上最新被渲染出來的學生真實姓名
             const nameDisplay = document.getElementById('userEmailDisplay');
             if (nameDisplay && nameDisplay.innerText.includes("🎓 學生：")) {
                 const extractedName = nameDisplay.innerText.replace("🎓 學生：", "").trim();
@@ -244,9 +244,15 @@
                 }
             }
 
+            // 進行中文字元安全 URL 轉碼
             const encodedName = encodeURIComponent(currentStudentName);
+
+            // 完美拼接符合老黃要求的安全 URL Scheme
             const targetSchemeUrl = `disasterapp://scan?user_id=${freshUserId}&name=${encodedName}`;
+            
+            // 💡 打印控制台以供查驗，切換帳號時 user_id= 後方絕對會跟著改變
             console.log("【發射跳轉 URL 檢查點】:", targetSchemeUrl);
+
             window.location.href = targetSchemeUrl;
         }
 
@@ -254,6 +260,7 @@
             const sidebar = document.getElementById('sidebarNav');
             const overlay = document.getElementById('sidebarOverlay');
             const toggleIcon = document.getElementById('toggleBtnIcon');
+
             const isMobile = window.innerWidth < 768;
 
             if (isMobile) {
@@ -291,6 +298,7 @@
 
         function toggleSidebar() { setSidebarState(!isSidebarExpanded); }
 
+        // 行動端流暢滑動手勢
         let touchStartX = 0; let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
@@ -298,9 +306,10 @@
         window.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
             const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
+
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && touchStartX < 60) setSidebarState(true);
-                else if (deltaX < 0 && isSidebarExpanded) setSidebarState(false);
+                if (deltaX > 0 && touchStartX < 60) { setSidebarState(true); } 
+                else if (deltaX < 0 && isSidebarExpanded) { setSidebarState(false); }
             }
         }, { passive: true });
 
@@ -374,6 +383,7 @@
             }
         }
 
+        // 🌟 核心修正二：點擊登出時進行「全域變數緩存大清洗」與帳號徹底隔離
         async function logout() {
             await supabaseClient.auth.signOut();
             localStorage.clear();
