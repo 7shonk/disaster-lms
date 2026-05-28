@@ -13,42 +13,48 @@
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
-            <span class="text-xl">🛡️</span>
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400 font-black">防災學習 LMS</span>
+    <aside id="sidebarNav" class="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition relative z-50 group">
+        
+        <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
+            <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
+                <span class="text-xl">🛡️</span>
+                <span class="text-blue-400 font-black">防災學習 LMS</span>
+            </div>
+            <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
+                <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
+            </button>
         </div>
         
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
                 <a href="#" class="flex items-center gap-4 text-blue-400 bg-blue-950/40 p-2.5 rounded-xl border border-blue-900/30 whitespace-nowrap pl-2">
-                    <span class="text-lg">🏠</span>
-                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">學習中控大廳</span>
+                    <span class="text-lg shrink-0">🏠</span>
+                    <span class="sidebar-text text-sm font-semibold sidebar-transition">學習中控大廳</span>
                 </a>
             </div>
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">實體備料</div>
                 <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
-                    <span class="text-lg">🧮</span>
-                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span>
+                    <span class="text-lg shrink-0">🧮</span>
+                    <span class="sidebar-text text-sm sidebar-transition">智慧物資準備</span>
                 </a>
             </div>
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🫨</span><span class="sidebar-text text-sm sidebar-transition">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🌀</span><span class="sidebar-text text-sm sidebar-transition">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm sidebar-transition">火災安全逃生</span></a>
                 </div>
             </div>
         </nav>
 
         <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
-            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+            <div id="userEmailDisplay" class="sidebar-text text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 sidebar-transition">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
-                <span class="text-lg">🚪</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+                <span class="text-lg shrink-0">🚪</span>
+                <span class="sidebar-text sidebar-transition">登出系統</span>
             </button>
         </div>
     </aside>
@@ -164,6 +170,38 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
         let testUserId = null; 
+        let isSidebarExpanded = true; // 🌟 控制側邊欄狀態的旗標
+
+        // 🌟 核心控制：切換側邊欄展開/收起
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarNav');
+            const title = document.getElementById('sidebarTitle');
+            const toggleIcon = document.getElementById('toggleBtnIcon');
+            const textElements = document.querySelectorAll('.sidebar-text');
+
+            if (isSidebarExpanded) {
+                // 【狀態一：切換成收起】 w-64 -> w-16
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                title.classList.replace('opacity-100', 'opacity-0');
+                toggleIcon.innerText = '☰'; // 變更為漢堡選單
+                
+                textElements.forEach(el => {
+                    el.classList.add('opacity-0', 'pointer-events-none');
+                });
+            } else {
+                // 【狀態二：切換成展開】 w-16 -> w-64
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                title.classList.replace('opacity-0', 'opacity-100');
+                toggleIcon.innerText = '✕'; // 變更為關閉叉叉
+                
+                textElements.forEach(el => {
+                    el.classList.remove('opacity-0', 'pointer-events-none');
+                });
+            }
+            isSidebarExpanded = !isSidebarExpanded;
+        }
 
         async function init() {
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -254,3 +292,4 @@
     </script>
 </body>
 </html>
+
