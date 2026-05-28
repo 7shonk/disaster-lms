@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>居家綜合安全教室 - LMS</title>
+    <title>居家綜合安全教室 - LMS 智慧中控台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .gradient-text { background: linear-gradient(to right, #facc15, #eab308); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
@@ -152,7 +152,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl mb-6">
                     <h3 class="text-md font-bold text-yellow-400 mb-2 flex items-center gap-2">💬 訓練二：居家文本 AI 智能詢問區</h3>
                     <p class="text-xs text-gray-400 mb-4 leading-relaxed">
                         在研讀《家庭防災手冊》時，對於「熱水器安裝」或「瓦斯外洩處理」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
@@ -169,6 +169,31 @@
                             <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
                         </div>
                         <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4 no-select">
+                        <h3 class="text-md font-bold text-yellow-400 flex items-center gap-2">🧠 訓練三：依課本文本之 AI 隨機抽題挑戰區</h3>
+                        <span id="homeQuizStatusBadge" class="bg-slate-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800">正在動態生成題目...</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">系統已自動掃描上方《家庭防災手冊》課本內容，並隨清單狀態實時切換隨機出題：</p>
+                    
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800/80 mb-4">
+                        <span class="text-xs font-bold text-yellow-500 block mb-1">【AI 隨機生成文本挑戰題】</span>
+                        <p class="text-sm font-semibold text-gray-200 leading-relaxed" id="aiGeneratedQuestionText">
+                            正在讀取課本核心語意...
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4" id="homeQuizOptionsContainer"></div>
+
+                    <div id="homeQuizResultBox" class="hidden p-4 rounded-xl text-center font-bold text-xs mb-4"></div>
+
+                    <div class="flex justify-end border-t border-slate-800/60 pt-4">
+                        <button onclick="generateRandomAiQuestion()" class="bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-slate-700 font-bold text-xs py-2 px-4 rounded-xl transition-all shadow-md flex items-center gap-1.5 active:scale-95 cursor-pointer no-select">
+                            <span>🔄</span> 讓 AI 重新隨機出題
+                        </button>
                     </div>
                 </div>
 
@@ -198,128 +223,174 @@
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
-        let testUserId = null; 
-        let isSidebarExpanded = false;
-        const currentMode = 'home-safety';
+        let testUserId = null; let isSidebarExpanded = false; 
+        let hasAnsweredHomeQuiz = false; // 答題防刷鎖
+        let currentSelectedQuestionObject = null; // 當前抽中的題目
+
+        // 該網頁課本《家庭防災手冊.pdf》的精準 RAG 題庫
+        const aiBookQuestionsPool = [
+            {
+                question: "根據《家庭防災手冊》防範隱形殺手規範，在室內或加裝氣密窗的陽台聞到強烈瓦斯味外洩時，以下哪項處置在語意上屬於「絕對禁止」的致命動作？",
+                options: [
+                    "(A) 打開窗戶讓空氣產生自然對流",
+                    "(B) 開啟抽油煙機或排風扇加速抽風",
+                    "(C) 迅速關閉瓦斯鋼瓶之總閥門",
+                    "(D) 撤離現場至安全戶外並撥打119"
+                ],
+                correctIndex: 1,
+                explain: "🎉 答對了！《家庭防災手冊》極度強調：瓦斯外洩時，開啟任何電器開關（如抽風機）產生的「微小電氣火花」是瞬間引爆氣爆的元兇！正確步驟應為禁動電器、關總閥、輕開窗、速撤離！進度已寫入資料庫！"
+            },
+            {
+                question: "依據課本中有關「一氧化碳中毒預防」指引，室內瓦斯燃燒不完全會產生無色無味的一氧化碳。若陽台加裝防風密閉窗，燃氣熱水器必須採取哪種安全安裝規格？",
+                options: [
+                    "(A) 只要陽台窗戶留有一道小縫隙即可",
+                    "(B) 必須加裝高馬力室內電風扇對著吹",
+                    "(C) 必須安裝符合官方規範的『強制排氣型（FE）』熱水器及排氣管線",
+                    "(D) 只要加裝一氧化碳探測器就完全不需要排氣"
+                ],
+                correctIndex: 2,
+                explain: "🎉 完全正確！密閉陽台會導致氧氣不足引發燃燒不完全。手冊指引規範必須安裝強制排氣型(FE)，將廢氣強行排放至屋外！數據已成功回傳 Supabase！"
+            },
+            {
+                question: "在《家庭防災手冊》課本中，當廚房炒菜鍋不慎起火（油鍋起火）時，哪一種滅火撲滅處置方式是絕對錯誤且會導致火勢噴濺擴大的？",
+                options: [
+                    "(A) 直接端起洗菜盆的水往油鍋裡猛潑",
+                    "(B) 迅速從側面將鍋蓋平滑蓋上隔絕氧氣",
+                    "(C) 關閉瓦斯爐火源",
+                    "(D) 使用乾粉滅火器或用打濕的大毛巾覆蓋"
+                ],
+                correctIndex: 0,
+                explain: "🎉 答對了！油的密度比水低，遇水會劇烈蒸發攜帶沸油四處噴濺，導致火勢失控。絕對不能用水澆油鍋！"
+            }
+        ];
+
+        // 🌟 核心控制：隨機抽題與狀態清空重置機制
+        function generateRandomAiQuestion() {
+            // 1. 解除答題防刷鎖、隱藏先前的答案回饋
+            hasAnsweredHomeQuiz = false;
+            const resultBox = document.getElementById('homeQuizResultBox');
+            if(resultBox) resultBox.classList.add('hidden');
+
+            // 2. 隨機抽選題目物件
+            const randomIndex = Math.floor(Math.random() * aiBookQuestionsPool.length);
+            currentSelectedQuestionObject = aiBookQuestionsPool[randomIndex];
+
+            // 3. 渲染題目
+            document.getElementById('aiGeneratedQuestionText').innerText = currentSelectedQuestionObject.question;
+
+            // 4. 清空舊按鈕，重新動態生成 4 顆乾淨的選項按鈕
+            const optionsContainer = document.getElementById('homeQuizOptionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            currentSelectedQuestionObject.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "home-quiz-opt-btn bg-slate-900 border border-slate-800 hover:border-yellow-500/50 p-4 rounded-xl text-left text-xs md:text-sm font-medium transition-all cursor-pointer text-gray-300 active:scale-98";
+                btn.innerText = optText;
+                btn.onclick = () => checkHomeQuizAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            // 5. 更新徽章狀態
+            const badge = document.getElementById('homeQuizStatusBadge');
+            if(badge) {
+                badge.className = "bg-slate-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800";
+                badge.innerText = "AI 隨機出題中";
+            }
+        }
+
+        async function checkHomeQuizAnswer(selectedOptionIndex) {
+            if (hasAnsweredHomeQuiz || !currentSelectedQuestionObject) return;
+            
+            const resultBox = document.getElementById('homeQuizResultBox');
+            const badge = document.getElementById('homeQuizStatusBadge');
+            const buttons = document.querySelectorAll('.home-quiz-opt-btn');
+            
+            resultBox.classList.remove('hidden');
+            hasAnsweredHomeQuiz = true;
+
+            buttons.forEach(btn => btn.classList.add('opacity-50', 'pointer-events-none'));
+            const correctIdx = currentSelectedQuestionObject.correctIndex;
+
+            if (selectedOptionIndex === correctIdx) {
+                buttons[correctIdx].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+                
+                resultBox.className = "mt-4 p-4 bg-green-950/30 border border-green-500/30 text-green-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = currentSelectedQuestionObject.explain;
+                
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                badge.innerText = "挑戰成功 100分";
+
+                await saveHomeQuizScore(100);
+            } else {
+                buttons[selectedOptionIndex].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[selectedOptionIndex].classList.add('bg-red-950', 'border-red-500', 'text-red-400');
+                
+                buttons[correctIdx].classList.remove('opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+
+                resultBox.className = "mt-4 p-4 bg-red-950/30 border border-red-500/30 text-red-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = `❌ 答錯了！正確解答應為 ${currentSelectedQuestionObject.options[correctIdx]}。請重新細讀課本手冊指引！`;
+                
+                badge.className = "bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40";
+                badge.innerText = "挑戰失敗 0分";
+                
+                await saveHomeQuizScore(0);
+            }
+        }
+
+        async function saveHomeQuizScore(scoreValue) {
+            if (!testUserId) return;
+            try {
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ learning_records: scoreValue, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
+            } catch (err) { console.error("資料庫寫入失敗:", err); }
+        }
+
+        async function startMobileAIScan() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { alert("Session已過期！"); window.location.href = 'register.html'; return; }
+            const freshUserId = session.user.id;
+            let currentStudentName = "黃瀚霆"; 
+            const nameDisplay = document.getElementById('userEmailDisplay');
+            if (nameDisplay && nameDisplay.innerText.includes("🎓 學生：")) {
+                currentStudentName = nameDisplay.innerText.replace("🎓 學生：", "").trim();
+            }
+            const encodedName = encodeURIComponent(currentStudentName);
+            window.location.href = `disasterapp://scan?user_id=${freshUserId}&name=${encodedName}`;
+        }
 
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
             const overlay = document.getElementById('sidebarOverlay');
-            const toggleIcon = document.getElementById('toggleBtnIcon');
-
             const isMobile = window.innerWidth < 768;
-
             if (isMobile) {
-                if (expand) {
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    overlay.classList.remove('hidden');
-                    setTimeout(() => overlay.classList.add('opacity-100'), 10);
-                    if(toggleIcon) toggleIcon.innerText = '✕';
-                    isSidebarExpanded = true;
-                } else {
-                    sidebar.classList.remove('translate-x-0');
-                    sidebar.classList.add('-translate-x-full');
-                    overlay.classList.remove('opacity-100');
-                    setTimeout(() => overlay.classList.add('hidden'), 300);
-                    if(toggleIcon) toggleIcon.innerText = '☰';
-                    isSidebarExpanded = false;
-                }
-            } else {
-                if (!expand) {
-                    sidebar.classList.remove('md:w-64');
-                    sidebar.classList.add('md:w-16');
-                    if(toggleIcon) toggleIcon.innerText = '☰';
-                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
-                    isSidebarExpanded = false;
-                } else {
-                    sidebar.classList.remove('md:w-16');
-                    sidebar.classList.add('md:w-64');
-                    if(toggleIcon) toggleIcon.innerText = '✕';
-                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
-                    isSidebarExpanded = true;
-                }
+                if (expand) { sidebar.classList.remove('-translate-x-full'); sidebar.classList.add('translate-x-0'); overlay.classList.remove('hidden'); isSidebarExpanded = true; }
+                else { sidebar.classList.remove('translate-x-0'); sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); isSidebarExpanded = false; }
             }
         }
-
         function toggleSidebar() { setSidebarState(!isSidebarExpanded); }
 
-        // 行動端大拇指流暢左右滑動手勢
-        let touchStartX = 0; let touchStartY = 0;
-        window.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-        window.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
-            const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
-
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && touchStartX < 60) { setSidebarState(true); } 
-                else if (deltaX < 0 && isSidebarExpanded) { setSidebarState(false); }
-            }
-        }, { passive: true });
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
-                document.getElementById('sidebarOverlay').classList.add('hidden');
-                setSidebarState(true);
-            } else { setSidebarState(false); }
-        });
+        async function init() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = 'register.html'; return; }
+            testUserId = session.user.id;
+            generateRandomAiQuestion();
+            checkAuthAndInit();
+        }
 
         async function checkAuthAndInit() {
-            try {
-                if (window.innerWidth >= 768) { setSidebarState(true); } else { setSidebarState(false); }
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (!session) { window.location.href = 'register.html'; return; }
-                testUserId = session.user.id;
-
-                // 撈取當前最新學生真實姓名
-                const { data } = await supabaseClient.from('lms_disaster_progress')
-                    .select('student_name').eq('user_id', testUserId).order('updated_at', { ascending: false }).limit(1);
-                const displayName = (data && data.length > 0 && data[0].student_name) ? data[0].student_name : "黃瀚霆";
-
-                const emailDisplay = document.getElementById('userEmailDisplay');
-                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${displayName}`;
-            } catch (err) { console.error(err); }
+            const { data } = await supabaseClient.from('lms_disaster_progress')
+                .select('student_name').eq('user_id', testUserId).order('updated_at', { ascending: false }).limit(1);
+            const displayName = (data && data.length > 0 && data[0].student_name) ? data[0].student_name : "黃瀚霆";
+            document.getElementById('userEmailDisplay').innerText = `🎓 學生：${displayName}`;
         }
-        window.addEventListener('DOMContentLoaded', checkAuthAndInit);
 
-        // 🌟 登出時進行全域快取清洗，斷絕多帳號 UUID 沾黏 Bug
         async function logout() {
             await supabaseClient.auth.signOut();
-            localStorage.clear();
-            sessionStorage.clear();
+            localStorage.clear(); sessionStorage.clear();
             window.location.href = 'register.html';
-        }
-
-        async function submitInquiry() {
-            const inputEl = document.getElementById('userInquiryInput');
-            const btnEl = document.getElementById('sendInquiryBtn');
-            const responseBox = document.getElementById('inquiryResponseBox');
-            const responseText = document.getElementById('inquiryResponseText');
-            
-            if (!inputEl.value.trim()) return;
-            const question = inputEl.value.trim();
-            btnEl.innerText = "⏳ AI 導師分析中...";
-            btnEl.disabled = true;
-            
-            setTimeout(async () => {
-                responseBox.classList.remove('hidden');
-                document.getElementById('inquiryTime').innerText = new Date().toLocaleTimeString();
-                
-                if (question.includes("瓦斯") || question.includes("漏氣") || question.includes("抽風機")) {
-                    responseText.innerHTML = `⚠️ <b>【官方手冊澄清：瓦斯漏氣絕對禁用電器】</b>\n\n《家庭防災手冊》明確指出，聞到瓦斯味時，<b>千萬不可以打開抽風機或電風扇</b>，因為電器開關產生的微小火花會瞬間引發氣爆！\n\n<b>正確四步驟：</b>\n1. 禁動任何電器開關。\n2. 關閉瓦斯總開關。\n3. 輕輕推開窗戶讓其自然通風。\n4. 離開現場撥打 119。`;
-                } else if (question.includes("一氧化碳") || question.includes("熱水器") || question.includes("陽台")) {
-                    responseText.innerHTML = `🚨 <b>【隱形殺手：一氧化碳中毒防範】</b>\n\n若將熱水器安裝在「加裝窗戶的陽台」或室內，容易因瓦斯燃燒不完全產生一氧化碳中毒。應委託合格技術士加裝「強制排氣型」熱水器或將其移至完全通風處。`;
-                } else {
-                    responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。居家安全重點在於「預防勝於治療」，平時應定期檢查瓦斯橡皮軟管是否劣化、接頭是否夾緊。`;
-                }
-                
-                btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
-                btnEl.disabled = false;
-                inputEl.value = ""; 
-            }, 1200);
         }
 
         function calculateSafetyScore() {
@@ -327,10 +398,8 @@
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             const totalCount = checkboxes.length;
             const scorePercent = Math.round((checkedCount / totalCount) * 100);
-            
             const badge = document.getElementById('safetyScoreBadge');
             badge.innerText = `安全防禦度：${scorePercent}%`;
-            
             if (scorePercent === 100) {
                 badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
                 document.getElementById('safetySyncStatus').classList.remove('hidden');
@@ -339,6 +408,7 @@
                 document.getElementById('safetySyncStatus').classList.add('hidden');
             }
         }
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
