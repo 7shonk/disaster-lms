@@ -12,159 +12,284 @@
         .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans min-h-screen flex antialiased">
+<body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <aside id="sidebarNav" class="w-16 hover:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition group relative z-50">
-        <div class="flex items-center gap-3 font-bold text-lg mb-8 overflow-hidden whitespace-nowrap pl-1">
-            <span class="text-xl">🛡️</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-400">防災學習 LMS</span>
+    <div class="md:hidden w-full bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between no-select">
+        <div class="flex items-center gap-3">
+            <button onclick="setSidebarState(true)" class="p-1.5 rounded-lg bg-slate-800 text-gray-300 hover:text-white cursor-pointer transition">
+                <span class="text-base font-bold block w-6 text-center">☰</span>
+            </button>
+            <div class="flex items-center gap-2 font-bold text-sm">
+                <span class="text-lg">🛡️</span>
+                <span class="text-blue-400 font-black">防災學習 LMS</span>
+            </div>
         </div>
-        <nav class="space-y-4 flex-1 overflow-y-auto pr-1">
+    </div>
+
+    <div id="sidebarOverlay" onclick="setSidebarState(false)" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+
+    <aside id="sidebarNav" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition z-50 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
+        
+        <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
+            <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
+                <span class="text-xl">🛡️</span>
+                <span class="text-blue-400 font-black">防災學習 LMS</span>
+            </div>
+            <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
+                <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
+            </button>
+        </div>
+        
+        <nav class="space-y-4 flex-1 overflow-y-auto pr-1" id="sidebarMenu">
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">主選單</div>
-                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🏠</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">學習中控大廳</span></a>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg shrink-0">🏠</span><span class="sidebar-text text-sm sidebar-transition">學習中控大廳</span>
+                </a>
             </div>
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">實體備料</div>
-                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🧮</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">智慧物資準備</span></a>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">實體備料</div>
+                <a href="calculator.html" class="flex items-center gap-4 text-gray-400 hover:text-purple-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                    <span class="text-lg shrink-0">🧮</span><span class="sidebar-text text-sm sidebar-transition">智慧物資準備</span>
+                </a>
             </div>
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">核心災害教室</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">核心災害教室</div>
                 <div class="space-y-1">
-                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🫨</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">地震應變教室</span></a>
-                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🌀</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">颱洪整備教室</span></a>
-                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🔥</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">火災安全逃生</span></a>
+                    <a href="earthquake.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🫨</span><span class="sidebar-text text-sm sidebar-transition">地震應變教室</span></a>
+                    <a href="typhoon.html" class="flex items-center gap-4 text-gray-400 hover:text-teal-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🌀</span><span class="sidebar-text text-sm sidebar-transition">颱洪整備教室</span></a>
+                    <a href="fire.html" class="flex items-center gap-4 text-gray-400 hover:text-red-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm sidebar-transition">火災安全逃生</span></a>
                 </div>
             </div>
             <div>
-                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pl-2">生活安全教室</div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">生活安全教室</div>
                 <div class="space-y-1">
-                    <a href="#" class="flex items-center gap-4 text-yellow-400 bg-yellow-950/40 p-2 rounded-xl border border-yellow-900/30 whitespace-nowrap pl-2"><span class="text-lg">🚪</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-bold">居家綜合安全</span></a>
-                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg">🚑</span><span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">民眾急救自救</span></a>
+                    <a href="#" class="flex items-center gap-4 text-yellow-400 bg-yellow-950/40 p-2.5 rounded-xl border border-yellow-900/30 whitespace-nowrap pl-2">
+                        <span class="text-lg shrink-0">🚪</span><span class="sidebar-text text-sm font-semibold sidebar-transition">居家綜合安全</span>
+                    </a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2">
+                        <span class="text-lg shrink-0">🚑</span><span class="sidebar-text text-sm sidebar-transition">民眾急救自救</span>
+                    </a>
                 </div>
             </div>
         </nav>
 
-        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden">
-            <div id="userEmailDisplay" class="text-xs text-gray-400 mb-3 truncate pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">🎓 學生：讀取中...</div>
+        <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden" id="sidebarFooter">
+            <div id="userEmailDisplay" class="sidebar-text text-xs text-gray-400 mb-3 whitespace-nowrap overflow-hidden text-ellipsis pl-2 sidebar-transition">🎓 學生：讀取中...</div>
             <button onclick="logout()" class="w-full text-left text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-4 p-2.5 rounded-xl transition pl-2 hover:bg-red-500/10">
-                <span class="text-lg">🚪</span>
-                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">登出系統</span>
+                <span class="text-lg shrink-0">🚪</span>
+                <span class="sidebar-text sidebar-transition">登出系統</span>
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 p-5 md:p-8 overflow-y-auto w-full">
-        <div class="max-w-4xl mx-auto w-full">
-            
-            <header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 md:px-0">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🚪 居家綜合安全教室</h1>
-                    <p class="text-gray-400 text-[11px] md:text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
-                </div>
-                <span class="bg-yellow-950 text-yellow-400 text-xs px-3 py-1 rounded-full font-bold border border-yellow-900/50 no-select whitespace-nowrap">內政部家庭防災手冊對齊</span>
-            </header>
+    <div class="flex-1 flex flex-col min-h-screen">
+        
+        <main class="flex-1 p-6 md:p-10 w-full">
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 md:px-0">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-black mb-1 gradient-text">🚪 居家綜合安全教室</h1>
+                        <p class="text-gray-400 text-[11px] md:text-xs">專攻一氧化碳防範、瓦斯漏氣正確處置與熱水器安全安裝診斷。</p>
+                    </div>
+                    <span class="bg-yellow-950 text-yellow-400 text-xs px-3 py-1 rounded-full font-bold border border-yellow-900/50 no-select whitespace-nowrap">內政部家庭防災手冊對齊</span>
+                </header>
 
-            <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
-                <div class="flex-1">
-                    <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防範居家隱形殺手</h2>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
-                        居家安全最大的隱形殺手是一氧化碳中毒與瓦斯氣爆。請記住，聞到瓦斯味時絕對不可開啟任何電器開關！點擊右側按鈕開啟《家庭防災手冊》，學習正確的保命防護步驟。
+                <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1">
+                        <h2 class="text-md font-bold text-gray-200 mb-2">📖 課本參閱：防範居家隱形殺手</h2>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            居家安全最大的隱形殺手是一氧化碳中毒與瓦斯氣爆。請記住，聞到瓦斯味時絕對不可開啟任何電器開關！點擊右側按鈕開啟《家庭防災手冊》，學習正確的保命防護步驟。
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《家庭防災手冊.pdf》</span>
+                        </div>
+                    </div>
+                    <a href="files/家庭防災手冊.pdf" target="_blank" class="w-full md:w-auto bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-yellow-400 text-sm whitespace-nowrap">
+                        <span class="text-xl group-hover:scale-110 transition-transform">📘</span>
+                        <span>開啟家庭防災課本</span>
+                    </a>
+                </div>
+
+                <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
+                    <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：瓦斯熱水器與防毒盤點</h3>
+                        <span id="safetyScoreBadge" class="bg-yellow-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-yellow-900/40">安全防禦度 : 0%</span>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-gray-400 mb-4">請實地確認家中廚房與陽台，勾選安全項目以遠離氣爆與一氧化碳無形毒害：</p>
+                        
+                        <div class="space-y-3">
+                            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-gray-300 text-sm font-bold block">熱水器完全通風與強制排氣</span>
+                                    <span class="text-xs text-gray-500 block mt-0.5">燃氣熱水器安裝於屋外通風處。若加裝密閉窗戶之陽台，則已安裝專屬強制排氣管及供氣通路。</span>
+                                </div>
+                            </label>
+
+                            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-gray-300 text-sm font-bold block">合格瓦斯管線與定期泡泡檢漏</span>
+                                    <span class="text-xs text-gray-500 block mt-0.5">廚房瓦斯橡皮管無老化龜裂或鬆脫，且已使用肥皂泡塗抹於接縫處測試無漏氣。</span>
+                                </div>
+                            </label>
+
+                            <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
+                                <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-gray-300 text-sm font-bold block">一氧化碳與警報器安全教育</span>
+                                    <span class="text-xs text-gray-500 block mt-0.5">室內隨時保持空氣對流，且家中成員皆知曉若聞到疑似外洩瓦斯，絕不開啟任何換氣電器或電風扇。</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="safetySyncStatus" class="hidden mt-4 p-3 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center text-xs text-yellow-400">
+                            🚀 [資料庫同步] 居家安全環境進度已確認！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <h3 class="text-md font-bold text-yellow-400 mb-2 flex items-center gap-2">💬 訓練二：居家文本 AI 智能詢問區</h3>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                        在研讀《家庭防災手冊》時，對於「熱水器安裝」或「瓦斯外洩處理」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
                     </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-slate-950 text-[11px] text-gray-400 px-3 py-1 rounded-lg border border-slate-800">📌 參閱資料：《家庭防災手冊.pdf》</span>
+                    <div class="space-y-4">
+                        <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『聞到瓦斯味可以開抽風機嗎？』..."></textarea>
+                        <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg flex items-center gap-2 cursor-pointer">
+                            <span>💬</span> 送出詢問 AI 導師
+                        </button>
+                    </div>
+                    <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
+                        <div class="flex items-center gap-2 mb-3 no-select">
+                            <span class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">🤖 文本導讀回饋</span>
+                            <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
+                        </div>
+                        <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
                     </div>
                 </div>
-                <a href="files/家庭防災手冊.pdf" target="_blank" class="w-full md:w-auto bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-3.5 px-5 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer border border-yellow-400 text-sm whitespace-nowrap">
-                    <span class="text-xl group-hover:scale-110 transition-transform">📘</span>
-                    <span>開啟家庭防災課本</span>
-                </a>
+
             </div>
+        </main>
 
-            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden mb-6">
-                <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center no-select">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">🛡️ 訓練一：瓦斯熱水器與防毒盤點</h3>
-                    <span id="safetyScoreBadge" class="bg-yellow-950 text-yellow-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-yellow-900/40">安全防禦度 : 0%</span>
+        <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <div class="flex flex-col items-center md:items-start gap-1">
+                    <div class="font-bold text-gray-400">🛡️ 智慧防災數位聯動學習系統 (LMS Platform)</div>
+                    <div>© 2026 國立臺南大學數位學習科技學系・專題技術發表</div>
                 </div>
-                <div class="p-6">
-                    <p class="text-xs text-gray-400 mb-4">請實地確認家中廚房與陽台，勾選安全項目以遠離氣爆與一氧化碳無形毒害：</p>
-                    
-                    <div class="space-y-3">
-                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                            <div class="flex-1 min-w-0">
-                                <span class="text-gray-300 text-sm font-bold block">熱水器完全通風與強制排氣</span>
-                                <span class="text-xs text-gray-500 block mt-0.5">燃氣熱水器安裝於屋外通風處。若加裝密閉窗戶之陽台，則已安裝專屬強制排氣管及供氣通路。</span>
-                            </div>
-                        </label>
-
-                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                            <div class="flex-1 min-w-0">
-                                <span class="text-gray-300 text-sm font-bold block">合格瓦斯管線與定期泡泡檢漏</span>
-                                <span class="text-xs text-gray-500 block mt-0.5">廚房瓦斯橡皮管無老化龜裂或鬆脫，且已使用肥皂泡塗抹於接縫處測試無漏氣。</span>
-                            </div>
-                        </label>
-
-                        <label class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 transition flex items-center gap-3 cursor-pointer select-none">
-                            <input type="checkbox" onchange="calculateSafetyScore()" class="safety-check w-5 h-5 rounded border-slate-700 bg-slate-800 text-yellow-500 focus:ring-0 cursor-pointer">
-                            <div class="flex-1 min-w-0">
-                                <span class="text-gray-300 text-sm font-bold block">一氧化碳與警報器安全教育</span>
-                                <span class="text-xs text-gray-500 block mt-0.5">室內隨時保持空氣對流，且家中成員皆知曉若聞到疑似外洩瓦斯，絕不開啟任何換氣電器或電風扇。</span>
-                            </div>
-                        </label>
+                <div class="flex items-center gap-4 text-[11px]">
+                    <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+                        <span class="text-gray-400">Supabase Realtime: 連線中</span>
                     </div>
-
-                    <div id="safetySyncStatus" class="hidden mt-4 p-3 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center text-xs text-yellow-400">
-                        🚀 [資料庫同步] 居家安全環境進度已確認！
-                    </div>
+                    <div class="text-gray-600">系統版本 v2.4.0-Prod</div>
                 </div>
             </div>
+        </footer>
 
-            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <h3 class="text-md font-bold text-yellow-400 mb-2 flex items-center gap-2">💬 訓練二：居家文本 AI 智能詢問區</h3>
-                <p class="text-xs text-gray-400 mb-4 leading-relaxed">
-                    在研讀《家庭防災手冊》時，對於「熱水器安裝」或「瓦斯外洩處理」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
-                </p>
-                <div class="space-y-4">
-                    <textarea id="userInquiryInput" rows="3" class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-600 transition outline-none" placeholder="例如輸入：『聞到瓦斯味可以開抽風機嗎？』..."></textarea>
-                    <button onclick="submitInquiry()" id="sendInquiryBtn" class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg flex items-center gap-2 cursor-pointer">
-                        <span>💬</span> 送出詢問 AI 導師
-                    </button>
-                </div>
-                <div id="inquiryResponseBox" class="hidden mt-6 p-5 bg-slate-950 border border-slate-800 rounded-xl">
-                    <div class="flex items-center gap-2 mb-3 no-select">
-                        <span class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">🤖 文本導讀回饋</span>
-                        <span id="inquiryTime" class="text-[10px] text-gray-600">剛剛</span>
-                    </div>
-                    <p id="inquiryResponseText" class="text-xs text-gray-300 leading-relaxed whitespace-pre-line"></p>
-                </div>
-            </div>
-
-        </div>
-    </main>
+    </div>
 
     <script>
         const supabaseUrl = 'https://ovyygcsuiwwbgoywplbq.supabase.co';
         const supabaseKey = 'sb_publishable_Rfekybrmzpc7rjaHAq5Q8Q_ChnHYcAI'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
         let testUserId = null; 
+        let isSidebarExpanded = false;
         const currentMode = 'home-safety';
+
+        function setSidebarState(expand) {
+            const sidebar = document.getElementById('sidebarNav');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggleIcon = document.getElementById('toggleBtnIcon');
+
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                if (expand) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    isSidebarExpanded = true;
+                } else {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.remove('opacity-100');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    isSidebarExpanded = false;
+                }
+            } else {
+                if (!expand) {
+                    sidebar.classList.remove('md:w-64');
+                    sidebar.classList.add('md:w-16');
+                    if(toggleIcon) toggleIcon.innerText = '☰';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = false;
+                } else {
+                    sidebar.classList.remove('md:w-16');
+                    sidebar.classList.add('md:w-64');
+                    if(toggleIcon) toggleIcon.innerText = '✕';
+                    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
+                    isSidebarExpanded = true;
+                }
+            }
+        }
+
+        function toggleSidebar() { setSidebarState(!isSidebarExpanded); }
+
+        // 行動端大拇指流暢左右滑動手勢
+        let touchStartX = 0; let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
+            const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+                if (deltaX > 0 && touchStartX < 60) { setSidebarState(true); } 
+                else if (deltaX < 0 && isSidebarExpanded) { setSidebarState(false); }
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+                setSidebarState(true);
+            } else { setSidebarState(false); }
+        });
 
         async function checkAuthAndInit() {
             try {
+                if (window.innerWidth >= 768) { setSidebarState(true); } else { setSidebarState(false); }
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) { window.location.href = 'register.html'; return; }
                 testUserId = session.user.id;
 
-                const emailPrefix = session.user.email.split('@')[0];
+                // 撈取當前最新學生真實姓名
+                const { data } = await supabaseClient.from('lms_disaster_progress')
+                    .select('student_name').eq('user_id', testUserId).order('updated_at', { ascending: false }).limit(1);
+                const displayName = (data && data.length > 0 && data[0].student_name) ? data[0].student_name : "黃瀚霆";
+
                 const emailDisplay = document.getElementById('userEmailDisplay');
-                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${emailPrefix}`;
+                if (emailDisplay) emailDisplay.innerText = `🎓 學生：${displayName}`;
             } catch (err) { console.error(err); }
         }
         window.addEventListener('DOMContentLoaded', checkAuthAndInit);
 
+        // 🌟 登出時進行全域快取清洗，斷絕多帳號 UUID 沾黏 Bug
         async function logout() {
             await supabaseClient.auth.signOut();
+            localStorage.clear();
+            sessionStorage.clear();
             window.location.href = 'register.html';
         }
 
