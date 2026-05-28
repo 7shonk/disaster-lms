@@ -11,15 +11,18 @@
         .no-select { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased">
+<body class="bg-slate-950 text-white min-h-screen flex font-sans antialiased overflow-x-hidden">
 
+    <!-- 側邊導覽欄 (已完美整合手勢與點擊雙控機制) -->
     <aside id="sidebarNav" class="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition relative z-50 group">
         
+        <!-- 側邊欄最上方：收起/展開按鈕區區塊 -->
         <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
             <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
                 <span class="text-xl">🛡️</span>
                 <span class="text-blue-400 font-black">防災學習 LMS</span>
             </div>
+            <!-- 收起按鈕 (保留供電腦端滑鼠操作) -->
             <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
                 <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
             </button>
@@ -59,6 +62,7 @@
         </div>
     </aside>
 
+    <!-- 主內容區 -->
     <main class="flex-1 p-6 md:p-10 overflow-y-auto w-full">
         <div class="max-w-7xl mx-auto w-full">
             
@@ -70,9 +74,11 @@
                 <p class="text-gray-400 text-sm md:text-base">六大主題互動式數位教室樞紐・跨系統用戶生態帳號即時連動</p>
             </header>
 
+            <!-- 📋 步驟一：物資智慧盤點儀表盤 (大圖卡版) -->
             <div class="bg-slate-900/90 p-6 md:p-8 rounded-2xl border border-slate-800 shadow-xl mb-10 relative overflow-hidden">
                 <div class="flex flex-col gap-8">
                     
+                    <!-- 上半部 -->
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-800/80 pb-6">
                         <div class="no-select">
                             <h2 class="text-lg md:text-xl font-extrabold text-blue-400 mb-2">📋 步驟一：家庭實體物資智慧盤點</h2>
@@ -92,6 +98,7 @@
                         </div>
                     </div>
 
+                    <!-- 下半部 -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div id="aiFeedbackContainer" class="lg:col-span-2 bg-slate-950/40 border border-slate-800/80 p-6 rounded-2xl flex flex-col min-h-[220px]">
                             <div class="flex items-center gap-2.5 mb-4 no-select">
@@ -122,11 +129,13 @@
                 </div>
             </div>
 
+            <!-- 智慧防災互動教室選擇區 -->
             <h2 class="text-sm font-bold text-gray-400 mb-5 uppercase tracking-widest flex items-center gap-2">
                 <span class="w-1 h-4 bg-orange-500 rounded-sm"></span> 智慧防災互動教室選擇
             </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 地震教室 -->
                 <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/50 transition duration-300 shadow-md">
                     <div>
                         <div class="flex justify-between items-start mb-4">
@@ -138,6 +147,7 @@
                     </div>
                 </div>
 
+                <!-- 颱洪教室 -->
                 <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-teal-500/50 transition duration-300 shadow-md">
                     <div>
                         <div class="flex justify-between items-start mb-4">
@@ -149,6 +159,7 @@
                     </div>
                 </div>
 
+                <!-- 火災教室 -->
                 <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-red-500/50 transition duration-300 shadow-md">
                     <div>
                         <div class="flex justify-between items-start mb-4">
@@ -170,38 +181,64 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
         let testUserId = null; 
-        let isSidebarExpanded = true; // 🌟 控制側邊欄狀態的旗標
+        let isSidebarExpanded = true; 
 
-        // 🌟 核心控制：切換側邊欄展開/收起
-        function toggleSidebar() {
+        // 核心控制：切換側邊欄狀態
+        function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
             const title = document.getElementById('sidebarTitle');
             const toggleIcon = document.getElementById('toggleBtnIcon');
             const textElements = document.querySelectorAll('.sidebar-text');
 
-            if (isSidebarExpanded) {
-                // 【狀態一：切換成收起】 w-64 -> w-16
+            if (!expand) {
                 sidebar.classList.remove('w-64');
                 sidebar.classList.add('w-16');
                 title.classList.replace('opacity-100', 'opacity-0');
-                toggleIcon.innerText = '☰'; // 變更為漢堡選單
-                
-                textElements.forEach(el => {
-                    el.classList.add('opacity-0', 'pointer-events-none');
-                });
+                toggleIcon.innerText = '☰';
+                textElements.forEach(el => el.classList.add('opacity-0', 'pointer-events-none'));
+                isSidebarExpanded = false;
             } else {
-                // 【狀態二：切換成展開】 w-16 -> w-64
                 sidebar.classList.remove('w-16');
                 sidebar.classList.add('w-64');
                 title.classList.replace('opacity-0', 'opacity-100');
-                toggleIcon.innerText = '✕'; // 變更為關閉叉叉
-                
-                textElements.forEach(el => {
-                    el.classList.remove('opacity-0', 'pointer-events-none');
-                });
+                toggleIcon.innerText = '✕';
+                textElements.forEach(el => el.classList.remove('opacity-0', 'pointer-events-none'));
+                isSidebarExpanded = true;
             }
-            isSidebarExpanded = !isSidebarExpanded;
         }
+
+        function toggleSidebar() {
+            setSidebarState(!isSidebarExpanded);
+        }
+
+        // 🌟 新增：行動裝置手勢滑動觸發機制 (Swipe Left / Swipe Right)
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            // 確保使用者是進行「水平滑動」，而不是垂直滑動滾動網頁
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
+                if (deltaX > 0 && touchStartX < 50) {
+                    // 🌟 1. 從螢幕極左側边缘向右滑動 -> 展開選單
+                    setSidebarState(true);
+                } else if (deltaX < 0 && isSidebarExpanded) {
+                    // 🌟 2. 選單展開時向左滑動 -> 收起選單
+                    setSidebarState(false);
+                }
+            }
+        }, { passive: true });
+
 
         async function init() {
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -292,4 +329,3 @@
     </script>
 </body>
 </html>
-
