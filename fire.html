@@ -14,7 +14,6 @@
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <!-- 手機端頂部導覽列：三槓按鈕固定在最左邊 -->
     <div class="md:hidden w-full bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between no-select">
         <div class="flex items-center gap-3">
             <button onclick="setSidebarState(true)" class="p-1.5 rounded-lg bg-slate-800 text-gray-300 hover:text-white cursor-pointer transition">
@@ -27,26 +26,22 @@
         </div>
     </div>
 
-    <!-- 行動端專用背景半透明遮罩 (Overlay) -->
     <div id="sidebarOverlay" onclick="setSidebarState(false)" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
 
-    <!-- 側邊導覽欄：懸浮抽屜覆蓋模式 -->
     <aside id="sidebarNav" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition z-50 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
         
         <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
             <div id="sidebarTitle" class="flex items-center gap-2 font-bold text-base overflow-hidden whitespace-nowrap pl-1 sidebar-transition opacity-100">
-                <span class="text-xl">🛡️</span>
-                <span class="text-blue-400 font-black">防災學習 LMS</span>
+                <span class="text-xl">🛡️</span><span class="text-blue-400 font-black">防災學習 LMS</span>
             </div>
             <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white transition cursor-pointer" title="收起/展開選單">
                 <span id="toggleBtnIcon" class="text-lg font-bold block w-6 text-center">✕</span>
             </button>
         </div>
-        
         <nav class="space-y-4 flex-1 overflow-y-auto pr-1" id="sidebarMenu">
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">主選單</div>
-                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-blue-400 p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🏠</span><span class="sidebar-text text-sm sidebar-transition">學習中控大廳</span></a>
+                <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white p-2.5 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🏠</span><span class="sidebar-text text-sm sidebar-transition">學習中控大廳</span></a>
             </div>
             <div>
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">實體備料</div>
@@ -60,6 +55,13 @@
                     <a href="#" class="flex items-center gap-4 text-red-400 bg-red-950/40 p-2 rounded-xl border border-red-900/30 whitespace-nowrap pl-2"><span class="text-lg shrink-0">🔥</span><span class="sidebar-text text-sm font-bold sidebar-transition">火災安全逃生</span></a>
                 </div>
             </div>
+            <div>
+                <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">生活安全教室</div>
+                <div class="space-y-1">
+                    <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🚪</span><span class="sidebar-text text-sm sidebar-transition">居家綜合安全</span></a>
+                    <a href="first-aid.html" class="flex items-center gap-4 text-gray-400 hover:text-emerald-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🚑</span><span class="sidebar-text text-sm sidebar-transition">民眾急救自救</span></a>
+                </div>
+            </div>
         </nav>
 
         <div class="border-t border-slate-800 pt-4 mt-auto overflow-hidden" id="sidebarFooter">
@@ -71,7 +73,6 @@
         </div>
     </aside>
 
-    <!-- 右側主內容複合區 -->
     <div class="flex-1 flex flex-col min-h-screen">
         
         <main class="flex-1 p-6 md:p-10 w-full">
@@ -172,7 +173,6 @@
             </div>
         </main>
 
-        <!-- 響應式動態黏性頁尾 -->
         <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <div class="flex flex-col items-center md:items-start gap-1">
@@ -250,7 +250,7 @@
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
         }, { passive: true });
-        window.addEventListener('touchend', (e) => {
+        window.addEventListener('tousend', (e) => {
             const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
             const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
@@ -288,6 +288,8 @@
 
         async function logout() {
             await supabaseClient.auth.signOut();
+            localStorage.clear();
+            sessionStorage.clear();
             window.location.href = 'register.html';
         }
 
