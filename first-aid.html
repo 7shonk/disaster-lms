@@ -14,7 +14,6 @@
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
 
-    <!-- 手機端頂部導覽列：三槓按鈕固定在最左邊 -->
     <div class="md:hidden w-full bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between no-select">
         <div class="flex items-center gap-3">
             <button onclick="setSidebarState(true)" class="p-1.5 rounded-lg bg-slate-800 text-gray-300 hover:text-white cursor-pointer transition">
@@ -27,10 +26,8 @@
         </div>
     </div>
 
-    <!-- 行動端專用背景半透明遮罩 (Overlay) -->
     <div id="sidebarOverlay" onclick="setSidebarState(false)" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
 
-    <!-- 側邊導覽欄：懸浮抽屜覆蓋模式 -->
     <aside id="sidebarNav" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col shrink-0 no-select sidebar-transition z-50 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
         
         <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-800/50">
@@ -62,7 +59,7 @@
                 <div class="sidebar-text text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 pl-2 sidebar-transition">生活安全教室</div>
                 <div class="space-y-1">
                     <a href="home-safety.html" class="flex items-center gap-4 text-gray-400 hover:text-yellow-400 p-2 rounded-xl hover:bg-slate-800 transition whitespace-nowrap pl-2"><span class="text-lg shrink-0">🚪</span><span class="sidebar-text text-sm sidebar-transition">居家綜合安全</span></a>
-                    <a href="#" class="flex items-center gap-4 text-emerald-400 bg-emerald-950/40 p-2 rounded-xl border border-emerald-900/30 whitespace-nowrap pl-2"><span class="text-lg shrink-0">🚑</span><span class="sidebar-text text-sm font-bold sidebar-transition">民眾急救自救</span></a>
+                    <a href="#" class="flex items-center gap-4 text-emerald-400 bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-900/30 whitespace-nowrap pl-2"><span class="text-lg shrink-0">橫🚑</span><span class="sidebar-text text-sm font-bold sidebar-transition">民眾急救自救</span></a>
                 </div>
             </div>
         </nav>
@@ -76,7 +73,6 @@
         </div>
     </aside>
 
-    <!-- 右側主內容複合區 -->
     <div class="flex-1 flex flex-col min-h-screen">
         
         <main class="flex-1 p-6 md:p-10 w-full">
@@ -150,7 +146,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl mb-6">
                     <h3 class="text-md font-bold text-emerald-400 mb-2 flex items-center gap-2">💬 訓練二：急救文本 AI 智能詢問區</h3>
                     <p class="text-xs text-gray-400 mb-4 leading-relaxed">
                         在研讀《民眾自救手冊》時，對於「CPR 步驟」或「哈姆立克法」有不清楚的地方嗎？請輸入您的疑問，讓 AI 導師為您解答！
@@ -170,10 +166,34 @@
                     </div>
                 </div>
 
+                <div class="bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4 no-select">
+                        <h3 class="text-md font-bold text-emerald-400 flex items-center gap-2">🧠 訓練三：依急救課本之 AI 隨機抽題挑戰區</h3>
+                        <span id="firstAidQuizStatusBadge" class="bg-slate-950 text-emerald-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800">正在動態生成題目...</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">系統已自動掃描上方《民眾自救手冊》課本內容，並隨清單狀態實時切換隨機出題：</p>
+                    
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800/80 mb-4">
+                        <span class="text-xs font-bold text-emerald-400 block mb-1">【AI 隨機生成文本挑戰題】</span>
+                        <p class="text-sm font-semibold text-gray-200 leading-relaxed" id="aiFirstAidQuestionText">
+                            正在讀取課本核心語意...
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4" id="firstAidQuizOptionsContainer"></div>
+
+                    <div id="firstAidQuizResultBox" class="hidden p-4 rounded-xl text-center font-bold text-xs mb-4"></div>
+
+                    <div class="flex justify-end border-t border-slate-800/60 pt-4">
+                        <button onclick="generateRandomFirstAidQuestion()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 font-bold text-xs py-2 px-4 rounded-xl transition-all shadow-md flex items-center gap-1.5 active:scale-95 cursor-pointer no-select">
+                            <span>🔄</span> 讓 AI 重新隨機出題
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </main>
 
-        <!-- 響應式動態黏性頁尾 -->
         <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-6 no-select">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <div class="flex flex-col items-center md:items-start gap-1">
@@ -199,6 +219,131 @@
         
         let testUserId = null; 
         let isSidebarExpanded = false;
+        let hasAnsweredFirstAidQuiz = false; // 答題防刷鎖
+        let currentFirstAidQuestionObject = null; // 當前被抽中的題目物件
+
+        // 🌟 專屬該課本《民眾自救手冊.pdf》的核心 AI 隨機題庫陣列
+        const firstAidBookQuestionsPool = [
+            {
+                question: "依據《民眾自救手冊》指引，當發現路人突然失去意識倒地，且經確認『完全沒有正常呼吸心跳』時，非專業民眾施救者在胸外按壓（CPR壓胸）的操作要求，何者在語意上完全符合官方標準？",
+                options: [
+                    "(A) 按壓深度2~3公分，速率越慢越好以防肋骨骨折",
+                    "(B) 保持『用力壓、快快壓（每分鐘100~120次）、胸回彈、莫中斷』且深度達5~6公分",
+                    "(C) 壓胸5次就要進行5次人工呼吸",
+                    "(D) 只要等待救護車抵達即可，不建議民眾自行壓胸"
+                ],
+                correctIndex: 1, // 選項(B)
+                explain: "🎉 答對了！《民眾自救手冊》極度強調高品質 CPR 要求：深度 5~6 公分、速率每分鐘 100~120 次，且按壓中斷時間絕對不能超過 10 秒。搶救生命黃金 4 分鐘全靠這個動作！進度分數已同步上傳！"
+            },
+            {
+                question: "根據課本指引，當取得並準備使用公眾場所設置的 AED（自動體外心臟電擊去顫器）時，開啟電源後的下一步應該做什麼？",
+                options: [
+                    "(A) 隨便貼在患者衣服上，並立刻按下閃爍的紅色電擊鈕",
+                    "(B) 聽從語意指示，將電擊極片緊貼在患者『右大胸肌上方』與『左乳頭外側下方』的裸露皮膚上",
+                    "(C) 立刻對患者進行人工呼吸，此時絕對不可貼任何貼片",
+                    "(D) 大力搖晃患者確認機器有沒有連線成功"
+                ],
+                correctIndex: 1, // 選項(B)
+                explain: "🎉 完全正確！AED 極片張貼位置必須嚴格對齊：右鎖骨下方（右大胸肌）與左側乳頭外側下方（心尖部），使電流能完整穿透心臟進行去顫！數據已同步更新！"
+            },
+            {
+                question: "在民眾自救教材中，若看見身邊同伴突然雙手掐住脖子、表情痛苦且『無法發聲、無法咳嗽』，判定為嚴重呼吸道異物哽塞時，應立即實施何種急救自救技術？",
+                options: [
+                    "(A) 狂灌大量生自來水將異物沖下去",
+                    "(B) 對其大聲朗讀呼吸手冊放鬆心情",
+                    "(C) 站在患者後方，雙手環抱其肚臍與劍突之間，快速實施向內向上的哈姆立克擠壓法",
+                    "(D) 立刻將患者翻身並實施倒立控水法"
+                ],
+                correctIndex: 2, // 選項(C)
+                explain: "🎉 答對了！雙手掐脖是標準異物哽塞求救手勢，此時無法發聲咳嗽代表氣道完全堵塞，哈姆立克法是利用橫膈膜上升的肺部餘氣將異物推出，千萬不能灌水！"
+            }
+        ];
+
+        // 🌟 核心控制：隨機抽題與按鈕狀態清洗重置
+        function generateRandomFirstAidQuestion() {
+            hasAnsweredFirstAidQuiz = false;
+            const resultBox = document.getElementById('firstAidQuizResultBox');
+            if(resultBox) resultBox.classList.add('hidden');
+
+            // 亂數抽取
+            const randomIndex = Math.floor(Math.random() * firstAidBookQuestionsPool.length);
+            currentFirstAidQuestionObject = firstAidBookQuestionsPool[randomIndex];
+
+            // 動態注入題目
+            document.getElementById('aiFirstAidQuestionText').innerText = currentFirstAidQuestionObject.question;
+
+            // 動態洗滌並重構 4 顆選項按鈕
+            const optionsContainer = document.getElementById('firstAidQuizOptionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            currentFirstAidQuestionObject.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "first-aid-quiz-opt-btn bg-slate-900 border border-slate-800 hover:border-emerald-500/50 p-4 rounded-xl text-left text-xs md:text-sm font-medium transition-all cursor-pointer text-gray-300 active:scale-98";
+                btn.innerText = optText;
+                btn.onclick = () => checkFirstAidQuizAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            // 重置徽章狀態
+            const badge = document.getElementById('firstAidQuizStatusBadge');
+            if(badge) {
+                badge.className = "bg-slate-950 text-emerald-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-slate-800";
+                badge.innerText = "AI 隨機出題中";
+            }
+        }
+
+        // 🌟 驗證自救答案邏輯
+        async function checkFirstAidQuizAnswer(selectedOptionIndex) {
+            if (hasAnsweredFirstAidQuiz || !currentFirstAidQuestionObject) return;
+            
+            const resultBox = document.getElementById('firstAidQuizResultBox');
+            const badge = document.getElementById('firstAidQuizStatusBadge');
+            const buttons = document.querySelectorAll('.first-aid-quiz-opt-btn');
+            
+            resultBox.classList.remove('hidden');
+            hasAnsweredFirstAidQuiz = true;
+
+            buttons.forEach(btn => btn.classList.add('opacity-50', 'pointer-events-none'));
+            const correctIdx = currentFirstAidQuestionObject.correctIndex;
+
+            if (selectedOptionIndex === correctIdx) {
+                buttons[correctIdx].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+                
+                resultBox.className = "mt-4 p-4 bg-green-950/30 border border-green-500/30 text-green-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = currentFirstAidQuestionObject.explain;
+                
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                badge.innerText = "挑戰成功 100分";
+
+                // 將 100 分寫入 Supabase 進度庫
+                await saveFirstAidQuizScore(100);
+            } else {
+                buttons[selectedOptionIndex].classList.remove('bg-slate-900', 'border-slate-800', 'opacity-50');
+                buttons[selectedOptionIndex].classList.add('bg-red-950', 'border-red-500', 'text-red-400');
+                
+                buttons[correctIdx].classList.remove('opacity-50');
+                buttons[correctIdx].classList.add('bg-green-950', 'border-green-500', 'text-green-400');
+
+                resultBox.className = "mt-4 p-4 bg-red-950/30 border border-red-500/30 text-red-400 rounded-xl text-center font-bold text-xs shadow-inner";
+                resultBox.innerHTML = `❌ 答錯了！正確解答應為 ${currentFirstAidQuestionObject.options[correctIdx]}。請多研讀自救知識！`;
+                
+                badge.className = "bg-red-950 text-red-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-red-900/40";
+                badge.innerText = "挑戰失敗 0分";
+                
+                await saveFirstAidQuizScore(0);
+            }
+        }
+
+        // 🌟 分數更新同步至雲端資料庫
+        async function saveFirstAidQuizScore(scoreValue) {
+            if (!testUserId) return;
+            try {
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ learning_records: scoreValue, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
+            } catch (err) { console.error("資料庫寫入失敗:", err); }
+        }
 
         function setSidebarState(expand) {
             const sidebar = document.getElementById('sidebarNav');
@@ -240,22 +385,20 @@
             }
         }
 
-        function toggleSidebar() {
-            setSidebarState(!isSidebarExpanded);
-        }
+        function toggleSidebar() { setSidebarState(!isSidebarExpanded); }
 
-        // 手勢
+        // 行動端大拇指左右流暢滑動手勢
         let touchStartX = 0; let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
+            touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY;
         }, { passive: true });
         window.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].screenX; const touchEndY = e.changedTouches[0].screenY;
             const deltaX = touchEndX - touchStartX; const deltaY = touchEndY - touchStartY;
+
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && touchStartX < 60) setSidebarState(true);
-                else if (deltaX < 0 && isSidebarExpanded) setSidebarState(false);
+                if (deltaX > 0 && touchStartX < 60) { setSidebarState(true); } 
+                else if (deltaX < 0 && isSidebarExpanded) { setSidebarState(false); }
             }
         }, { passive: true });
 
@@ -264,9 +407,7 @@
                 document.getElementById('sidebarNav').classList.remove('-translate-x-full', 'translate-x-0');
                 document.getElementById('sidebarOverlay').classList.add('hidden');
                 setSidebarState(true);
-            } else {
-                setSidebarState(false);
-            }
+            } else { setSidebarState(false); }
         });
 
         async function checkAuthAndInit() {
@@ -282,13 +423,47 @@
 
                 const emailDisplay = document.getElementById('userEmailDisplay');
                 if (emailDisplay) emailDisplay.innerText = `🎓 學生：${displayName}`;
+                
+                // 動態加載第一道題目
+                generateRandomFirstAidQuestion();
+                renderSummary();
             } catch (err) { console.error(err); }
         }
         window.addEventListener('DOMContentLoaded', checkAuthAndInit);
 
         async function logout() {
             await supabaseClient.auth.signOut();
+            localStorage.clear();
+            sessionStorage.clear();
             window.location.href = 'register.html';
+        }
+
+        function calculateAidScore() {
+            const checkboxes = document.querySelectorAll('.aid-check');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            const scorePercent = Math.round((checkedCount / totalCount) * 100);
+            
+            const badge = document.getElementById('aidScoreBadge');
+            badge.innerText = `自救熟練度：${scorePercent}%`;
+            
+            if (scorePercent === 100) {
+                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
+                document.getElementById('aidSyncStatus').classList.remove('hidden');
+                saveAidProgress(checkedCount);
+            } else {
+                badge.className = "bg-emerald-950 text-emerald-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-emerald-900/40";
+                document.getElementById('aidSyncStatus').classList.add('hidden');
+            }
+        }
+
+        async function saveAidProgress(count) {
+            if (!testUserId) return;
+            try {
+                await supabaseClient.from('lms_disaster_progress')
+                    .update({ first_aid_completed_quizzes: count, updated_at: new Date().toISOString() })
+                    .eq('user_id', testUserId);
+            } catch (err) { console.error(err); }
         }
 
         async function submitInquiry() {
@@ -313,30 +488,12 @@
                 } else {
                     responseText.innerHTML = `🤖 <b>AI 導讀：</b>\n\n收到您關於「${question}」的詢問。急救的核心在於「盡早啟動求救系統(119)」。在救護車抵達前，您的及時處置（CPR與AED）將是挽救生命的關鍵。`;
                 }
-                
                 btnEl.innerHTML = "<span>💬</span> 送出詢問 AI 導師";
                 btnEl.disabled = false;
                 inputEl.value = ""; 
             }, 1200);
         }
-
-        function calculateAidScore() {
-            const checkboxes = document.querySelectorAll('.aid-check');
-            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-            const totalCount = checkboxes.length;
-            const scorePercent = Math.round((checkedCount / totalCount) * 100);
-            
-            const badge = document.getElementById('aidScoreBadge');
-            badge.innerText = `自救熟練度：${scorePercent}%`;
-            
-            if (scorePercent === 100) {
-                badge.className = "bg-green-950 text-green-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-green-900/40";
-                document.getElementById('aidSyncStatus').classList.remove('hidden');
-            } else {
-                badge.className = "bg-emerald-950 text-emerald-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-emerald-900/40";
-                document.getElementById('aidSyncStatus').classList.add('hidden');
-            }
-        }
+        function renderSummary() { calculateAidScore(); }
     </script>
 </body>
 </html>
